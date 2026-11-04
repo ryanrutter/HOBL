@@ -57,7 +57,7 @@ class AlOfficePrep(core.app_scenario.Scenario):
         deadline = time.time() + timeout
         while time.time() < deadline:
             root = ui.read_ui(self)
-            if ui.find_any(root, SIGNED_IN) is not None:
+            if self.is_signed_in(root):
                 return True
             sign_in = ui.find(root, "Sign in")
             if sign_in is not None:
@@ -69,32 +69,44 @@ class AlOfficePrep(core.app_scenario.Scenario):
             time.sleep(3)
         self.fail("Word did not show its home page or a Sign in button.")
 
+    @staticmethod
+    def is_signed_in(root):
+        # Word's account button is labeled "Signed in as <account>." in both its desktop and phone layouts.
+        if any((node.get("content-desc") or "").startswith("Signed in as") for node in root.iter("node")):
+            return True
+        return ui.find_any(root, SIGNED_IN) is not None
+
     def sign_in(self, account, password, timeout):
+        '''Reacts to each sign-in page until Word is signed in.  If another Microsoft app on the DUT is signed in with the
+        account, Microsoft offers it in an account picker instead of asking for the email and password.'''
         logging.info("Signing in to the Microsoft 365 apps.")
         root, button = ui.wait_for(self, ["Sign in"], timeout=10)
-        ui.tap(self, button, settle=3)
-        for value, labels in ((account, ["Next"]), (password, ["Sign in", "Next"])):
-            root, field = ui.wait_for(self, ["Email, phone, or Skype", "Email or phone", "Enter password", "Password"], timeout=timeout)
-            edit = next((node for node in root.iter("node") if node.get("class") == "android.widget.EditText"), None)
-            if edit is None:
-                self.fail("The Microsoft sign-in page has no text field.  Sign in to Word on the DUT once, then run al_office_prep again.")
-            ui.tap(self, edit)
-            self._send_text(value)
-            root, button = ui.wait_for(self, labels, timeout=15)
-            if button is None:
-                self.fail("The Microsoft sign-in page has no Next button.")
-            ui.tap(self, button, settle=5)
-
+        if button is not None:
+            ui.tap(self, button, settle=3)
+        typed = set()
         deadline = time.time() + timeout
         while time.time() < deadline:
             root = ui.read_ui(self)
-            if ui.find_any(root, VERIFY) is not None:
-                self.fail("Microsoft asked for extra verification.  Turn off two-step verification for the test account, or sign in on the DUT once, then run al_office_prep again.")
-            if ui.find_any(root, SIGNED_IN) is not None:
+            if self.is_signed_in(root):
                 logging.info("Signed in to the Microsoft 365 apps.")
                 return
-            # "Stay signed in?" and first-run prompts.
-            button = ui.find_any(root, ["Yes", "Continue", "Accept"] + DISMISS)
+            if ui.find_any(root, VERIFY) is not None:
+                self.fail("Microsoft asked for extra verification.  Turn off two-step verification for the test account, or sign in on the DUT once, then run al_office_prep again.")
+            edit = next((node for node in root.iter("node") if node.get("class") == "android.widget.EditText"), None)
+            if edit is not None:
+                is_password = edit.get("password") == "true"
+                value, name = (password, "password") if is_password else (account, "account")
+                if name in typed:
+                    self.fail("Microsoft did not accept msa_account and dut_password.  Check them in the device profile.")
+                typed.add(name)
+                ui.tap(self, edit)
+                self._send_text("\ue009a")
+                self._send_text(value + "\ue007")
+                time.sleep(5)
+                continue
+            picker = next((node for node in root.iter("node") if (node.get("text") or "").lower() == account.lower()), None)
+            # "Stay signed in?", the account picker, and first-run prompts.
+            button = picker if picker is not None else ui.find_any(root, ["Yes", "Continue", "Accept", "Next"] + DISMISS)
             if button is not None:
                 ui.tap(self, button, settle=3)
                 continue

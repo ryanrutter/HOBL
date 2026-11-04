@@ -100,6 +100,8 @@ class AlStandby(core.app_scenario.Scenario):
                 state = self._call(["sh", "-c \"dumpsys power | grep -m1 mWakefulness=\""], timeout=20)
                 if "Awake" in state:
                     logging.info("The DUT is awake.")
+                    # With a screen lock PIN, the DUT wakes to the lock screen.
+                    self._aluminium_unlock()
                     return
             except Exception as e:
                 logging.debug(f"DUT not reachable yet: {e}")

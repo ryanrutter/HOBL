@@ -136,6 +136,49 @@ function Connect-WirelessDebugging {
     return $false
 }
 
+# After a restart, Aluminium shows its login screen as the system user (0), and the test user stays locked until
+# its PIN is entered.  Switching users stops Wireless debugging and ends every process started over ADB, including
+# the agent, so the agent can't do the switch.  Instead, verify the PIN to unlock the test user's storage, then
+# switch to it; Wireless debugging starts again once the test user is unlocked, and HOBL enters the PIN on the lock
+# screen through the agent.  Returns the adb serial to use after the switch.
+function Switch-AluminiumTestUser {
+    param([string]$Adb, [string]$Serial, [string]$DeviceIp, [string]$Pin, [int]$TimeoutSeconds = 120)
+    $current = (Invoke-Adb $Adb $Serial @("shell", "am get-current-user") -AllowFailure).Trim()
+    if ($current -ne "0") { return $Serial }
+    $users = Invoke-Adb $Adb $Serial @("shell", "pm list users") -AllowFailure
+    $testUser = [regex]::Matches($users, "UserInfo\{(\d+):") | ForEach-Object { $_.Groups[1].Value } | Where-Object { $_ -ne "0" } | Select-Object -First 1
+    if (-not $testUser) { return $Serial }
+    if (-not $Pin) {
+        " WARNING - The DUT is at the login screen.  Set dut_pin in the device profile so HOBL can sign in to user $testUser after a restart, or sign in by hand." | log
+        return $Serial
+    }
+    "The DUT is at the login screen.  Unlocking and switching to user $testUser." | log
+    # The PIN goes to the DUT's shell on standard input, so it isn't on a command line or in the DUT's adbd log.
+    $commands = "am start-user $testUser`ncmd lock_settings verify --old $(ConvertTo-ShellLiteral $Pin) --user $testUser`nexit`n"
+    $output = $commands | & $Adb -s $Serial shell 2>&1 | Out-String
+    if ($output -notmatch "verified successfully") {
+        # Exit code 3 tells HOBL not to retry, since repeated wrong PINs lock the user out for longer each time.
+        " ERROR - dut_pin was not accepted for user $testUser.  Check dut_pin in the device profile." | log
+        Exit 3
+    }
+    Invoke-Adb $Adb $Serial @("shell", "am switch-user $testUser") -AllowFailure | Out-Null
+    if (Test-WirelessSerial $Serial) { & $Adb disconnect $Serial 2>&1 | Out-Null }
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Seconds 5
+        $devices = Get-AdbDevices -Adb $Adb
+        $newSerial = Find-AdbDeviceByIp -Adb $Adb -Devices $devices -DeviceIp $DeviceIp
+        if (-not $newSerial -and (Connect-WirelessDebugging -Adb $Adb -DeviceIp $DeviceIp)) {
+            $newSerial = Find-AdbDeviceByIp -Adb $Adb -Devices (Get-AdbDevices -Adb $Adb) -DeviceIp $DeviceIp
+        }
+        if ($newSerial -and (Invoke-Adb $Adb $newSerial @("shell", "am get-current-user") -AllowFailure).Trim() -eq $testUser) {
+            "Switched to user $testUser." | log
+            return $newSerial
+        }
+    }
+    fail "Wireless debugging did not reconnect within $TimeoutSeconds seconds after switching to user $testUser."
+}
+
 # IPv4 address of the DUT's Wi-Fi or Ethernet interface.
 function Get-DeviceIp {
     param([string]$Adb, [string]$Serial)
@@ -247,22 +290,63 @@ function Get-DutWifiName {
     return ""
 }
 
+# MAC address the DUT uses on its current Wi-Fi network, or "".
+function Get-DutWifiMac {
+    param([string]$Adb, [string]$Serial)
+    $info = & $Adb -s $Serial shell "dumpsys wifi | grep -m1 'mWifiInfo SSID'" 2>&1 | Out-String
+    if ($info -match 'MAC: ([0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5})') { return $Matches[1] }
+    return ""
+}
+
+# IDs of the DUT's saved Wi-Fi networks named Name, for the current Android user and shared networks.
+function Get-DutSavedNetworkIds {
+    param([string]$Adb, [string]$Serial, [string]$Name)
+    $list = & $Adb -s $Serial shell "cmd wifi list-networks" 2>&1 | Out-String
+    $ids = foreach ($line in ($list -split "`n")) {
+        if ($line -match "^\s*(\d+)\s+$([regex]::Escape($Name))\s{2,}") { $Matches[1] }
+    }
+    return @($ids | Select-Object -Unique)
+}
+
+# True for a random MAC address: random addresses are locally administered (bit 2 of the first byte is set).
+function Test-RandomMac {
+    param([string]$Mac)
+    return ($Mac -and ([Convert]::ToInt32($Mac.Substring(0, 2), 16) -band 2))
+}
+
 # Join the DUT to a Wi-Fi network over USB, the equivalent of dut_wifi_name/dut_wifi_password in the Windows
 # dut_setup.  The password is passed to the DUT only, never written to the console.
+#
+# The network is saved once, shared with all Android users, with the device's own MAC address.  Settings saves a
+# network for the current user only, with a random MAC that changes daily and differs per user.  After a restart,
+# the login screen then has no network or a different IP address, so HOBL can't reach the DUT to sign in, and
+# dut_ip in the profile stops matching.
 function Connect-DutWifi {
     param([string]$Adb, [string]$Serial, [string]$Name, [string]$Password, [string]$Authentication = "WPA2PSK", [int]$TimeoutSeconds = 60)
     $current = Get-DutWifiName -Adb $Adb -Serial $Serial
-    if ($current -eq $Name) {
+    $saved = Get-DutSavedNetworkIds -Adb $Adb -Serial $Serial -Name $Name
+    $randomMac = ($current -eq $Name) -and (Test-RandomMac (Get-DutWifiMac -Adb $Adb -Serial $Serial))
+    if ($current -eq $Name -and -not $randomMac -and $saved.Count -le 1) {
         "Wi-Fi: already connected to $Name" | log
         return
     }
     if (Test-WirelessSerial $Serial) {
+        if ($current -eq $Name) {
+            # Changing the saved network reconnects Wi-Fi, which would disconnect Wireless debugging.
+            " WARNING - Wi-Fi network $Name was saved in Settings (a random MAC address, or saved more than once), so the DUT's IP address can change after a restart and HOBL can't reconnect to it.  Connect the DUT with USB and run this script again to save the network for lab use." | log
+            return
+        }
         fail "The DUT is on Wi-Fi network '$current', not '$Name'.  Changing networks would disconnect Wireless debugging, so connect the DUT with USB and run this script again."
     }
+    foreach ($id in $saved) {
+        Invoke-Adb $Adb $Serial @("shell", "cmd wifi forget-network $id") -AllowFailure | Out-Null
+    }
     $security = if (-not $Password) { "open" } elseif ($Authentication -eq "WPA3SAE") { "wpa3" } else { "wpa2" }
+    # cmd wifi saves the network shared with all users; -r none uses the device's MAC address.
     $command = "cmd wifi connect-network $(ConvertTo-ShellLiteral $Name) $security"
     if ($Password) { $command += " $(ConvertTo-ShellLiteral $Password)" }
-    "Wi-Fi: joining $Name ($security)" | log
+    $command += " -r none"
+    "Wi-Fi: joining $Name ($security, device MAC address, shared with all users)" | log
     $output = & $Adb -s $Serial shell $command 2>&1 | Out-String
     if ($LASTEXITCODE -ne 0) {
         if ($Password) { $output = $output.Replace($Password, "********") }
@@ -270,7 +354,9 @@ function Connect-DutWifi {
     }
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
-        if ((Get-DutWifiName -Adb $Adb -Serial $Serial) -eq $Name) {
+        # Wait for DHCP too, since the agent and Wireless debugging need the DUT's address.
+        $addresses = & $Adb -s $Serial shell "ip -4 -o addr show" 2>&1 | Out-String
+        if ((Get-DutWifiName -Adb $Adb -Serial $Serial) -eq $Name -and $addresses -match "(wlan|eth)\S*\s+inet ") {
             "Wi-Fi: connected to $Name" | log
             return
         }

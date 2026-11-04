@@ -5,14 +5,18 @@
 # HOBL runs this automatically while waiting for a DUT that rebooted or shut down; it can also be run by hand.
 #
 # Usage:
-#   .\launch_agent.ps1 [-Serial <adb serial or ip:port>] [-DeviceIp <DUT Wi-Fi ip>] [-HostIp <host ip>] [-Port 8000] [-AllowAny]
+#   .\launch_agent.ps1 [-Serial <adb serial or ip:port>] [-DeviceIp <DUT Wi-Fi ip>] [-HostIp <host ip>] [-Port 8000] [-AllowAny] [-ProfilePath <device profile .ini>]
+#
+# If the DUT restarted and is at the login screen, the script signs in to the test user with dut_pin first.  HOBL
+# passes the PIN in the HOBL_DUT_PIN environment variable; when run by hand, it's read from -ProfilePath.
 
 param(
     [string]$Serial = "",
     [string]$DeviceIp = "",
     [string]$HostIp = "",
     [int]$Port = 8000,
-    [switch]$AllowAny
+    [switch]$AllowAny,
+    [string]$ProfilePath = ""
 )
 
 . "$PSScriptRoot\aluminium_common.ps1"
@@ -24,6 +28,10 @@ $Serial = Get-AluminiumDevice -Adb $adb -Serial $Serial -DeviceIp $DeviceIp
 $deviceIp = Get-DeviceIp -Adb $adb -Serial $Serial
 if (-not $HostIp) { $HostIp = Get-HostIp -DeviceIp $deviceIp }
 "DUT $Serial has IP $deviceIp; host IP is $HostIp" | log
+
+$pin = $env:HOBL_DUT_PIN
+if (-not $pin -and $ProfilePath) { $pin = Get-ProfileValue -ProfilePath $ProfilePath -Section "global" -Key "dut_pin" }
+$Serial = Switch-AluminiumTestUser -Adb $adb -Serial $Serial -DeviceIp $deviceIp -Pin $pin
 
 $existing = Invoke-Adb $adb $Serial @("shell", "ls $AgentJar") -AllowFailure
 if ($existing -notmatch [regex]::Escape($AgentJar) -or $existing -match "No such file") {

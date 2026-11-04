@@ -528,6 +528,9 @@ class Scenario(unittest.TestCase):
             csv_writter.writerow(['Scenario', module])
 
         # Start config info, including SoC
+        if self.platform.lower() == "aluminium" and self.training_mode != '1':
+            # The DUT locks when it sleeps, e.g. after sleep_wake or al_standby, if the test user has a PIN.
+            self._aluminium_unlock()
         if self.platform.lower() == "aluminium" and self.training_mode != '1' and self.collection_enabled != '0' and self.is_prep == False:
             self._aluminium_check_screen_timeout()
 
@@ -3861,6 +3864,11 @@ class Scenario(unittest.TestCase):
     def _aluminium_unlock(self):
         # After the DUT restarts, the test user stays locked until its PIN is entered.
         try:
+            if self._call(["am", "get-current-user"], expected_exit_code="").strip() == "0":
+                # launch_agent.ps1 signs in to the test user from the login screen when dut_pin is set.
+                if "UserInfo{" in self._call(["pm", "list users"], expected_exit_code="").replace("UserInfo{0:", ""):
+                    logging.warning("The DUT is at the login screen.  Set dut_pin in the device profile so HOBL can sign in after a restart, or sign in by hand.")
+                return
             if not self._aluminium_is_locked():
                 return
             pin = Params.get('global', 'dut_pin', log=False)
@@ -3891,10 +3899,20 @@ class Scenario(unittest.TestCase):
             logging.warning(f"Unable to relaunch the Aluminium agent, {script} not found.")
             return False
         command = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script, "-DeviceIp", str(self.dut_ip), "-Port", str(self.rpc_port)]
+        env = os.environ.copy()
+        pin = Params.get('global', 'dut_pin', log=False)
+        # The script signs in to the test user if the DUT is at the login screen.  The PIN is passed in the
+        # environment, not on the command line, and not again after it was rejected.
+        if pin and not getattr(self, "_aluminium_pin_rejected", False):
+            env["HOBL_DUT_PIN"] = pin
         try:
-            result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+            result = subprocess.run(command, capture_output=True, text=True, timeout=240, env=env)
         except Exception as e:
             logging.debug(f"Aluminium agent relaunch attempt failed: {e}")
+            return False
+        if result.returncode == 3:
+            self._aluminium_pin_rejected = True
+            logging.error("The DUT is at the login screen and rejected dut_pin.  Check dut_pin in the device profile, then sign in to the DUT by hand.")
             return False
         if result.returncode != 0:
             # Expected until the DUT has booted and reconnected to wireless debugging.

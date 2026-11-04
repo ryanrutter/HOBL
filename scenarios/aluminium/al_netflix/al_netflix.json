@@ -60,7 +60,7 @@
             {
                 "children": [],
                 "delay": "0",
-                "enabled": true,
+                "enabled": false,
                 "id": "AN0007",
                 "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
                 "params": [
@@ -104,7 +104,7 @@
             {
                 "children": [],
                 "delay": "0.0",
-                "description": "Sign in with the profile's Netflix account",
+                "description": "Sign in with the profile's Netflix account, if not signed in",
                 "enabled": true,
                 "file_name": [
                     "code_AN0020.py"

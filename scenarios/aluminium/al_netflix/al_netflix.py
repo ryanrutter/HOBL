@@ -8,7 +8,7 @@ from . import default_params
 
 class AlNetflix(core.app_scenario.Scenario):
     '''
-    Watches a Netflix video in Chrome, the Aluminium version of the Windows netflix scenario: it signs out, signs in with netflix_username and netflix_password from the [netflix] section of the device profile, and plays the same title from the same position, full screen, for the specified duration.  Playback is verified with Android's media session at the start and end.
+    Watches a Netflix video in Chrome, the Aluminium version of the Windows netflix scenario: it signs in with netflix_username and netflix_password from the [netflix] section of the device profile if Chrome isn't signed in already, and plays the same title from the same position, full screen, for the specified duration.  Playback is verified with Android's media session at the start and end.  Unlike Windows, it doesn't sign out first:  Netflix may send a sign-in code to the account's email instead of asking for the password, which can't be automated.  If it does, sign in to Netflix once by hand in Chrome on the DUT.
     '''
     default_params.run()
 
