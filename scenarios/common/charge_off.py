@@ -77,6 +77,8 @@ class ChargeOff(core.app_scenario.Scenario):
                 state = 2
             elif "charged" in battery_status:
                 state = 2
+        elif self.platform.lower() == 'aluminium':
+            state = self.getAluminiumPowerState()
         else:
             state = int(self._call(["powershell", "(Get-WmiObject -Class Win32_Battery -ea 0).BatteryStatus"], timeout=10))
 

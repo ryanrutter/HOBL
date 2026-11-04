@@ -711,6 +711,17 @@ Teams is launched and then minimized to run in the background for the duration o
 
 `minimize_teams_only` -  **Default:** `0` 
 
+## upload
+
+Uploads a file or folder to the DUT
+
+
+<u>Parameters:</u>
+
+`source_path` - Source path (file or folder) **Default:** `` 
+
+`target_path` - Target folder (defaults to hobl_bin) **Default:** `` 
+
 ## youtube
 
 Plays a YouTube video in a web browser in Default View mode.
@@ -817,4 +828,252 @@ Local user is sharing desktop.
 `collect_MSTeams_Logs` - Set to 1 to collect MS Teams logs of the meeting after exiting the meeting. **Default:** `1`  **Options:** `0, 1`
 
 `maintain_bots` - Set to 1 to have the test periodically check that all bots are present in the call and add bots if needed. **Default:** `0`  **Options:** `0, 1`
+
+## al_accounts_check
+
+Reports which account settings are present in the device profile of an Aluminium (Android desktop) DUT, without showing their values.
+
+Use it after filling in the profile, to see which account-dependent scenarios can run.  The scenario fails if a workload listed in "required" is missing a setting.
+
+
+<u>Parameters:</u>
+
+`required` - Space-separated workloads whose settings must be present: wifi, google, microsoft, netflix, teams **Default:** `` 
+
+## al_agent_check
+
+Checks that the agent on an Aluminium (Android desktop) DUT supports everything HOBL uses.  Run this after comm_check when setting up a new DUT or agent version.
+
+Steps:
+
+1. SimpleRemote compatible calls: version, command output, exit codes, and background jobs
+2. File upload and download, including sub-folders and long file names
+3. InputInject screen info and screenshot
+4. InputInject input injection, using input that doesn't change the DUT state
+5. Report results
+
+## al_app_install_prep
+
+Installs the Android apps used by HOBL scenarios from the Play Store on an Aluminium (Android desktop) DUT, for the active Android user.  Apps that are already installed are left unchanged.  The DUT must be signed in to a Google account.
+
+
+<u>Parameters:</u>
+
+`apps` - Space-separated apps to install: netflix, word, excel, powerpoint, outlook, onenote, teams, onedrive **Default:** `netflix word excel powerpoint outlook onenote teams onedrive` 
+
+`install_timeout` - Seconds to wait for each app to download and install. **Default:** `900` 
+
+## al_google_account_prep
+
+The Google account names in "dumpsys account" output.
+
+
+<u>Parameters:</u>
+
+`required` - Space-separated workloads whose settings must be present: wifi, google, microsoft, netflix, teams **Default:** `` 
+
+`signin_timeout` - Seconds to wait for each Google sign-in screen. **Default:** `120` 
+
+## al_lvp
+
+True if an audio player of uid is started in "dumpsys audio" output.
+
+
+<u>Parameters:</u>
+
+`video_file` - Name of the video file in the host's downloads folder and on the DUT. **Default:** `ToS-4k-1920.mp4` 
+
+`video_url` - Where to download the video if it isn't in the downloads folder.  A .zip or .mov is converted to MP4 without re-encoding. **Default:** `http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov.zip` 
+
+`video_file` - The file name of the video, copied to the Movies folder by al_lvp_prep. **Default:** `ToS-4k-1920.mp4` 
+
+`duration` - Time to play the video in seconds **Default:** `300` 
+
+`airplane_mode` - Not supported on Aluminium: airplane mode would disconnect the HOBL agent. **Default:** `0`  **Options:** `0`
+
+## al_lvp_prep
+
+ffmpeg from PATH, or the copy host_setup downloads into downloads\ffmpeg_*.
+
+
+<u>Parameters:</u>
+
+`video_file` - Name of the video file in the host's downloads folder and on the DUT. **Default:** `ToS-4k-1920.mp4` 
+
+`video_url` - Where to download the video if it isn't in the downloads folder.  A .zip or .mov is converted to MP4 without re-encoding. **Default:** `http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov.zip` 
+
+## al_netflix
+
+Watches a Netflix video in Chrome, the Aluminium version of the Windows netflix scenario: it signs out, signs in with netflix_username and netflix_password from the [netflix] section of the device profile, and plays the same title from the same position, full screen, for the specified duration.  Playback is verified with Android's media session at the start and end.
+
+
+<u>Parameters:</u>
+
+`duration` - Seconds to play the video **Default:** `600` 
+
+`page_load_time` - Seconds to wait for each Netflix page **Default:** `20` 
+
+`netflix_username` - Netflix account, the same setting as the Windows netflix scenario **Default:** `` 
+
+`netflix_password` - Netflix account password **Default:** `` 
+
+## al_office_prep
+
+Signs in to the Microsoft 365 apps (Word, Excel, PowerPoint, Outlook, OneNote) on an Aluminium (Android desktop) DUT with msa_account and dut_password from the device profile, the equivalent of office_install activation on Windows.  The apps share the sign-in, so it is done once in Word.  Editing documents on Googlebook-sized screens needs a Microsoft 365 subscription on the account.
+
+
+<u>Parameters:</u>
+
+`required` - Space-separated workloads whose settings must be present: wifi, google, microsoft, netflix, teams **Default:** `` 
+
+`timeout` - Seconds to wait for each sign-in step. **Default:** `180` 
+
+## al_process_idle_tasks
+
+Runs pending background maintenance on an Aluminium (Android desktop) DUT so it will not be running during tests.  Android compiles installed apps in a background job after OS and app updates, similar to Windows idle tasks.  To ensure consistent results, please run this scenario at least once per day on devices before starting tests.
+
+
+<u>Parameters:</u>
+
+`timeout` - Maximum time in seconds the automation will wait for tasks to complete **Default:** `1800` 
+
+## al_read128kseq
+
+Reads a 1 GB file sequentially in 128 KB blocks, bypassing the file cache, for the specified duration on an Aluminium (Android desktop) DUT.  The Aluminium version of read128kseq, using toybox dd with direct I/O instead of diskspd.  The throughput is written to disk_throughput.csv.
+
+
+<u>Parameters:</u>
+
+`block` - Block size in KB **Default:** `128` 
+
+`duration` - Seconds **Default:** `300` 
+
+## al_recharge
+
+Turns on the device charger and waits until the battery reaches the recharge:resume_threshold level, then waits recharge:post_charge_delay seconds and turns off the charger.  Aluminium version of recharge.
+
+
+<u>Parameters:</u>
+
+`resume_threshold` -  **Default:** `100` 
+
+`post_charge_delay` - How many seconds to wait after reaching the resume_threshold before disconnecting charger. **Default:** `0` 
+
+`leave_on_ac` -  **Default:** `0`  **Options:** `0, 1`
+
+`monitor_only` -  **Default:** `0`  **Options:** `0, 1`
+
+`check_smart_charge` -  **Default:** `1`  **Options:** `0, 1`
+
+## al_speedometer
+
+Runs the Speedometer 3.1 browser benchmark in Chrome, the Aluminium version of the Windows speedometer scenario.  The score is written to speedometer_score.csv with the same metric name as Windows.
+
+
+<u>Parameters:</u>
+
+`timeout` - Seconds to wait for the benchmark to finish **Default:** `900` 
+
+## al_standby
+
+Puts an Aluminium (Android desktop) DUT into standby with the screen off, the Aluminium version of the Windows standby scenario.  It uses the same cs_floor parameters: cs_duration, button_to_record_delay, connection, and the button callbacks.
+
+Without a power measurement device, the average standby current and power are calculated from the battery charge counter, read just before standby and just after waking, and written to standby_power.csv.  Run it on battery; the charge counter resolution is 1 mAh, so longer durations are more accurate.
+
+
+<u>Parameters:</u>
+
+`cs_duration` -  **Default:** `1200` 
+
+`button_to_record_delay` -  **Default:** `900` 
+
+`button_sleep_callback` -  **Default:** `` 
+
+`button_wake_callback` -  **Default:** `` 
+
+`connection` - Connected or Disconnected from the network during standby **Default:** `Connected`  **Options:** `Disconnected, Connected`
+
+`wake_timeout` - Seconds to keep trying to wake the DUT after standby. **Default:** `300` 
+
+## al_timer
+
+Delays for the specified duration on an Aluminium (Android desktop) DUT.  Useful for checking that the HOBL host and the Aluminium agent are set up correctly.
+
+
+<u>Parameters:</u>
+
+`duration` - Seconds to delay. **Default:** `1` 
+
+## al_wait_for_dut
+
+Waits until the Aluminium agent on the DUT responds.
+
+## al_web
+
+Runs the twelve default Windows web_replay sites in Chrome, including archived YouTube media requests.
+
+This Aluminium version matches the site set and tab count but does not yet reproduce Windows'
+image-matched scrolling or select fixed YouTube resolutions.  YouTube's player pauses the recorded
+videos in Chrome on Aluminium, so the scenario only checks that archived video segments were
+delivered; use al_youtube for representative video playback.
+
+
+<u>Parameters:</u>
+
+`loops` - Number of browser loops **Default:** `1` 
+
+`page_load_time` - Seconds to wait after each page load **Default:** `10` 
+
+`youtube_duration` - Seconds to stream archived YouTube videos before pausing **Default:** `90` 
+
+## al_webxprt
+
+Runs the WebXPRT 4 browser benchmark in Chrome with its automation URL, the Aluminium version of the Windows webxprt scenario.  The overall score is written to webxprt_score.csv with the same metric name as Windows.
+
+
+<u>Parameters:</u>
+
+`timeout` - Seconds to wait for the benchmark to finish **Default:** `1800` 
+
+## al_web_prep
+
+Prepares Chrome for Aluminium web workloads.  It dismisses Chrome's first-run, sign-in, sync,
+notification, and default browser prompts without accepting them, then clears cached files only,
+preserving cookies, browsing history, passwords, and the signed-in test account.
+
+## al_write128kseq
+
+Writes a 1 GB file sequentially in 128 KB blocks, bypassing the file cache, for the specified duration on an Aluminium (Android desktop) DUT.  The Aluminium version of write128kseq, using toybox dd with direct I/O instead of diskspd.  The throughput is written to disk_throughput.csv.
+
+
+<u>Parameters:</u>
+
+`block` - Block size in KB **Default:** `128` 
+
+`duration` - Seconds **Default:** `300` 
+
+`block` - Block size in KB **Default:** `128` 
+
+`duration` - Seconds **Default:** `300` 
+
+## al_youtube
+
+Plays the Tears of Steel YouTube video in Chrome, the Aluminium version of the Windows youtube scenario.
+
+It uses the same parameters as Windows: duration, loop_duration (the video restarts after this many seconds), and full_screen.  Playback is verified on the DUT: after each loop, Android's media session must report that Chrome is playing and that the video advanced by the loop duration.
+
+By default the live site is used, because YouTube's player pauses the web_replay recording in Chrome on Aluminium.  Set web_replay=1 to use the recording, the same as Windows, once that is resolved.
+
+
+<u>Parameters:</u>
+
+`duration` - Total scenario duration **Default:** `600` 
+
+`loop_duration` - YouTube video playback duration before looping (max 480s) **Default:** `300` 
+
+`full_screen` - Full Screen mode **Default:** `0`  **Options:** `0, 1`
+
+`page_load_time` - Seconds to wait for the video page **Default:** `15` 
+
+`web_replay` - Play the web_replay recording (1) or the live site (0).  The recording does not currently play in Chrome on Aluminium. **Default:** `0`  **Options:** `0, 1`
 

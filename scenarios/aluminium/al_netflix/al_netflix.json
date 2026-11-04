@@ -1,0 +1,222 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "Acer Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Watch a Netflix video in Chrome, the Aluminium version of the Windows netflix scenario",
+        "enabled": true,
+        "id": "AN0000",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to play the video",
+        "enabled": true,
+        "id": "AN0001",
+        "name": "[duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "600"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to wait for each Netflix page",
+        "enabled": true,
+        "id": "AN0002",
+        "name": "[page_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "20"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0004",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_live_mode",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0005",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0006",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0007",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "netflix.com/SignOut"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "10"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0008",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "netflix.com/login"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "[page_load_time]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Sign in with the profile's Netflix account",
+                "enabled": true,
+                "file_name": [
+                    "code_AN0020.py"
+                ],
+                "id": "AN0020",
+                "type": "Code"
+            }
+        ],
+        "enabled": true,
+        "id": "AN0003",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0010",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "netflix.com/watch/81147381?t=150"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "[page_load_time]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "f - enter full screen",
+                "enabled": true,
+                "id": "AN0011",
+                "text": "f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Check that the video is playing",
+                "enabled": true,
+                "file_name": [
+                    "code_AN0021.py"
+                ],
+                "id": "AN0021",
+                "type": "Code"
+            },
+            {
+                "children": [],
+                "delay": "[duration]",
+                "description": "Watch video",
+                "enabled": true,
+                "id": "AN0012",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Check that the video played",
+                "enabled": true,
+                "file_name": [
+                    "code_AN0022.py"
+                ],
+                "id": "AN0022",
+                "type": "Code"
+            }
+        ],
+        "enabled": true,
+        "id": "AN0009",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "2",
+                "description": "f - exit full screen",
+                "enabled": true,
+                "id": "AN0014",
+                "text": "f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0015",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AN0016",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AN0013",
+        "type": "Teardown"
+    }
+]

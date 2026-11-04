@@ -1,0 +1,58 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Close tabs",
+        "enabled": true,
+        "id": "1X8U3MN",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Number of tabs to close",
+        "enabled": true,
+        "id": "1X8U3MP",
+        "name": "[num_tabs_to_close]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3MR",
+        "type": "Delay"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "2",
+                "description": "CTRL-w",
+                "enabled": true,
+                "id": "1X8U3MT",
+                "text": "\ue009w",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "count": "[num_tabs_to_close]",
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3MU",
+        "type": "Loop"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3MV",
+        "type": "End Loop"
+    }
+]

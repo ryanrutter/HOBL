@@ -1,0 +1,34 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Switch web_replay archive",
+        "enabled": true,
+        "id": "AW0000",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "web_replay archive name",
+        "enabled": true,
+        "id": "AW0002",
+        "name": "[archive_name]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": ""
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "Change replay archive",
+        "enabled": true,
+        "file_name": [
+            "code_AW0001.py"
+        ],
+        "id": "AW0001",
+        "type": "Code"
+    }
+]

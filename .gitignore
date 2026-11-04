@@ -6,3 +6,7 @@
 __pycache__
 /downloads/**
 /scenarios/windows/enterprise_collab/resources/large/**
+# Local build output.  Release builds in bin\*\Release and Output folders are committed on purpose.
+/utilities/open_source/HOBLStatusWindow/obj/
+/utilities/open_source/HOBLStatusWindow/bin/*/Debug/
+/utilities/open_source/map_luid_to_name/out/

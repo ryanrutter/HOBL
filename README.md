@@ -2,7 +2,7 @@
 
 ## Introduction
 
-* "HOBL" (Hours Of Battery Life) is a test framework and set of test scenarios for the purpose of measuring power, performance, and thermal characteristics of Windows and (to a lesser extent) macOS devices.
+* "HOBL" (Hours Of Battery Life) is a test framework and set of test scenarios for the purpose of measuring power, performance, and thermal characteristics of Windows and (to a lesser extent) macOS and Aluminium (Android desktop) devices.
 * The intent of HOBL is to support fully-automated and scaled out user-representative test execution and analysis, to enable computer system and component manufacturers to validate and tune products during development.
 * Power is expected to be primarily measured with external DAQ equipment, but internal power monitor chips and battery rundown measurements are also supported.
 * The HOBL test framework runs on a "Host" Windows 10/11 PC.  Test scenarios execute on the Host and send commands to the DUT (Device Under Test) over a local network to replicate user interactions.
@@ -117,6 +117,18 @@ The following components are licensed under the Apache License, Version 2.0:
   Copyright © 2015 Dave Wyatt  
   License: Apache License 2.0  
   Source: [https://www.powershellgallery.com/packages/PolicyFileEditor/3.0.1](https://www.powershellgallery.com/packages/PolicyFileEditor/3.0.1)
+
+- **Kotlin Standard Library**  
+  Copyright © 2010-2024 JetBrains s.r.o. and Kotlin Programming Language contributors  
+  License: Apache License 2.0  
+  Source: [https://github.com/JetBrains/kotlin](https://github.com/JetBrains/kotlin)  
+  Compiled into `utilities/open_source/AluminiumAgent/Output/AluminiumAgent.jar`.
+
+- **Gradle Wrapper**  
+  Copyright © 2007-2024 Gradle, Inc.  
+  License: Apache License 2.0  
+  Source: [https://github.com/gradle/gradle](https://github.com/gradle/gradle)  
+  Located in `utilities/open_source/AluminiumAgent/gradle/wrapper`.
 
 These components are used in compliance with the Apache License, Version 2.0.  
 A copy of the license is available at:  

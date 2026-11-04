@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Close browser",
+        "enabled": true,
+        "id": "1X8U3MY",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Close Chrome",
+        "enabled": true,
+        "file_name": [
+            "code_1X8U3MW.py"
+        ],
+        "id": "1X8U3MW",
+        "type": "Code"
+    }
+]

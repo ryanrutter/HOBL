@@ -1,0 +1,406 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "Acer Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Play the Tears of Steel YouTube video in Chrome, the Aluminium version of the Windows youtube scenario",
+        "enabled": true,
+        "id": "AY0000",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Total scenario duration",
+        "enabled": true,
+        "id": "AY0001",
+        "name": "[duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "600"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "YouTube video playback duration before looping (max 480s)",
+        "enabled": true,
+        "id": "AY0015",
+        "name": "[loop_duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "300"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Full Screen mode",
+        "enabled": true,
+        "id": "AY0016",
+        "name": "[full_screen]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to wait for the video page",
+        "enabled": true,
+        "id": "AY0002",
+        "name": "[page_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "15"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Play the web_replay recording (1) or the live site (0)",
+        "enabled": true,
+        "id": "AY0034",
+        "name": "[web_replay]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AY0004",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_live_mode",
+                        "type": "Include"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0035",
+                "left_term": "[web_replay]",
+                "right_term": "0",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0036",
+                "type": "End If"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AY0005",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AY0017",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Calculate number of loops",
+                "enabled": true,
+                "file_name": [
+                    "code_AY0018.py"
+                ],
+                "id": "AY0018",
+                "type": "Code"
+            }
+        ],
+        "enabled": true,
+        "id": "AY0006",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AY0019",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "youtubetos"
+                            }
+                        ],
+                        "type": "Include"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0037",
+                "left_term": "[web_replay]",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0038",
+                "type": "End If"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AY0007",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "youtu.be/41hv2tW5Lc4"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "[page_load_time]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0.0",
+                        "description": "Select the recorded video quality",
+                        "enabled": true,
+                        "file_name": [
+                            "code_AY0030.py"
+                        ],
+                        "id": "AY0030",
+                        "type": "Code"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0039",
+                "left_term": "[web_replay]",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0040",
+                "type": "End If"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Start playback",
+                "enabled": true,
+                "file_name": [
+                    "code_AY0031.py"
+                ],
+                "id": "AY0031",
+                "type": "Code"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "f to go full screen",
+                        "enabled": true,
+                        "id": "AY0021",
+                        "text": "f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0020",
+                "left_term": "[full_screen]",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0022",
+                "type": "End If"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "description": "Restart",
+                        "enabled": true,
+                        "id": "AY0024",
+                        "text": "0",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0.0",
+                        "description": "Note the playback position",
+                        "enabled": true,
+                        "file_name": [
+                            "code_AY0032.py"
+                        ],
+                        "id": "AY0032",
+                        "type": "Code"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[loop_duration]",
+                        "description": "Watch video",
+                        "enabled": true,
+                        "id": "AY0009",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0.0",
+                        "description": "Check that the video played",
+                        "enabled": true,
+                        "file_name": [
+                            "code_AY0033.py"
+                        ],
+                        "id": "AY0033",
+                        "type": "Code"
+                    }
+                ],
+                "count": "[loops]",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "AY0023",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0025",
+                "type": "End Loop"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "Pause",
+                "enabled": true,
+                "id": "AY0010",
+                "text": "k",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "f to exit full screen",
+                        "enabled": true,
+                        "id": "AY0027",
+                        "text": "f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0026",
+                "left_term": "[full_screen]",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0028",
+                "type": "End If"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AY0029",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_check",
+                        "params": [
+                            {
+                                "name": "[youtube_duration]",
+                                "value": "[duration]"
+                            }
+                        ],
+                        "type": "Include"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "AY0041",
+                "left_term": "[web_replay]",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "AY0042",
+                "type": "End If"
+            }
+        ],
+        "enabled": true,
+        "id": "AY0011",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AY0012",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AY0013",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AY0014",
+        "type": "Teardown"
+    }
+]

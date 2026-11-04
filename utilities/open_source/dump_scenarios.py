@@ -40,7 +40,7 @@ def main(print_json=True, short=True):
         if not os.path.exists(scenarios_dir):
             continue
 
-        for subdir in ["windows", "common", "macos"]:
+        for subdir in ["windows", "common", "macos", "aluminium"]:
             scenarios_dir_sub = os.path.join(scenarios_dir, subdir)
 
             if not os.path.exists(scenarios_dir_sub):

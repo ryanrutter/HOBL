@@ -14,7 +14,7 @@
 import builtins
 import logging
 import core.app_scenario
-from core.parameters import Params
+from core.parameters import Params, get_hobl_version
 import os
 import json
 
@@ -39,13 +39,7 @@ class MacConfigCheck(core.app_scenario.Scenario):
     is_prep = True
 
     def runTest(self):
-        hobl_ver = "Unknown"
-        try:
-            fo = open("hobl_version.txt", "r")
-            hobl_ver = fo.readline(50).strip()
-            fo.close()
-        except Exception as e:
-            logging.warning(f"Failed to read hobl_version.txt: {e}")
+        hobl_ver = get_hobl_version()
 
         override_dict = {key: Params.get(self.module, key) for key in self.override_keys}
         override_dict["Hardware Version"] = override_dict["Hardware Version"].upper()

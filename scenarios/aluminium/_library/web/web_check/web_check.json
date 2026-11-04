@@ -1,0 +1,34 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Web check output",
+        "enabled": true,
+        "id": "1X8U3N3",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Expected video playback duration",
+        "enabled": true,
+        "id": "1X8U3N4",
+        "name": "[youtube_duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "90"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Check web_replay log output",
+        "enabled": true,
+        "file_name": [
+            "code_1X8U3N2.py"
+        ],
+        "id": "1X8U3N2",
+        "type": "Code"
+    }
+]

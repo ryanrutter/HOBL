@@ -26,7 +26,8 @@ if ("-e" in sys.argv):
     sys.exit(0)
 
 import core.arguments
-from core.parameters import Params
+import core.log_redaction as log_redaction
+from core.parameters import Params, get_hobl_version
 from utilities.open_source.modules import get_parent_modules
 
 if "-d" not in sys.argv and "-dv" not in sys.argv:
@@ -69,9 +70,12 @@ params.setDefault('global', 'aux_host', '', desc="IP address or hostname of an a
 params.setDefault('global', 'run_type', '', desc="A results sub-folder to indicate the type of run it is, such as 'Power', 'ETL', 'Misc', etc.")
 params.setDefault('global', 'iterations', '1', desc="How many time to repeat the scenario.")
 params.setDefault('global', 'training_mode', '0', desc="Specify if this is a training run (1) or not (0).", valOptions=["0", "1"])
-params.setDefault('global', 'platform', '[PLATFORM]', desc="Operating system platform.", valOptions=["[PLATFORM]", "Windows", "Android", "W365", "MacOS", "Linux"])
+params.setDefault('global', 'platform', '[PLATFORM]', desc="Operating system platform.", valOptions=["[PLATFORM]", "Windows", "Android", "W365", "MacOS", "Linux", "Aluminium"])
 params.setDefault('global', 'msa_account', '', desc="The test account that Windows and apps will be logged in with.")
 params.setDefault('global', 'dut_password', '', desc="The password for the test account (msa_account).")
+params.setDefault('global', 'google_account', '', desc="Aluminium only: the Google test account the DUT is signed in with.")
+params.setDefault('global', 'google_password', '', desc="Aluminium only: the password for the Google test account (google_account).")
+params.setDefault('global', 'dut_pin', '', desc="Aluminium only: the lock screen PIN of the DUT's test user.")
 params.setDefault('global', 'dut_ip', '127.0.0.1', desc="IP address of the Device Under Test (name can be used if DNS is supported).")
 params.setDefault('global', 'dut_name', '', desc="Name of the Device Under Test.  Every DUT on the lab network needs to have a unique name.")
 params.setDefault('global', 'dut_architecture', 'x64', desc="The CPU architecture of the DUT, used for running apps and tools that are optimized for that architecture.", valOptions=["x64", "arm64"])
@@ -122,6 +126,7 @@ params.setDefault('global', 'warn_limit', '20') # Warn_limit is a percentage (20
 # params.setDefault('global', 'enable_vbs', '')
 params.setDefault('global', 'hobl_external', '', desc="External HOBL directories for specifying extra scenarios/tools/utilities", multiple=True)
 params.setDefault('global', 'cursor_movement_enable', '0', desc="Enable moving the cursor in a realistic manner between click points.", valOptions=["0", "1"])
+params.setDefault('global', 'aluminium_agent_relaunch', '1', desc="Aluminium only.  While waiting for the DUT, relaunch the agent over wireless ADB after a reboot or shutdown (1) or wait for a manual relaunch (0).", valOptions=["1", "0"])
 
 params.setDefault('global', 'web_replay_run', '0')
 params.setDefault('global', 'web_replay_check_enable', '1')
@@ -307,7 +312,7 @@ class StreamHandlerWrapper(logging.StreamHandler):
 
 class NormalizeNewlinesFormatter(logging.Formatter):
     def format(self, record):
-        return super().format(record).replace("\r\n", "\n")
+        return log_redaction.redact(super().format(record).replace("\r\n", "\n"))
 
 
 def format_log():
@@ -513,7 +518,7 @@ def get_test_module(test_name, ext_paths=[]):
     # Check platform compatibility
     platform = params.get('global', 'platform', log = False).lower()
 
-    for folder_name, display_name in [("macos", "MacOS"), ("windows", "Windows"), ("linux", "Linux")]:
+    for folder_name, display_name in [("macos", "MacOS"), ("windows", "Windows"), ("linux", "Linux"), ("aluminium", "Aluminium")]:
         if folder_name in test_module.lower() and platform != folder_name:
             test_module = "scenarios.common.scenario_invalid"
             params.setCalculated("scenario_invalid", f"Invalid platform {platform} for {test_name}. Expected platform: {display_name}.")
@@ -804,13 +809,7 @@ if __name__ == '__main__':
                             time.sleep(5)
 
 
-                    try:
-                        fo = open("hobl_version.txt", "r")
-                        hobl_ver = fo.readline(50).strip()
-                        fo.close()
-                        logging.info ("HOBL Version: " + hobl_ver)
-                    except:
-                        logging.info ("HOBL Version: Unknown")
+                    logging.info ("HOBL Version: " + get_hobl_version())
                     logging.info("run_dir: " + run_dir)
                     params.get('global', 'host_ip') # just to get it to be set properly before dumping
                     params.dump()

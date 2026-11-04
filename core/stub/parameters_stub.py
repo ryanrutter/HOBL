@@ -210,3 +210,7 @@ class Params(object):
     @classmethod
     def expandStudyVars(cls):
         return ""
+
+
+def get_hobl_version():
+    return "Unknown"

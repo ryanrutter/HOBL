@@ -126,9 +126,9 @@ results, minimize measurement overhead, and follow the design principles in
 ## Development setup
 
 HOBL's host runs on Windows 10 or Windows 11. Scenario execution may target
-Windows or macOS DUTs. A complete end-to-end validation generally requires a
-dedicated DUT and, for hosted operation, a private network between the host and
-DUT.
+Windows, macOS, or Aluminium (Android desktop) DUTs. A complete end-to-end
+validation generally requires a dedicated DUT and, for hosted operation, a
+private network between the host and DUT.
 
 1. Fork [microsoft/HOBL](https://github.com/microsoft/HOBL).
 2. Clone your fork and add the upstream repository:
@@ -164,6 +164,7 @@ installation directories.
 | `core/` | Core HOBL framework code |
 | `scenarios/windows/` | Windows scenarios and shared scenario libraries |
 | `scenarios/macos/` | macOS scenarios and resources |
+| `scenarios/aluminium/` | Aluminium (Android desktop) scenarios |
 | `testplans/` | Test-plan definitions |
 | `profile_templates/` | Reusable HOBL profile templates |
 | `providers/` | ETL trace providers |
@@ -267,6 +268,9 @@ HOBL contains varied workloads and does not have one command that validates ever
 possible change. Run the smallest meaningful validation for the files you
 changed, then perform end-to-end scenario validation when behavior on a DUT is
 affected.
+
+Changes to the Aluminium agent must also pass its own unit tests, which
+`utilities\open_source\AluminiumAgent\build_aluminium.cmd` runs before building.
 
 As applicable:
 

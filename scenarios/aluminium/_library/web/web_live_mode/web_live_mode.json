@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Prepare Chrome for live internet traffic",
+        "enabled": true,
+        "id": "AW0004",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "Clear any previous web_replay proxy",
+        "enabled": true,
+        "file_name": [
+            "code_AW0003.py"
+        ],
+        "id": "AW0003",
+        "type": "Code"
+    }
+]

@@ -10,6 +10,7 @@ from core.app_scenario import Scenario
 import logging
 import sys
 import os
+import re
 import decimal
 
 
@@ -52,6 +53,17 @@ class Tool(Scenario):
             
             self._call(["powershell.exe ", self.dut_exec_path + "\\audio_volume.ps1 " +  str(self.set_vol)])
             logging.info("Audio volume set to: " + str(self.set_vol))
+            return
+
+        elif self.platform.lower() == "aluminium":
+            # Media volume uses device specific steps, reported as "volume is <n> in range [<min>..<max>]".
+            output = self._call(["cmd", "media_session volume --stream 3 --get"])
+            match = re.search(r"in range \[(\d+)\.\.(\d+)\]", output)
+            if not match:
+                self.fail("Could not read media volume range: " + output)
+            steps = round(int(match.group(2)) * float(self.volume) / 100)
+            self._call(["cmd", f"media_session volume --stream 3 --set {steps}"])
+            logging.info("Audio volume set to: " + str(self.volume) + "% (" + str(steps) + " of " + match.group(2) + " steps)")
             return
 
     def testBeginCallback(self):

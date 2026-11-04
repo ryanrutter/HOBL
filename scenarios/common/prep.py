@@ -25,6 +25,7 @@ class Prep(core.app_scenario.Scenario):
     module = __module__.split('.')[-1]
 
     Params.setDefault('prep', 'common_preps',      'msa_prep system_prep store_prep surface_app_prep adaptive_color_disable', desc='List of common prep scenarios to run, if needed', multiple=True)
+    Params.setDefault('prep', 'aluminium_common_preps', 'al_google_account_prep al_app_install_prep', desc='List of common prep scenarios to run on Aluminium DUTs, if needed', multiple=True)
     Params.setDefault('prep', 'scenarios_to_prep', '', desc='List of scenarios to run prep for, if needed', multiple=True)
     Params.setDefault('prep', 'additional_preps',  '', desc='List of additional prep scenarios to run',     multiple=True)
 
@@ -40,6 +41,7 @@ class Prep(core.app_scenario.Scenario):
     Params.setOverride("dut_setup", "target_path", "")
 
     common_preps      = Params.get('prep', 'common_preps').split()
+    aluminium_common_preps = Params.get('prep', 'aluminium_common_preps').split()
     scenarios_to_prep = Params.get('prep', 'scenarios_to_prep').split()
     additional_preps  = Params.get('prep', 'additional_preps').split()
 
@@ -66,6 +68,8 @@ class Prep(core.app_scenario.Scenario):
             if net_prep_needed:
                 prep_scenarios.append("net_prep_wifi")
             prep_scenarios.extend(self.checkPrepStatusNew(self.common_preps))
+        elif Params.get('global', 'platform').lower() == "aluminium":
+            prep_scenarios.extend(self.checkPrepStatusNew(self.aluminium_common_preps))
 
         for scenario in self.scenarios_to_prep:
             for parent_module in parent_modules:

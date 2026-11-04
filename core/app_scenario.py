@@ -11,7 +11,7 @@ import logging
 import subprocess
 import traceback
 from appium import webdriver
-from core.parameters import Params, reg_read, reg_write, reg_clean
+from core.parameters import Params, reg_read, reg_write, reg_clean, get_hobl_version
 import os
 import os.path
 import stat
@@ -250,6 +250,10 @@ class Scenario(unittest.TestCase):
             elif self.platform.lower() == 'linux':
                 self.dut_exec_path = "/home/shared/hobl_bin"
                 self.dut_data_path = "/home/shared/hobl_data"
+            elif self.platform.lower() == 'aluminium':
+                # /sdcard is mounted noexec, so use the shell user's writable and executable temp folder.
+                self.dut_exec_path = "/data/local/tmp/hobl_bin"
+                self.dut_data_path = "/data/local/tmp/hobl_data"
             else:
                 self.dut_exec_path = "C:\\hobl_bin"
                 self.dut_data_path = "C:\\hobl_data"
@@ -386,6 +390,9 @@ class Scenario(unittest.TestCase):
         elif self.platform.lower() == 'linux':
             # InputInject not supported for Linux
             pass
+        elif self.platform.lower() == 'aluminium':
+            # InputInject is built into the Aluminium agent, which takes the place of SimpleRemote.
+            rpc.plugin_load(self.dut_ip, self.rpc_port, "InputInject", "InputInject.Application", self.dut_exec_path + "/AluminiumAgent/AluminiumAgent.jar")
         else:
             rpc.plugin_load(self.dut_ip, self.rpc_port, "InputInject", "InputInject.Application", "C:\\hobl_bin\\InputInject\\InputInject.dll")
             rpc.plugin_load(self.dut_ip, self.rpc_port, "PowerManager", "PowerManager.Application", "C:\\hobl_bin\\PowerManager\\PowerManager.dll")
@@ -521,16 +528,14 @@ class Scenario(unittest.TestCase):
             csv_writter.writerow(['Scenario', module])
 
         # Start config info, including SoC
+        if self.platform.lower() == "aluminium" and self.training_mode != '1' and self.collection_enabled != '0' and self.is_prep == False:
+            self._aluminium_check_screen_timeout()
+
         if Params.get('global', 'config_check') != '0' and self.training_mode != '1' and self.collection_enabled != '0' and self.is_prep == False:
             logging.info("Running pre-config_check.")
 
             # Write hobl version
-            hobl_ver = "Unknown"
-            try:
-                with open("hobl_version.txt", "r") as fo:
-                    hobl_ver = fo.readline(50).strip()
-            except Exception as e:
-                logging.warning(f"Failed to read hobl_version.txt: {e}")
+            hobl_ver = get_hobl_version()
 
             override_dict = {}
             override_dict["Hardware Version"] = Params.get('global', 'hardware_version', log = False).upper()
@@ -560,6 +565,12 @@ class Scenario(unittest.TestCase):
                 self._upload(source, self.dut_exec_path, check_modified=True)
                 cmd = f'-c "{dest} --logfile={self.dut_data_path}/Config --override-string=\\\"{override_str}\\\""'
                 self._call(["bash", cmd])
+            elif self.platform.lower() == "aluminium":
+                source = os.path.join("utilities", "open_source", "config_check_aluminium.sh")
+                dest = self.dut_exec_path + "/config_check_aluminium.sh"
+                self._upload(source, self.dut_exec_path, check_modified=True)
+                cmd = f'-c "{dest} --logfile={self.dut_data_path}/Config --override-string=\\\"{override_str}\\\""'
+                self._call(["sh", cmd])
 
 
 
@@ -592,6 +603,15 @@ class Scenario(unittest.TestCase):
                 dest = self.dut_exec_path + "/config_check_linux.sh"
                 cmd = f'-c "{dest} --prerun --logfile={self.dut_data_path}/{self.testname}_ConfigPre --override-string=\\\"{override_str}\\\""'
                 result = self._call(["bash", cmd])
+            elif self.platform.lower() == "aluminium":
+                dest = self.dut_exec_path + "/config_check_aluminium.sh"
+                cmd = f'-c "{dest} --prerun --logfile={self.dut_data_path}/{self.testname}_ConfigPre --override-string=\\\"{override_str}\\\""'
+                result = self._call(["sh", cmd])
+                # A full rundown ends with the DUT shutting down, so tearDown can't copy data back.  Copy the
+                # config data now so it isn't stranded on the DUT.  The agent copies files that are still being
+                # written, so this is safe while screen_record is running.
+                logging.debug("Copying config data from DUT in setUp.")
+                self._copy_data_from_remote(self.result_dir)
             # Copy back results - Commenting out for now because trying to copy back while screen_recording causes tar failure on SimpleRemote, and I don't see the need for it anyway.
             # logging.debug("Copying data from DUT in setUp.")
             # self._copy_data_from_remote(self.result_dir)
@@ -701,8 +721,12 @@ class Scenario(unittest.TestCase):
             if self.rundown_mode == "0":
                 self.logErrorMessages(exp, path=self.__module__.split(".")[-2])
             if self._module != "comm_check":
+                if self.platform.lower() == "aluminium" and self.dut_conn_timeout:
+                    logging.info("Aluminium DUT is offline after rundown; skipping remote failure diagnostics.")
+                    self.toolCallBacks("testScenarioFailed")
+                    raise exp
                 try:
-                    if self.stop_soc == "0":
+                    if self.stop_soc == "0" and self.platform.lower() != "aluminium":
                         time.sleep(60)
                     if self.platform.lower() != 'android':
                         rpc.call_rpc(self.dut_ip, self.rpc_port,
@@ -890,16 +914,36 @@ class Scenario(unittest.TestCase):
                     if int(level) <= int(self.stop_soc):
                         break
                     time.sleep(int(self.poll_rate))
+                elif self.platform.lower() == 'aluminium':
+                    level = self.getAluminiumBatt()
+                    time_s = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
+
+                    # Write human-readable txt log, used for the full rundown duration
+                    with open(file_path, 'a', newline='') as f:
+                        f.write(f"{time_s}: total battery: {str(level)}\n")
+
+                    # Stopping at stop_soc is handled by monitorBattery.  When the DUT shuts down at the
+                    # end of a full rundown, the failed call above ends this thread.
+                    time.sleep(int(self.poll_rate))
                 else:
                     time.sleep(900)
             except Exception:
                 self.toolCallBacks("testTimeoutCallback")
-                if self.platform.lower() != 'android':
+                if self.platform.lower() == 'aluminium':
+                    try:
+                        rpc.call_rpc(self.dut_ip, self.rpc_port, "GetVersion", [], log=False, timeout=5)
+                    except Exception:
+                        self.dut_conn_timeout = True
+                        logging.info("Aluminium agent is unreachable; treating this as the end of the rundown.")
+                    else:
+                        self.dut_conn_timeout = False
+                elif self.platform.lower() != 'android':
                     self.dut_conn_timeout = True
                     self._wait_for_dut_comm()
                 self.toolCallBacks("testScenarioFailed")
-                logging.debug("Copying data from DUT due to test exception again.")
-                self._copy_data_from_remote(self.result_dir)
+                if not (self.platform.lower() == 'aluminium' and self.dut_conn_timeout):
+                    logging.debug("Copying data from DUT due to test exception again.")
+                    self._copy_data_from_remote(self.result_dir)
                 raise Exception("Device monitor timeout")
 
     def monitorBattery(self):
@@ -921,6 +965,13 @@ class Scenario(unittest.TestCase):
             #         break
             #     time.sleep(int(self.poll_rate))
             time.sleep(172800)  # 48 hours, just to keep the thread alive, we will stop it when the scenario ends.
+        elif self.platform.lower() == "aluminium":
+            if int(self.stop_soc) > 0:
+                while self.getAluminiumBatt() > int(self.stop_soc):
+                    time.sleep(int(self.poll_rate))
+            else:
+                # Full rundown: the DUT shuts down at the end, which monitorLife detects.
+                time.sleep(172800)
         elif int(self.stop_soc) <= 0:
             self._kill("MonitorPowerEvents.exe")
             logging.info("stop_soc set to 0")
@@ -1199,6 +1250,30 @@ class Scenario(unittest.TestCase):
         logging.info("Battery level: " + str(int(out)))
         return (int(out))
 
+    def getAluminiumBatt(self):
+        # Battery level as shown in the Android UI, from BatteryManager.
+        output = self._call(["dumpsys", "battery"], log_output=False, timeout=30)
+        values = {}
+        for line in output.splitlines():
+            if ":" in line:
+                key, value = line.split(":", 1)
+                values[key.strip()] = value.strip()
+        if "level" not in values:
+            raise Exception("Unable to read battery level from dumpsys battery: " + output)
+        level = int(values["level"]) * 100 // int(values.get("scale", "100"))
+        logging.info("Battery level: " + str(level))
+        return level
+
+    def getAluminiumPowerState(self):
+        # Returns 1 for DC, 2 for AC, the same as Win32_Battery BatteryStatus.
+        output = self._call(["dumpsys", "battery"], log_output=False, timeout=30)
+        for line in output.splitlines():
+            key, _, value = line.partition(":")
+            # USB-C chargers are reported as "USB powered" on some devices.
+            if key.strip() in ["AC powered", "USB powered", "Wireless powered", "Dock powered"] and value.strip() == "true":
+                return 2
+        return 1
+
     def power_manager_call(self, method, *args, **kwargs):
         out = json.loads(rpc.plugin_call(self.dut_ip, self.rpc_port, "PowerManager", method, *args, **kwargs))
 
@@ -1283,11 +1358,18 @@ class Scenario(unittest.TestCase):
                 dest = self.dut_exec_path + "/config_check_linux.sh"
                 cmd = f'-c "{dest} --postrun --logfile={self.dut_data_path}/{self.testname}_ConfigPost --prerunfile={self.dut_data_path}/{self.testname}_ConfigPre.csv"'
                 result = self._call(["bash", cmd])
+            elif self.platform.lower() == "aluminium":
+                dest = self.dut_exec_path + "/config_check_aluminium.sh"
+                cmd = f'-c "{dest} --postrun --logfile={self.dut_data_path}/{self.testname}_ConfigPost --prerunfile={self.dut_data_path}/{self.testname}_ConfigPre.csv"'
+                result = self._call(["sh", cmd])
 
         # Copy back results
         if self.collection_enabled != '0':
-            logging.debug("Copying data from DUT in tearDown.")
-            self._copy_data_from_remote(self.result_dir)
+            if self.platform.lower() == "aluminium" and self.dut_conn_timeout:
+                logging.info("Skipping DUT data copy because the Aluminium agent is unreachable.")
+            else:
+                logging.debug("Copying data from DUT in tearDown.")
+                self._copy_data_from_remote(self.result_dir)
 
         # TODO: Calculate power drain, other stats, write results.
 
@@ -1762,7 +1844,7 @@ class Scenario(unittest.TestCase):
             if delete:
                 self._host_call("adb -s " + str(self.dut_ip) + ":5555 shell rm -r " + path, expected_exit_code="")
             self._host_call("adb -s " + str(self.dut_ip) + ":5555 shell mkdir " + path, expected_exit_code="")
-        elif self.platform.lower() == "macos" or self.platform.lower() == "linux":
+        elif self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
             if delete:
                 self._call(["rm", "-rf " + path], callback=False, timeout=10)
             self._call(["mkdir", "-p " + path], callback=False, timeout=10)
@@ -1796,7 +1878,7 @@ class Scenario(unittest.TestCase):
                     full_dest = os.path.join(dest, folder)
                     if self.platform.lower() == "windows":
                         self._call(["cmd.exe", '/c if exist ' + full_dest + ' rmdir ' + full_dest + ' /S /Q'], callback = False)
-                    elif self.platform.lower() == "macos" or self.platform.lower() == "linux":
+                    elif self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
                         full_dest = dest + "/" + folder
                         self._call(["rm", "-rf " + full_dest], callback=False)
                 else:
@@ -1876,6 +1958,23 @@ class Scenario(unittest.TestCase):
                                 rpc.upload(self.dut_ip, self.rpc_port, source, dest)
                                 self._call(["chmod", f'775 {dest_file}'])
                                 return
+                        elif self.platform.lower() == "aluminium":
+                            # toybox stat reports the modification time in seconds since the epoch.
+                            dest_file = dest + "/" + os.path.basename(source)
+                            result = self._call(["stat", f'-c %Y "{dest_file}"'], expected_exit_code="")
+                            logging.debug("RESULT: " + result)
+                            if result.strip().isdigit():
+                                result_time = datetime.fromtimestamp(int(result.strip()))
+                                source_time = datetime.fromtimestamp(os.path.getmtime(source))
+                                if source_time <= result_time:
+                                    logging.debug("File not modified, skipping upload: " + source)
+                                    return
+                            else:
+                                logging.debug("Dest file doesn't exist, uploading: " + source)
+                            # Files uploaded from a Windows host are not marked executable.
+                            rpc.upload(self.dut_ip, self.rpc_port, source, dest)
+                            self._call(["chmod", f'775 {dest_file}'])
+                            return
 
                 logging.debug("Dest file doesn't exist, uploading: " + source)
                 rpc.upload(self.dut_ip, self.rpc_port, source, dest)
@@ -1977,7 +2076,7 @@ class Scenario(unittest.TestCase):
                             self._call(["cmd.exe", '/c copy ' + source_path + ' ' + source], expected_exit_code="")
                         
                 rpc.download(target_ip, self.rpc_port, source, dest)
-            elif self.platform.lower() == "macos" or self.platform.lower() == "linux":
+            elif self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
                 rpc.download(target_ip, self.rpc_port, source, dest)
 
     ''' Checks if path exists on DUT '''
@@ -2004,6 +2103,17 @@ class Scenario(unittest.TestCase):
             # logging.info("Checking: '" + file_name + "'")
             if "No such file or directory" in file_name:
                 return False
+        elif self.platform.lower() == "aluminium":
+            # Some callers build paths with Windows separators.
+            path = path.replace("\\", "/")
+            if in_exec_path:
+                # Strip leading path breaks before joining
+                if path[:1] == "/":
+                    path = path[1:]
+                path = self.dut_exec_path + "/" + path
+            file_name = self._call(["ls", path], expected_exit_code="", target_ip=target_ip)
+            if "No such file or directory" in file_name:
+                return False
         return True
 
     ''' Creates the prep status file if there is no error or failures. If exists, deletes first. '''
@@ -2013,7 +2123,7 @@ class Scenario(unittest.TestCase):
         if module == "":
             module = self._module
         path = os.path.join(self.dut_exec_path, "prep_status", module + suffix)
-        if self.platform.lower() == "macos" or self.platform.lower() == "linux":
+        if self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
             path = path.replace("\\", "/")
         self._remote_make_dir(path, True)
 
@@ -2023,7 +2133,7 @@ class Scenario(unittest.TestCase):
         if not self.prep_status_enable:
             return assert_list
         for prep in prep_list:
-            if self.platform.lower() == "macos" or self.platform.lower() == "linux":
+            if self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
                 path = "prep_status/" + prep
             else:
                 path = "prep_status\\" + prep
@@ -2069,7 +2179,7 @@ class Scenario(unittest.TestCase):
                     prep_str = f"{prep[0]}{prep[1]}"
             else:
                 prep_str = prep
-            if self.platform.lower() == "macos" or self.platform.lower() == "linux":
+            if self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
                 path = f"prep_status/{prep_str}"
             else:
                 path = f"prep_status\\{prep_str}"
@@ -2227,6 +2337,10 @@ class Scenario(unittest.TestCase):
                 pass
             elif self.platform.lower() == 'macos' or self.platform.lower() == 'linux':
                 tasks = self._call(["killall", name], expected_exit_code="", timeout=timeout)
+            elif self.platform.lower() == 'aluminium':
+                # Apps are stopped by package name; the shell user can't signal app processes directly.
+                # killall covers command line processes started by HOBL.
+                tasks = self._call(["sh", f'-c "am force-stop {name}; killall {name} 2>/dev/null"'], expected_exit_code="", timeout=timeout)
             else:
                 tasks = self._call(["cmd.exe", '/c tasklist /nh /fo csv /fi "IMAGENAME eq ' + name + '"'], expected_exit_code="", timeout=timeout)
                 # print tasks
@@ -3712,6 +3826,7 @@ class Scenario(unittest.TestCase):
             
         count = 0
         count_timeout = 20
+        aluminium_relaunch = self.platform.lower() == "aluminium" and Params.get('global', 'aluminium_agent_relaunch') == "1"
 
         # Poll for simple remote to determine if DUT is alive
         while(True):
@@ -3720,6 +3835,8 @@ class Scenario(unittest.TestCase):
             try:
                 rpc.call_rpc(self.dut_ip, self.rpc_port, "GetVersion", [], log=False)
                 logging.info("DUT is alive")
+                if self.platform.lower() == "aluminium":
+                    self._aluminium_unlock()
                 break
             except:
                 if self.timeout_wake == '1':
@@ -3729,9 +3846,72 @@ class Scenario(unittest.TestCase):
                     elif count/count_timeout == 3:
                         logging.info("Going Hard Reboot")
                         self._host_call(hard_reboot_call)
+                # The Aluminium agent doesn't start on boot, so restart it over wireless ADB every 30 seconds.
+                if aluminium_relaunch and count % 3 == 0:
+                    self._aluminium_launch_agent()
                 time.sleep(10)
                 count += 1
                 continue
+
+    def _aluminium_is_locked(self):
+        user = self._call(["am", "get-current-user"], expected_exit_code="").strip()
+        trust = self._call(["dumpsys", "trust"], expected_exit_code="", log_output=False)
+        return any(f"(id={user}," in line and "deviceLocked=1" in line for line in trust.splitlines())
+
+    def _aluminium_unlock(self):
+        # After the DUT restarts, the test user stays locked until its PIN is entered.
+        try:
+            if not self._aluminium_is_locked():
+                return
+            pin = Params.get('global', 'dut_pin', log=False)
+            if not pin:
+                logging.warning("The DUT is locked.  Set dut_pin in the device profile so HOBL can unlock it after a restart, or unlock it by hand.")
+                return
+            logging.info("Unlocking the DUT")
+            self.load_plugins()
+            self._call(["input", "keyevent KEYCODE_WAKEUP"], expected_exit_code="")
+            time.sleep(1)
+            # Shows the PIN entry on the lock screen.
+            self._call(["input", "keyevent KEYCODE_MENU"], expected_exit_code="")
+            time.sleep(1)
+            # Typed with input injection, which, unlike shell commands, the agent doesn't log on the DUT.
+            self._send_text(pin + "\ue007")
+            time.sleep(3)
+            if self._aluminium_is_locked():
+                logging.warning("The DUT is still locked.  Check dut_pin in the device profile.")
+            else:
+                logging.info("The DUT is unlocked.")
+        except Exception as e:
+            logging.warning(f"Could not check or unlock the DUT lock screen: {e}")
+
+    def _aluminium_launch_agent(self):
+        # Runs launch_agent.ps1, which finds the DUT on ADB by its IP address and starts the agent.
+        script = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "setup_src", "src_dut_aluminium", "launch_agent.ps1")
+        if not os.path.isfile(script):
+            logging.warning(f"Unable to relaunch the Aluminium agent, {script} not found.")
+            return False
+        command = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script, "-DeviceIp", str(self.dut_ip), "-Port", str(self.rpc_port)]
+        try:
+            result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        except Exception as e:
+            logging.debug(f"Aluminium agent relaunch attempt failed: {e}")
+            return False
+        if result.returncode != 0:
+            # Expected until the DUT has booted and reconnected to wireless debugging.
+            errors = [line.strip() for line in result.stdout.splitlines() if " ERROR - " in line]
+            logging.info("Aluminium agent not relaunched yet: " + (errors[-1] if errors else f"launch_agent.ps1 exit code {result.returncode}"))
+            return False
+        logging.info("Relaunched the Aluminium agent.")
+        return True
+
+    def _aluminium_check_screen_timeout(self):
+        # When the screen turns off, Android stops the workload and the rundown is invalid.  dut_setup_aluminium.ps1
+        # sets the maximum timeout, but adding or switching the Android user or account resets it.
+        timeout = self._call(["settings", "get system screen_off_timeout"], expected_exit_code="").strip()
+        if timeout != "2147483647":
+            msg = f"The DUT screen is set to turn off after {timeout} ms.  Run setup_src\\src_dut_aluminium\\dut_setup_aluminium.ps1 again so the screen stays on, then rerun the scenario."
+            logging.error(msg)
+            self.fail(msg)
 
     def _check_local_exec_reboot(self):
         if self.dut_ip == "127.0.0.1" and self.platform.lower() == "windows":
@@ -3786,6 +3966,10 @@ class Scenario(unittest.TestCase):
         elif self.platform.lower() == "macos" or self.platform.lower() == "linux":
             logging.info("Rebooting DUT")
             self._call(["bash", f'-c "echo {self.password} | sudo -S shutdown -r now"'])
+        elif self.platform.lower() == "aluminium":
+            logging.info("Rebooting DUT")
+            # The agent doesn't start on boot; _wait_for_dut_comm() relaunches it over wireless ADB.
+            self._call(["svc", "power reboot"], expected_exit_code="", blocking=False)
         else:
             logging.error("Unsupported platform")
         time.sleep(30)
@@ -3929,7 +4113,10 @@ class Scenario(unittest.TestCase):
                 if (battery <= int(self.crit_batt_level) + 1):
                     test_pass = True
         if (test_pass):
-            logging.info("Device successfully entered hibernate and woke up.")
+            if self.platform.lower() == "aluminium":
+                logging.info("Device reached critical battery level and shut down.")
+            else:
+                logging.info("Device successfully entered hibernate and woke up.")
         else:
             logging.error("Test timed out before critical battery level reached.")
             raise Exception("Command timeout occurred before critical battery level reached.  Critical battery level: " + self.crit_batt_level)
@@ -4006,6 +4193,8 @@ class Scenario(unittest.TestCase):
                 self._kill("chrome.exe")
             except:
                 pass
+        elif self.platform.lower() == "aluminium":
+            self._kill("com.android.chrome")
 
         if self.web_replay_action not in ["record", "replay", "bulk_record", "bulk_replay"]:
             raise Exception(f"Invalid web_replay action parameter: {self.web_replay_action}")
@@ -4031,7 +4220,7 @@ class Scenario(unittest.TestCase):
 
         if self.platform.lower() == "windows":
             web_replay_cmd_args += f" --https_port={self.web_replay_https_port}"
-        elif self.platform.lower() == "macos" or self.platform.lower() == "linux":
+        elif self.platform.lower() == "macos" or self.platform.lower() == "linux" or self.platform.lower() == "aluminium":
             web_replay_cmd_args += f" --http_proxy_port={self.web_replay_https_port}"
 
         if self.web_replay_ip == self.host_ip:
@@ -4053,6 +4242,12 @@ class Scenario(unittest.TestCase):
                 "powershell.exe",
                 "(Get-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize).AppsUseLightTheme"
             ])
+        elif self.platform.lower() == "aluminium" and action == "replay":
+            night_mode = self._call(["dumpsys", "uimode"]).lower().replace(" ", "")
+            if "mcomputednightmode=true" in night_mode:
+                use_light_theme = "0"
+            elif "mcomputednightmode=false" not in night_mode:
+                raise RuntimeError("Could not determine Aluminium dark mode from dumpsys uimode.")
 
         if action == "replay":
             theme = "light" if use_light_theme == "1" else "dark"
@@ -4153,6 +4348,9 @@ class Scenario(unittest.TestCase):
         elif self.platform.lower() == "linux":
             # Not implemented for Linux
             pass
+        elif self.platform.lower() == "aluminium":
+            # ":0" is the documented way to clear the global proxy.
+            self._call(["settings", "put global http_proxy :0"])
         elif self.platform.lower() == "macos":
             result = self._call(["networksetup", f'-listallnetworkservices'])
             services = result.splitlines()
@@ -4188,6 +4386,9 @@ class Scenario(unittest.TestCase):
         elif self.platform.lower() == "linux":
             # Not implemented for Linux
             pass
+        elif self.platform.lower() == "aluminium":
+            # Android has a single global proxy for HTTP and HTTPS, like macOS's secure web proxy.
+            self._call(["settings", f"put global http_proxy {self.web_replay_ip}:{self.web_replay_https_port}"])
         elif self.platform.lower() == "macos":
             result = self._call(["networksetup", f'-listallnetworkservices'])
             services = result.splitlines()
@@ -4261,7 +4462,26 @@ class Scenario(unittest.TestCase):
             with open(os.path.join(log_dir, fname), 'r') as f:
                 log_data[os.path.splitext(fname)[0]] = json.load(f)
 
-        for yt_entry in log_data.get("youtube", []):
+        youtube_entries = log_data.get("youtube", [])
+        if self.platform.lower() == "aluminium" and youtube_duration > 0 and not youtube_entries:
+            out_log = os.path.join(log_dir, "out.log")
+            segment_responses = 0
+            if os.path.isfile(out_log):
+                with open(out_log, "r", errors="replace") as f:
+                    segment_responses = sum(
+                        1
+                        for line in f
+                        if "googlevideo.com/videoplayback" in line and "serving 200 response" in line
+                    )
+
+            if segment_responses == 0:
+                self.fail("No archived YouTube video segments were served on Aluminium.")
+            logging.info(
+                f"Aluminium web_replay served {segment_responses} archived YouTube video segments, "
+                "but replay duration metadata is unavailable; duration was not verified."
+            )
+
+        for yt_entry in youtube_entries:
             title = yt_entry["title"]
             dur = yt_entry["end"] - yt_entry["start"]
 
@@ -4458,7 +4678,11 @@ class thread_with_exception(threading.Thread):
             self.exceptionEvent.set()
             # logging.error("Exception in secondary thread!")
             if("Device monitor timeout" in str(e)):
-                logging.info('Device entered hibernate')
+                if Params.get('global', 'platform').lower() == 'aluminium':
+                    # Android shuts down at critical battery instead of hibernating.
+                    logging.info('Device shut down')
+                else:
+                    logging.info('Device entered hibernate')
             else:
                 if self.rundown == '0':
                     logging.error(e)

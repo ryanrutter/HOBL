@@ -4,6 +4,7 @@
 from core.parameters import Params
 from core.app_scenario import Scenario
 import logging
+import re
 import time
 import os
 
@@ -38,6 +39,9 @@ class Tool(Scenario):
             # self._upload("downloads\\ffmpeg_macos\\ffmpeg", self.dut_exec_path) # ffmpeg is installed by dut_setup.sh on macOS.
             self._upload("utilities\\open_source\\command_wrapper.sh", self.dut_exec_path)
             self.stop_file = self.dut_exec_path + "/command_wrapper_stop.txt"
+        elif self.platform.lower() == "aluminium":
+            # Android's screenrecord is used; it is stopped with SIGINT, which finishes the MP4 file.
+            self.stop_file = None
 
     def testBeginCallback(self):
         if self.already_started:
@@ -55,12 +59,31 @@ class Tool(Scenario):
             cmd = "/opt/homebrew/bin/ffmpeg"
             args = f"-capture_cursor 1 -capture_mouse_clicks 1 -f avfoundation -framerate 6 -i {self.device_index} -loglevel quiet -c:v libx264 -tune stillimage -crf 40 -pix_fmt yuv420p " + output_file
             self._call(["/bin/bash", self.dut_exec_path + "/command_wrapper.sh " + cmd + " \"" + args + "\" " + self.stop_file + " " + "kill"], blocking=False)
+        elif self.platform.lower() == "aluminium":
+            output_file = self.scenario.dut_data_path + "/" + self.scenario.testname + "_recording.mp4"
+            match = re.search(r"(\d+)x(\d+)", self._call(["wm", "size"], expected_exit_code="") or "")
+            width, height = (int(match.group(1)), int(match.group(2))) if match else (2560, 1600)
+            # Half resolution at a low bit rate keeps the recording's power impact down, like the 6 fps Windows recording.
+            size = f"{(width // 2) & ~15}x{(height // 2) & ~15}"
+            self._call(["sh", f"-c \"setsid nohup screenrecord --time-limit 0 --size {size} --bit-rate 2M {output_file} > /dev/null 2>&1 < /dev/null &\""])
 
         logging.info("Screen Recording started.")
         self.scenario.video_startTime = time.time()
         time.sleep(0.5)
 
     def testEndCallback(self):
+        if self.platform.lower() == "aluminium":
+            try:
+                # Anchored, so pkill doesn't match the shell that runs it.
+                self._call(["pkill", "-INT -f ^screenrecord"], expected_exit_code="")
+                for _ in range(20):
+                    if not self._call(["pidof", "screenrecord"], expected_exit_code="").strip():
+                        break
+                    time.sleep(1)
+                logging.info("Screen Recording stopped.")
+            except Exception:
+                pass
+            return
         try:
             if not self._check_remote_file_exists(self.stop_file, in_exec_path=False):
                 if self.platform.lower() == "windows":

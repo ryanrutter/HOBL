@@ -46,6 +46,10 @@ Overlays a widget showing battery level.
 
 `version` -  **Default:** `v1.0.0` 
 
+## battery_energy
+
+Aluminium only.  Measures the battery charge used during the test from the battery's charge counter, and calculates the average current and power.  Results are written to <test name>_battery_energy.csv.  This is a coarse alternative to a power measurement device: run on battery, and prefer tests of 10 minutes or more, since the charge counter resolution is about 1 mAh.
+
 ## battery_stats
 
 Deprecated.
@@ -273,6 +277,17 @@ Calculates a MOS score from an abl_perf run.
 <u>Parameters:</u>
 
 `provider` -  **Default:** `abl_perf.wprp` 
+
+## perfetto_trace
+
+Aluminium only.  Records a Perfetto system trace during the test, the Android equivalent of the Windows etl_trace tool.  The trace is copied to the results as <test name>.pftrace and can be opened at https://ui.perfetto.dev.  Tracing has some power impact, so don't use it for measured runs.
+
+
+<u>Parameters:</u>
+
+`categories` - Space-separated atrace and ftrace categories to record; see 'perfetto --help' on the DUT. **Default:** `sched freq idle power am wm gfx view` 
+
+`buffer` - Trace buffer size; when it is full, the oldest data is overwritten. **Default:** `64mb` 
 
 ## perfmon_util
 

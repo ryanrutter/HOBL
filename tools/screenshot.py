@@ -96,6 +96,9 @@ class Tool(Scenario):
         return
         
     def testEndCallback(self):
+        if self.conn_timeout:
+            logging.info("Skipping end screenshot because DUT communication timed out.")
+            return
         if self.pause > 0 and self.conn_timeout == False :
             logging.info("Stopping screenshot thread")
             self.thread.event.set()

@@ -1,0 +1,138 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Enter web address",
+        "enabled": true,
+        "id": "1X8U3M1",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3M2",
+        "name": "web_site_address",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "about:blank"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3M3",
+        "name": "new_tab",
+        "type": "Set Default",
+        "val_options": "0, 1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3M4",
+        "name": "[web_site_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "20"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Chrome on Android doesn't open the address bar in a new tab with ALT-ENTER, so open the tab first",
+        "enabled": true,
+        "id": "1X8U3M6",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "1.0",
+                "description": "CTRL-t",
+                "enabled": true,
+                "id": "1X8U3M7",
+                "text": "\ue009t",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1X8U3M8",
+        "left_term": "[new_tab]",
+        "name": "",
+        "right_term": "1",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3M9",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "1.0",
+        "description": "CTRL-l",
+        "enabled": true,
+        "id": "1X8U3MA",
+        "text": "\ue009l",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "[web_site_address]",
+        "enabled": true,
+        "id": "1X8U3MC",
+        "text": "[web_site_address]",
+        "type": "Type",
+        "typing_delay": "[global:typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "ENTER",
+        "enabled": true,
+        "id": "1X8U3ME",
+        "text": "\ue007",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Subtract 1 to accommodate 1s delay after CTRL-l",
+        "enabled": true,
+        "id": "1X8U3MF",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3MH",
+        "name": "[web_site_load_time]",
+        "type": "Decrement",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "[web_site_load_time]",
+        "description": "[web_site_load_time]",
+        "enabled": true,
+        "id": "1X8U3MJ",
+        "type": "Delay"
+    }
+]

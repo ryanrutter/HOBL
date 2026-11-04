@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "Acer Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Dismiss Chrome first-run, sign-in, sync, notification, and default browser prompts",
+        "enabled": true,
+        "id": "AW0209",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "Dismiss Chrome first-run prompts",
+        "enabled": true,
+        "file_name": [
+            "code_AW0210.py"
+        ],
+        "id": "AW0210",
+        "type": "Code"
+    }
+]

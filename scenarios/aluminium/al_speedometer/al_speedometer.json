@@ -1,0 +1,101 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "HP Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Run the Speedometer 3.1 browser benchmark, the Aluminium version of the Windows speedometer scenario",
+        "enabled": true,
+        "id": "AS0000",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to wait for the benchmark to finish",
+        "enabled": true,
+        "id": "AS0001",
+        "name": "[timeout]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "900"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AS0003",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_live_mode",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AS0004",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AS0002",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AS0006",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "https://browserbench.org/Speedometer3.1/?startAutomatically=true"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "5"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Wait for the score",
+                "enabled": true,
+                "file_name": [
+                    "code_AS0007.py"
+                ],
+                "id": "AS0007",
+                "type": "Code"
+            }
+        ],
+        "enabled": true,
+        "id": "AS0005",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AS0009",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AS0008",
+        "type": "Teardown"
+    }
+]

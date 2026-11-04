@@ -1,0 +1,1 @@
+from .web_new_tab import *

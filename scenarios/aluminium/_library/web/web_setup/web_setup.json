@@ -1,0 +1,99 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Web setup",
+        "enabled": true,
+        "id": "1X8U3LR",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Disable web_replay Delay",
+        "enabled": true,
+        "id": "1X8U3LT",
+        "name": "[disable_delay]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "5.0",
+                "description": "Web Replay without Delay",
+                "enabled": true,
+                "file_name": [
+                    "code_1X8U3LM.py"
+                ],
+                "id": "1X8U3LM",
+                "type": "Code"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1X8U3LV",
+        "left_term": "[disable_delay]",
+        "name": "",
+        "right_term": "1",
+        "type": "If"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Web Replay with Delay",
+                "enabled": true,
+                "file_name": [
+                    "code_1X8U3LN.py"
+                ],
+                "id": "1X8U3LN",
+                "type": "Code"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3LW",
+        "type": "Else"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3LX",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Launch Chrome",
+        "enabled": true,
+        "file_name": [
+            "code_1X8U3LP.py"
+        ],
+        "id": "1X8U3LP",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Wait for the browser window",
+        "enabled": true,
+        "id": "1X8U3LY",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "5",
+        "description": "",
+        "enabled": true,
+        "id": "1X8U3M0",
+        "type": "Delay"
+    }
+]

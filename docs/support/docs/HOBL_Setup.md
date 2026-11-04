@@ -122,3 +122,98 @@ Verify these settings have been set in  System Settings -> Privacy & Security:
 - Local Network -> SimpleRemoteConsole
 - Screen & System Audio Recording -> SimpleRemoteConsole
 
+## DUT Setup For Aluminium
+Aluminium is the Android desktop operating system used by devices such as Googlebooks.  Instead of SimpleRemote, HOBL uses the Aluminium agent (utilities\open_source\AluminiumAgent), which provides the same functions.  The agent is started on the DUT over ADB (Android Debug Bridge) from the Host, so nothing is installed on the DUT itself.  Aluminium scenarios are in scenarios\aluminium and start with "al_".
+
+Like SimpleRemote, the agent allows running programs and accessing files on the DUT with no authentication.  It only accepts connections from the HOBL Host's IP address, but should still only be used on dedicated test devices.
+
+### Host Prerequisites
+1. Install Android SDK Platform-Tools, which include adb, from <a href="https://developer.android.com/tools/releases/platform-tools" target="_blank">https://developer.android.com/tools/releases/platform-tools</a>.  Extract the zip file to a folder of your choice, then either add the platform-tools folder to the PATH environment variable, or set ANDROID_HOME to the folder containing platform-tools.
+1. Open a new PowerShell window and run `adb version` to make sure adb is found.
+1. The agent is prebuilt in utilities\open_source\AluminiumAgent\Output.  Rebuilding is only needed when changing the agent.  To rebuild, install JDK 17 and the Android SDK command-line tools, set JAVA_HOME and ANDROID_HOME, and run utilities\open_source\AluminiumAgent\build_aluminium.cmd.
+
+### Google Account
+1. Create a dedicated <a href="https://accounts.google.com/signup" target="_blank">Google account</a> for each DUT, for the same reasons as the MSA described in [Account Setup](#account-setup). Use recovery information you control. Google may require phone verification during account creation.
+1. Add the dedicated account on the DUT through Settings -> Passwords & accounts -> Add account -> Google, or let the `al_google_account_prep` scenario add it (see [Accounts and Prep Scenarios](#accounts-and-prep-scenarios)).
+1. Keep Chrome sync off unless the scenario being run explicitly requires it. Do not sync personal data to a test DUT.
+1. Automated sign-in, like Windows' `msa_prep`, needs the account without 2-Step Verification.  If your lab requires 2-Step Verification, sign in on the DUT once by hand and leave `google_password` empty; `al_google_account_prep` then only checks that the account is signed in.
+
+### Device Setup
+1. Set up the Googlebook with the dedicated Google account, and connect it to the lab Wi-Fi network, on the same subnet as the Host.
+1. Enable Developer mode:  Settings -> About device -> scroll down to "Build number" -> tap "Build number" 7 times.  When prompted, enter the device PIN.  After the confirmation that Developer mode is enabled, Developer options becomes available.
+1. Enable USB debugging:  Settings -> System -> Developer options -> USB debugging.  Enable Wireless debugging in the same Developer options screen if using ADB over Wi-Fi.
+1. Connect the DUT to the Host with a USB cable.  On the DUT, accept the "Allow USB debugging?" prompt and check "Always allow from this computer".
+    1. On the HP Googlebook 14 used during initial bring-up, the left USB-C port enumerated over USB; the right port did not. Use the left port for initial ADB setup on this model, and verify ports separately on other models.
+    1. Windows may show the device as a portable/MTP device before ADB is available. ADB requires USB debugging to be enabled and the Android debugging interface to enumerate.
+1. On the Host, run `adb devices` and make sure the DUT is listed as `device`.  If it is listed as `unauthorized`, unlock the DUT and accept the prompt.
+    1. Alternatively, ADB can be used over Wi-Fi without a cable:  Developer options -> Wireless debugging -> Pair device with pairing code.  On the Host, run `adb pair <ip>:<pairing port>` with the IP address and port shown, and enter the pairing code.  Android 17 with ADB 37 may reconnect automatically on a trusted network; otherwise run `adb connect <ip>:<port>` using the device's current Wireless debugging address and port.
+1. Remove any screen lock:  Settings -> Security & privacy -> Device unlock -> Screen lock -> None.  Otherwise the lock screen will interrupt automation.
+1. On the Host, run `setup_src\src_dut_aluminium\dut_setup_aluminium.ps1 -ProfilePath <device profile .ini>` in PowerShell.  If more than one device is connected, specify one with `-Serial <serial or ip:port>`.  This will:
+    1. Join the Wi-Fi network in the profile's `dut_wifi_name` and `dut_wifi_password`, the same settings the Windows dut_setup uses, if they are set.  The password is passed to the DUT only and is never shown.  The network can only be changed over USB, since changing it would disconnect Wireless debugging.
+    1. Warn if the DUT's IP address is different from the profile's `dut_ip`.
+    1. Install the agent to /data/local/tmp/hobl_bin on the DUT.
+    1. Apply test settings, the same as the Windows dut_setup:  the display never turns off, the lock screen is disabled, and adaptive brightness is turned off.
+    1. Start the agent, allowing connections only from the Host.
+    1. Over USB, turn on Wireless debugging and connect to it.  A Host that was allowed with "Always allow from this computer" over USB is also trusted over Wireless debugging, so no pairing code is needed, and Android's "Allow wireless debugging on this network?" prompt is accepted automatically.  Use `-SkipWirelessDebugging` to leave Wireless debugging unchanged.
+    1. Report the DUT's IP address, to use as dut_ip in the device profile.
+    1. Run this setup after the final test account is signed in.  If you add, remove, or switch the Android user/account later, rerun setup.  Measured scenarios check the screen timeout before they start, and fail with a message to rerun setup if the screen could turn off.
+1. Disconnect the USB cable.  The agent keeps running, and the cable must not be connected during measurements since it charges the DUT.
+1. Create a device profile from profile_templates\aluminium.ini.  Set dut_ip, and set dut_architecture to x64 if dut_setup_aluminium.ps1 reported x86_64, or arm64 for arm64-v8a.
+1. Find the display brightness that gives 150 nits, as described in [Display Brightness](#display-brightness), with `setup_src\src_dut_aluminium\calibrate_brightness.ps1 -DeviceIp <dut_ip> -ProfilePath <device profile .ini>`.  The DUT shows a full-screen white page; for each brightness the script tries, measure the center and the four corners with a luminance meter and type the average.  It narrows down to the brightness within 3 nits of the target and writes `nits_map` to the `[display]` section of the profile (a backup is kept).  Use `-TargetNits 150,200` to also calibrate the 200 nits used by JEITA tests.  A lab with a scriptable meter can pass `-MeterCommand "<command that prints the nits>"` to calibrate without a person.
+    1. On Aluminium, display:brightness is a percentage of Android's brightness setting (0-255), which is **not** the position of the brightness slider: the slider follows a perceptual curve, so 80% on the slider can be about 15% of the setting.  Don't calibrate with the slider.  On the Googlebooks used for bring-up, 150 nits was about 36% (HP Googlebook 14) and 13% (Acer Googlebook 14).
+1. Leave the audio volume at the out-of-box level.
+1. Test the network connection to the DUT:
+    1. Host and DUT need to be on the same subnet (first 2 octets of the IP address).
+    1. Run Cmd or Powershell on the Host, and make sure the DUT responds to pings:  `ping <dut_ip>`
+    1. Run the "comm_check" scenario to make sure that all communications needs are met.
+    1. Run the "al_agent_check" scenario to make sure that all agent functions work on this DUT.
+1. For web scenarios, configure Chrome for web_replay.  Unlock the active Android user, connect ADB, and run `setup_src\src_dut_aluminium\install_web_replay_certs.ps1 -DeviceIp <dut_ip>` in PowerShell.
+    1. On a build with the `android.software.device_admin` feature, the script installs a test-only profile-owner app for the active Android user and silently installs only the web_replay root and intermediate CA certificates. Remove them and the test app later with `install_web_replay_certs.ps1 -DeviceIp <dut_ip> -Remove`.
+    1. The HP and Acer Android 17 builds do not advertise `android.software.device_admin`, so they cannot grant profile-owner rights to this app. On these devices, the script instead enables Chrome's "Enable command line on non-rooted devices" flag and configures a narrowly scoped SPKI allowlist for the two web_replay leaf keys. This is not a CA installation and does not disable certificate checks for other certificates. Chrome warns that the command-line feature is unsupported; this warning is expected on the test DUT.
+    1. Chrome must be unlocked when the script runs. Verify in `chrome://version` that the Command Line includes `--ignore-certificate-errors-spki-list`. The `-Remove` option deletes the command-line file, resets this Chrome flag to Default, and clears Chrome's persistent debug-app setting.
+    1. To retain the manual Android Settings flow instead, use `install_web_replay_certs.ps1 -DeviceIp <dut_ip> -Manual`. On Android user 0 it copies the CA files to Downloads; on a secondary user it opens the release ZIP in Chrome for that user.
+
+### Accounts and Prep Scenarios
+Accounts are stored the same way as on Windows: in the device profile, which is kept outside the repository (for example in c:\profiles, where the HOBL UI keeps profiles) and must never be committed.  Avoid folders that sync to the cloud.  HOBL replaces password, PIN, and access key values with `********` in its logs.  The Aluminium keys, with the same names as Windows where Windows has the setting, are in profile_templates\aluminium.ini:
+
+| Profile setting | Used for |
+|---|---|
+| `[global] dut_wifi_name`, `dut_wifi_password` | Wi-Fi joined by dut_setup_aluminium.ps1 |
+| `[global] google_account`, `google_password` | Google test account (`al_google_account_prep`) |
+| `[global] msa_account`, `dut_password` | Microsoft account for Microsoft 365 and Teams (`al_office_prep`) |
+| `[netflix] netflix_username`, `netflix_password` | `al_netflix` |
+| `[teams] access_key` | Teams bots server; request a key from HOBLsupport@microsoft.com |
+
+* Run the `al_accounts_check` scenario to see which accounts are set up.  It only reports "set" or "missing", never the values.  `al_accounts_check:required="netflix microsoft"` makes it fail if those are missing.
+* The `prep` scenario works on Aluminium the same way as on Windows: `hobl.cmd -p <profile> -s prep prep:scenarios_to_prep="al_web al_lvp"` runs the prep scenarios those scenarios need, plus the Aluminium common preps in `prep:aluminium_common_preps`, skipping preps that have already run.  The prep scenarios are:
+    * `al_google_account_prep`: makes sure the test user is signed in to `google_account`, signing in if needed.  Google may ask for extra verification for a new sign-in; the scenario then fails, and the account must be added on the DUT by hand once.
+    * `al_app_install_prep`: installs Netflix, Word, Excel, PowerPoint, Outlook, OneNote, Teams, and OneDrive from the Play Store, skipping apps that are installed.  The first install for a Google account asks to complete the account setup with an optional payment method; this is skipped automatically.
+    * `al_office_prep`: signs in to the Microsoft 365 apps with `msa_account`.  Word, Excel, and PowerPoint can't be used without signing in on Googlebook-sized screens, and editing needs a Microsoft 365 subscription.
+    * `al_web_prep`: dismisses Chrome's first-run, sign-in, sync, notification, and default browser prompts without accepting them, and clears cached files.
+    * `al_lvp_prep`: copies the Tears of Steel video used by the Windows lvp scenario to the test user's Movies folder.  The video is downloaded to the Host's downloads folder the first time and stored as MP4 without re-encoding.
+* Charger control uses the same `charge_on_call` and `charge_off_call` host commands as Windows, for example a smart plug.  `al_recharge` waits for the DUT to report AC or battery power after each command.
+
+### Daily Operation
+* The agent does not start automatically when the DUT boots.  While HOBL waits for an Aluminium DUT ("Waiting for DUT communication"), for example after a reboot or at the end of a rundown, it relaunches the agent every 30 seconds by running `setup_src\src_dut_aluminium\launch_agent.ps1 -DeviceIp <dut_ip>`.  This finds the DUT among the devices paired with Wireless debugging by its IP address, so several Googlebooks can be paired with the same Host.  Wireless debugging uses a new port each time the DUT starts; if ADB hasn't reconnected by itself, the script finds the port with `adb mdns services` and connects to it.  After a shutdown, connecting the charger and pressing the power button is normally all that's needed.
+    * adb is found from PATH, or from ANDROID_HOME or ANDROID_SDK_ROOT, including values saved for the user or machine after the PowerShell window was opened.
+    * To keep the DUT's IP address from changing, reserve it in the router's DHCP settings.  Signing in to Wi-Fi again, for example after changing the test account, can assign a new address.
+    * If the DUT doesn't reconnect automatically, run `adb connect <ip>:<port>` with the address and port shown on its Wireless debugging screen.
+    * The agent can also be restarted by hand with `launch_agent.ps1`.  To turn off automatic relaunch, set `aluminium_agent_relaunch=0` in the `[global]` section of the profile.
+    * If the test user has a screen lock PIN, it stays locked after the DUT restarts.  Set `dut_pin` in the profile, and HOBL unlocks the DUT once the agent is running again; otherwise unlock it by hand.
+* `testplans\al_rundown_idle.ps1` waits for the agent after the rundown.  If the Googlebook powered off, reconnect its charger and press the power button; the test plan continues once the agent responds.  The configuration data is copied to the Host when the run starts, since it can't be copied from a DUT that has shut down.
+* `testplans\al_rundown_web.ps1` runs the 100-loop Aluminium web workload and collects a study report. It also prompts for charger connection and disconnection, so run it from an interactive PowerShell window only after the short web and regression checks are complete; it is a long battery workload.
+* The agent log is on the DUT, and can be viewed with `adb shell cat /data/local/tmp/hobl_bin/AluminiumAgent/agent.log`.
+* To collect Android logs for a problem, run `adb logcat -d > logcat.txt`, or `adb bugreport bugreport.zip` for a full report.
+* ScenarioMaker works with Aluminium DUTs the same way as Windows and macOS DUTs.
+* Run `testplans\al_rundown_idle.ps1 "<path to profile.ini>"` from the HOBL repository in an interactive PowerShell window.  The plan prompts for manual charger connection and disconnection; do not launch it as a background or non-interactive process.
+
+Current limitations on Aluminium:
+* `al_web` opens the twelve default Windows web_replay sites in seven Chrome tabs and clears cached files before each loop while preserving cookies and the signed-in test account. It does not yet reproduce Windows' image-matched scrolling or fixed video resolutions. The recorded YouTube videos load but YouTube's player pauses them in Chrome on Aluminium (the recording's streaming requests don't match Android Chrome's), so the YouTube part of `al_web` is not representative video playback.
+* For that reason `al_youtube` plays the live site by default (`al_youtube:web_replay=0`).  It uses the same parameters as Windows (duration, loop_duration, full_screen) and verifies playback after each loop with Android's media session.  The media session reports pauses and stops, but not short buffering stalls.
+* `al_netflix` mirrors the Windows browser flow and needs a Netflix account in the profile.  `al_office_prep` needs a Microsoft account; the Microsoft 365 productivity workload and the Teams scenarios are not yet ported.
+* `al_lvp` plays the video with Google Photos, full screen, restarting it when it ends.  Airplane mode is not supported, since it would disconnect the agent.
+* `al_standby` measures connected standby by default.  The disconnected mode turns Wi-Fi off on the DUT and needs `cs_floor:button_wake_callback` to wake it.
+* `al_read128kseq` and `al_write128kseq` use toybox dd with direct I/O instead of diskspd; throughputs are indicative, since storage encryption may still cache data.  iperf3 and random 4 KB disk tests are not available, since Android has no iperf3 or diskspd equivalent.
+* Without a power measurement device, the `battery_energy` tool and `al_standby` calculate average power from the battery's charge counter, which has a resolution of about 1 mAh.
+* Only the primary display is supported.
+* `screen_record` uses Android's screenrecord, and `perfetto_trace` records a Perfetto trace (the equivalent of etl_trace), to open at https://ui.perfetto.dev.  The display tool supports brightness only.  The original brightness and adaptive-brightness setting are saved the first time the tool changes them and restored when `display:display_restore=1` is set; otherwise the brightness set by HOBL remains in effect after the scenario.

@@ -1,0 +1,731 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Aluminium Chrome multi-site web workload",
+        "enabled": true,
+        "id": "AW0100",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Number of browser loops",
+        "enabled": true,
+        "id": "AW0101",
+        "name": "[loops]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to wait after each page load",
+        "enabled": true,
+        "id": "AW0102",
+        "name": "[page_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "10"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to play archived YouTube videos",
+        "enabled": true,
+        "id": "AW0129",
+        "name": "[youtube_duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "90"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "enabled": true,
+        "id": "AW0103",
+        "name": "[web_replay_run]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "enabled": true,
+        "id": "AW0104",
+        "name": "[phase_reporting]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AW0105",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0106",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0130",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0110",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "reddit"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0111",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "aka.ms/AAnowz2"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0112",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "instagram"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0113",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "aka.ms/AAle9to"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0114",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "amazonbsg"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0115",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "aka.ms/AAnpar4"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0116",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "amazonvacuum"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0117",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "www.amazon.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0118",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "theverge"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0119",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "www.theverge.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0120",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "wikipediaunitedstates"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0121",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "aka.ms/watb03"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0122",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "googleimagesapollo"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0123",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "images.google.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0131",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "googleimageslondon"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0132",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "images.google.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "description": "Search Google Images for London",
+                        "enabled": true,
+                        "id": "AW0133",
+                        "text": "london",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Submit search",
+                        "enabled": true,
+                        "id": "AW0134",
+                        "text": "\ue007",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[page_load_time]",
+                        "description": "Wait for Google Images results",
+                        "enabled": true,
+                        "id": "AW0135",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0136",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "youtubetos"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0137",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "youtu.be/41hv2tW5Lc4"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "15"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Start archived video",
+                        "enabled": true,
+                        "id": "AW0154",
+                        "type": "Click Coord",
+                        "x": "0.37",
+                        "y": "0.45"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[youtube_duration]",
+                        "description": "Play archived Tears of Steel",
+                        "enabled": true,
+                        "id": "AW0138",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Pause archived video",
+                        "enabled": true,
+                        "id": "AW0139",
+                        "type": "Click Coord",
+                        "x": "0.37",
+                        "y": "0.45"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0140",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "youtubenasa"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0141",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "aka.ms/AAnpaqy"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "15"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Start archived video",
+                        "enabled": true,
+                        "id": "AW0155",
+                        "type": "Click Coord",
+                        "x": "0.37",
+                        "y": "0.45"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[youtube_duration]",
+                        "description": "Play archived NASA video",
+                        "enabled": true,
+                        "id": "AW0142",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Pause archived video",
+                        "enabled": true,
+                        "id": "AW0143",
+                        "type": "Click Coord",
+                        "x": "0.37",
+                        "y": "0.45"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0144",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "googlesearchbelgium"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0145",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "www.google.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "0"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Search Google for Belgium",
+                        "enabled": true,
+                        "id": "AW0146",
+                        "text": "belgium",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Submit search",
+                        "enabled": true,
+                        "id": "AW0147",
+                        "text": "\ue007",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[page_load_time]",
+                        "description": "Wait for Google Search results",
+                        "enabled": true,
+                        "id": "AW0148",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0149",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "params": [
+                            {
+                                "name": "[archive_name]",
+                                "value": "googlesearchsuperbowl"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0150",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                        "params": [
+                            {
+                                "name": "web_site_address",
+                                "value": "www.google.com"
+                            },
+                            {
+                                "name": "new_tab",
+                                "value": "1"
+                            },
+                            {
+                                "name": "[web_site_load_time]",
+                                "value": "[page_load_time]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Search Google for Super Bowl 48",
+                        "enabled": true,
+                        "id": "AW0151",
+                        "text": "super\ue00dbowl\ue00d48",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "Submit search",
+                        "enabled": true,
+                        "id": "AW0152",
+                        "text": "\ue007",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "[page_load_time]",
+                        "description": "Wait for Google Search results",
+                        "enabled": true,
+                        "id": "AW0153",
+                        "type": "Delay"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0124",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
+                        "params": [
+                            {
+                                "name": "[num_tabs_to_close]",
+                                "value": "6"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "enabled": true,
+                        "id": "AW0125",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_check",
+                        "params": [
+                            {
+                                "name": "[youtube_duration]",
+                                "value": "[youtube_duration]"
+                            }
+                        ],
+                        "type": "Include"
+                    }
+                ],
+                "count": "[loops]",
+                "delay": "0.0",
+                "enabled": true,
+                "id": "AW0107",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "enabled": true,
+                "id": "AW0108",
+                "type": "End Loop"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0109",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AW0126",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AW0127",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0128",
+        "type": "Teardown"
+    }
+]

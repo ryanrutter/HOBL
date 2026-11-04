@@ -13,6 +13,7 @@ import subprocess
 import winreg
 import csv
 import os
+import core.log_redaction as log_redaction
 
 class Params(object):
 
@@ -40,6 +41,7 @@ class Params(object):
                 if section not in Params.fileParams:
                     Params.fileParams[section] = collections.OrderedDict()
                 Params.fileParams[section][key] = val
+                log_redaction.register_param(key, val)
 
     @classmethod
     def setOverrides(cls, override_list):
@@ -68,6 +70,7 @@ class Params(object):
     @classmethod
     def setOverride(cls, section, key, val):
         val = val.strip('"')
+        log_redaction.register_param(key, val)
         if section not in Params.overrides:
             Params.overrides[section] = collections.OrderedDict()
         base_val = Params.get_raw(section, key, False, recurse_init = True)
@@ -93,6 +96,7 @@ class Params(object):
     @classmethod
     def setParam(cls, section, key, val):
         val = val.strip('"')
+        log_redaction.register_param(key, val)
 
         # If section is None, find an existing section from defaults, else set to module
         if section == None:
@@ -192,13 +196,13 @@ class Params(object):
                 if section in Params.overrides:
                     if key in Params.overrides[section]:
                         continue
-                if 'password' in key.lower():
+                if log_redaction.is_sensitive_key(key):
                     continue
                 val = Params.fileParams[section][key]
                 logging.debug("File - " + section + " : " + key + " = " + val)
         for section in Params.overrides:
             for key in Params.overrides[section]:
-                if 'password' in key.lower():
+                if log_redaction.is_sensitive_key(key):
                     continue
                 val = Params.overrides[section][key]
                 logging.debug("Override - " + section + " : " + key + " = " + val)
@@ -248,7 +252,7 @@ class Params(object):
                         key_list.append(key)
             for key in key_list:
                 val = Params.get(section, key, log=False)
-                if 'password' in key.lower():
+                if log_redaction.is_sensitive_key(key):
                     continue
                 logging.debug("Resolved - " + str(section) + " : " + str(key) + " = " + str(val))
 
@@ -639,6 +643,10 @@ def find_val(name):
             return val
         if "result" in json.loads(result):
             val = "MacOS"
+            # Android's getprop only exists on Aluminium (Android desktop) DUTs.
+            result = rpc.call_rpc(dut_ip, 8000, "RunWithResultAndExitCode", ["getprop", "ro.build.version.release"], log = False)
+            if result != "TIMEOUT" and json.loads(result).get("result", ["1"])[0] == "0":
+                val = "Aluminium"
         else:
             val = "Windows"
     else:
@@ -727,6 +735,30 @@ def host_call(command, cwd = "."):
         #     logging.error(l.rstrip())
     # return(out.decode().rstrip())
     return(out.decode())
+
+def get_hobl_version():
+    # hobl_version.txt is written by the git hooks in git_hooks, which host_setup enables.  If it's
+    # missing, such as in a clone where host_setup wasn't run, ask git directly and save the result.
+    try:
+        with open("hobl_version.txt", "r") as fo:
+            version = fo.readline(50).strip()
+        if version:
+            return version
+    except OSError:
+        pass
+    try:
+        result = subprocess.run(["git", "describe", "--tags"], capture_output=True, text=True, timeout=10)
+        version = result.stdout.strip()
+        if result.returncode == 0 and version:
+            try:
+                with open("hobl_version.txt", "w") as fo:
+                    fo.write(version + "\n")
+            except OSError:
+                pass
+            return version
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return "Unknown"
 
 def find_goals_val(nits_map=False, volume=False):
     goals = Params.get('global', "goals", log = False)

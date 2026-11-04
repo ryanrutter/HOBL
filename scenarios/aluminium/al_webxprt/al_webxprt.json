@@ -1,0 +1,101 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "HP Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Run the WebXPRT 4 browser benchmark with its automation URL, the Aluminium version of the Windows webxprt scenario",
+        "enabled": true,
+        "id": "AX0000",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Seconds to wait for the benchmark to finish",
+        "enabled": true,
+        "id": "AX0001",
+        "name": "[timeout]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "1800"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AX0003",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_live_mode",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AX0004",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AX0002",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AX0006",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+                "params": [
+                    {
+                        "name": "web_site_address",
+                        "value": "https://www.principledtechnologies.com/benchmarkxprt/webxprt/2021/wx4_build_3_7_3/auto.php?testtype=1&tests=63&result=1"
+                    },
+                    {
+                        "name": "new_tab",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "5"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Wait for the score",
+                "enabled": true,
+                "file_name": [
+                    "code_AX0007.py"
+                ],
+                "id": "AX0007",
+                "type": "Code"
+            }
+        ],
+        "enabled": true,
+        "id": "AX0005",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "enabled": true,
+                "id": "AX0009",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AX0008",
+        "type": "Teardown"
+    }
+]

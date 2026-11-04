@@ -68,14 +68,28 @@ class Tool(Scenario):
 
     # =========================================================================
     # State persistence helpers — read/write/delete from HKLM\SOFTWARE\HOBL
+    # On Aluminium, state is kept in files on the DUT instead of the registry.
     # =========================================================================
+
+    def _is_aluminium(self):
+        return (Params.get('global', 'platform') or "").lower() == "aluminium"
+
+    def _state_file(self, name):
+        return self.dut_exec_path + "/display_state/" + name
 
     def _save_state(self, name, value):
         """Save initial state to HOBL registry for later restoration."""
+        if self._is_aluminium():
+            self._call(["sh", f'-c "mkdir -p {self.dut_exec_path}/display_state && echo {value} > {self._state_file(name)}"'])
+            return
         self._call(["cmd.exe", f'/C reg add "{self.REG_KEY_PATH}" /v "{name}" /t REG_SZ /d "{value}" /f'], expected_exit_code="")
 
     def _read_state(self, name):
         """Read saved state from HOBL registry. Returns string or None."""
+        if self._is_aluminium():
+            result = self._call(["cat", self._state_file(name)], expected_exit_code="")
+            value = (result or "").strip()
+            return value if re.fullmatch(r'-?\d+', value) else None
         result = self._call(["cmd.exe", f'/C reg query "{self.REG_KEY_PATH}" /v "{name}"'], expected_exit_code="")
         if result and name in result:
             try:
@@ -86,6 +100,9 @@ class Tool(Scenario):
 
     def _clear_state(self, name):
         """Delete saved state from HOBL registry."""
+        if self._is_aluminium():
+            self._call(["rm", "-f " + self._state_file(name)], expected_exit_code="")
+            return
         self._call(["cmd.exe", f'/C reg delete "{self.REG_KEY_PATH}" /v "{name}" /f'], expected_exit_code="")
 
     # =========================================================================
@@ -155,7 +172,7 @@ class Tool(Scenario):
             if brightness_val in nits_table:
                 brightness_val = nits_table[brightness_val]
             else:
-                raise Exception(f"No slider mapping for {brightness_str}.")
+                raise Exception(f"No slider mapping for {brightness_str}.  Measure the display with a luminance meter and set display:nits_map in the device profile.")
 
         if platform and platform.lower() == "android":
             logging.warning("Brightness save/restore is not supported on Android.")
@@ -163,6 +180,21 @@ class Tool(Scenario):
         elif platform and platform.lower() == "macos":
             logging.warning("Brightness save/restore is not supported on macOS.")
             self._call([self.dut_exec_path + "/brightness", str(int(brightness_val) / 100.0)])
+        elif platform and platform.lower() == "aluminium":
+            # Save the initial brightness and mode once, so the first scenario captures the true original.
+            if self._read_state("InitialBrightness") is None:
+                current_val = (self._call(["settings", "get system screen_brightness"]) or "").strip()
+                current_mode = (self._call(["settings", "get system screen_brightness_mode"]) or "").strip()
+                if current_val.isdigit() and current_mode.isdigit():
+                    self._save_state("InitialBrightnessMode", current_mode)
+                    self._save_state("InitialBrightness", current_val)
+                    logging.info("Saved initial brightness: %s (mode %s)", current_val, current_mode)
+                else:
+                    logging.warning("Could not read the initial brightness, so it won't be restored: %s, %s", current_val, current_mode)
+            # A fixed brightness requires manual mode, otherwise adaptive brightness overrides it.
+            self._call(["settings", "put system screen_brightness_mode 0"])
+            # The percentage maps to Android's 0-255 brightness setting.
+            self._call(["settings", "put system screen_brightness " + str(round(int(brightness_val) * 255 / 100))])
         else:
             # Save initial brightness if not already saved
             if self._read_state("InitialBrightness") is None:
@@ -186,6 +218,16 @@ class Tool(Scenario):
     def _restore_brightness(self):
         """Restore brightness from previously saved value in DUT registry."""
         brightness_val = self._read_state("InitialBrightness")
+        if self._is_aluminium():
+            mode = self._read_state("InitialBrightnessMode")
+            if brightness_val is not None:
+                logging.info("Restoring brightness to: %s (mode %s)", brightness_val, mode)
+                self._call(["settings", "put system screen_brightness " + brightness_val])
+                if mode is not None:
+                    self._call(["settings", "put system screen_brightness_mode " + mode])
+            self._clear_state("InitialBrightness")
+            self._clear_state("InitialBrightnessMode")
+            return
         if brightness_val is not None:
             logging.info("Restoring brightness to: %s", brightness_val)
             self._call(["cmd.exe", "/c Powercfg.exe -SETDCVALUEINDEX scheme_balanced SUB_VIDEO aded5e82-b909-4619-9949-f5d71dac0bcb " + brightness_val])
@@ -922,6 +964,13 @@ class Tool(Scenario):
     def testEndCallback(self):
         display_restore = Params.get(self.module, 'display_restore').strip()
         if display_restore != '1':
+            return
+
+        if self._is_aluminium():
+            # Brightness is the only display setting supported on Aluminium.
+            if self._read_state("InitialBrightness") is not None:
+                logging.info("display_restore=1: Restoring saved display brightness.")
+                self._restore_brightness()
             return
 
         # Check if any init keys exist before logging

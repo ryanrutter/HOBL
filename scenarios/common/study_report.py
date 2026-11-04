@@ -133,7 +133,11 @@ class StudyReport(core.app_scenario.Scenario):
             else:
                 logging.info("Study report CSV generated in " + self.csv_path)
 
-        # Call the json study report
+        # Call the json study report.  It's for the HOBL dashboard, and is built from dashboard_url.
+        if self.dashboard_url == '' or self.dashboard_url is None:
+            logging.info("Skipping JSON study report because dashboard_url is not set.")
+            return
+
         cwd2 = os.path.abspath(os.getcwd())
         cmd = cwd2 + "\hobl.cmd -e utilities.open_source.gen_study_report_json " + self.result_path + " -dashboard_url " + self.dashboard_url
 

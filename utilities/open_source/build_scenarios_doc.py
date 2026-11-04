@@ -35,7 +35,7 @@ def main():
                 Params.clear()
                 path = None
                 scenarios_dir = os.path.join(os.getcwd(), 'scenarios')
-                for platform in ["windows", "macos", "common"]:
+                for platform in ["windows", "macos", "aluminium", "common"]:
                     scenarios_dir_sub = os.path.join(os.getcwd(), 'scenarios', platform)
                     path = os.path.join(scenarios_dir_sub, scenario + ".py")
                     if os.path.isfile(path):

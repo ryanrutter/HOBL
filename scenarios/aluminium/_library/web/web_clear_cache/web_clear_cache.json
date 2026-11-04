@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "Acer Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Clear Chrome cache without deleting account data",
+        "enabled": true,
+        "id": "AW0208",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "Clear cached files without removing account data",
+        "enabled": true,
+        "file_name": [
+            "code_AW0204.py"
+        ],
+        "id": "AW0204",
+        "type": "Code"
+    }
+]

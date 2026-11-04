@@ -1,0 +1,22 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-10-31",
+        "description": "Open New Tab",
+        "enabled": true,
+        "id": "1X8U3ML",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "1.0",
+        "description": "CTRL-t",
+        "enabled": true,
+        "id": "1X8U3MM",
+        "text": "\ue009t",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    }
+]

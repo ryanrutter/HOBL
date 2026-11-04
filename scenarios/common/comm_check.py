@@ -72,7 +72,11 @@ class CommCheck(core.app_scenario.Scenario):
         # Async SimpleRemote
         if (self.async_comm == "1"):
             try:
-                output = self._call(["curl", "-V"], timeout=5)
+                if self.platform.lower() == "aluminium":
+                    # curl is not part of Android, so echo a known string through the shell instead.
+                    output = self._call(["sh", '-c "echo Release-Date"'], timeout=5)
+                else:
+                    output = self._call(["curl", "-V"], timeout=5)
                 # if self.platform.lower() == "windows":
                 #     output = self._call(["cmd.exe", "/c echo ok"], timeout=5)
                 # elif self.platform.lower() == "macos":

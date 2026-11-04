@@ -99,6 +99,11 @@ class ConnectionManager(QThread):
 
         try:
             if "result" in json.loads(result):
+                # Android's getprop only exists on Aluminium (Android desktop) DUTs.
+                result = rpc.call_rpc(self.dut_ip, 8000, "RunWithResultAndExitCode", ["getprop", "ro.build.version.release"])
+                if result != "TIMEOUT" and json.loads(result).get("result", ["1"])[0] == "0":
+                    print("Connecting to Aluminium DUT")
+                    return self.simple_remote_connect_aluminium()
                 print("Connecting to macOS DUT")
                 return self.simple_remote_connect_macos()
             else:
@@ -171,6 +176,50 @@ class ConnectionManager(QThread):
                 data = result_dict["result"]
                 exit_code = data[0]
             result = rpc.call_rpc(self.dut_ip, 8000, "Run", ["/Users/Shared/hobl_bin/ScreenServer/ScreenServer.app/Contents/MacOS/ScreenServer"])
+            if result == "TIMEOUT":
+                print('Timeout starting ScreenServer.')
+                return False
+            print("ScreenServer started.")
+            return True
+
+
+    def simple_remote_connect_aluminium(self):
+        agent_path = "/data/local/tmp/hobl_bin/AluminiumAgent/AluminiumAgent.jar"
+        res = rpc.plugin_load(self.dut_ip, 8000, "InputInject", "InputInject.Application", agent_path)
+        if res == "TIMEOUT":
+            print("Timeout loading plugin.")
+            return False
+        else:
+            # ScreenServer is built into the agent and runs with the command line "ScreenServer".  app_process doesn't set the
+            # process name, so find and stop it by the start of its command line.
+            result = rpc.call_rpc(self.dut_ip, 8000, "RunWithResultAndExitCode", ["pgrep", "-f ^ScreenServer"])
+            if result == "TIMEOUT":
+                print("Timeout killing ScreenServer.")
+                return False
+            result_dict = json.loads(result)
+            data = result_dict["result"]
+            exit_code = data[0]
+            # Keep trying to kill until it doesn't exist
+            while exit_code == "0":
+                result = rpc.call_rpc(self.dut_ip, 8000, "RunWithResultAndExitCode", ["pkill", "-f ^ScreenServer"])
+                if result == "TIMEOUT":
+                    print("Timeout killing ScreenServer.")
+                    return False
+                result = rpc.call_rpc(self.dut_ip, 8000, "RunWithResultAndExitCode", ["pgrep", "-f ^ScreenServer"])
+                if result == "TIMEOUT":
+                    print("Timeout killing ScreenServer.")
+                    return False
+                result_dict = json.loads(result)
+                data = result_dict["result"]
+                exit_code = data[0]
+
+            # The screen stream is only allowed to this host, as seen by the DUT.
+            result = rpc.call_rpc(self.dut_ip, 8000, "GetClientIP", [])
+            if result == "TIMEOUT":
+                print("Timeout getting host IP.")
+                return False
+            host_ip = json.loads(result)["result"].rsplit(":", 1)[0]
+            result = rpc.call_rpc(self.dut_ip, 8000, "Run", ["sh", f'-c "CLASSPATH={agent_path} app_process / --nice-name=ScreenServer com.microsoft.hobl.agent.ScreenServer --allow {host_ip}"'])
             if result == "TIMEOUT":
                 print('Timeout starting ScreenServer.')
                 return False

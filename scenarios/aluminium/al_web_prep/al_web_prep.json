@@ -1,0 +1,72 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "Acer Googlebook 14, Android 17, Chrome",
+        "children": [],
+        "create_date": "2026-11-03",
+        "description": "Prepare Chrome for Aluminium web workloads",
+        "enabled": true,
+        "id": "AW0200",
+        "type": "Information"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "id": "AW0201",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_live_mode",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "id": "AW0202",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0203",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "Dismiss Chrome first-run prompts",
+                "enabled": true,
+                "id": "AW0211",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_first_run",
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "Clear cached files without removing account data",
+                "enabled": true,
+                "id": "AW0204",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0205",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "id": "AW0206",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "type": "Include"
+            }
+        ],
+        "enabled": true,
+        "id": "AW0207",
+        "type": "Teardown"
+    }
+]
