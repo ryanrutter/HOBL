@@ -11,7 +11,8 @@ Set specified audio volume.
 
 ## auto_charge
 
-Turn off charger before scenario, turn it on after.
+Turn off charger before scenario, turn it on after.  Aluminium uses the configured host charger callbacks, or
+prompts the operator and waits for the DUT's Android battery state when those callbacks are empty.
 
 
 <u>Parameters:</u>
@@ -710,4 +711,4 @@ Record a video of the scenario using a camera attached to the Host USB, or an RT
 
 `rotation` -  **Default:** `0` 
 
-`show` -  **Default:** `0` 
+`show` -  **Default:** `0`

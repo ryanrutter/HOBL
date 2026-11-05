@@ -863,6 +863,34 @@ Installs the Android apps used by HOBL scenarios from the Play Store on an Alumi
 
 `install_timeout` - Seconds to wait for each app to download and install. **Default:** `900` 
 
+## al_config_check
+
+Run the Aluminium config-check script as a standalone prep and save Config.csv in the scenario results.
+The normal scenario lifecycle already runs this check automatically for measured workloads.
+
+
+<u>Parameters:</u>
+
+`Study Type` -  **Default:** ``
+
+`Comments` -  **Default:** ``
+
+`Hardware Version` -  **Default:** ``
+
+`Hardware Type` -  **Default:** ``
+
+`Screen Size (in)` -  **Default:** ``
+
+`Blade` -  **Default:** ``
+
+`Accessories` -  **Default:** ``
+
+`RTC Reserve (%)` -  **Default:** ``
+
+`Raw Data Location` -  **Default:** ``
+
+`Device Name` -  **Default:** ``
+
 ## al_discharge
 
 Turns off the charger and waits for the battery to reach discharge:resume_threshold.
@@ -922,6 +950,23 @@ ffmpeg from PATH, or the copy host_setup downloads into downloads\ffmpeg_*.
 
 `video_url` - Where to download the video if it isn't in the downloads folder.  A .zip or .mov is converted to MP4 without re-encoding. **Default:** `http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov.zip` 
 
+## al_manual
+
+Aluminium platform alias for the host-driven Windows manual measurement scenario.
+
+
+<u>Parameters:</u>
+
+`duration` -  **Default:** ``
+
+`delay` -  **Default:** ``
+
+`start_prompt` -  **Default:** `1`
+
+`setup_prompt` -  **Default:** `1`
+
+`teardown_prompt` -  **Default:** `1`
+
 ## al_netflix
 
 Watches a Netflix video in Chrome, the Aluminium version of the Windows netflix scenario: it signs in with netflix_username and netflix_password from the [netflix] section of the device profile if Chrome isn't signed in already, and plays the same title from the same position, full screen, for the specified duration.  Playback is verified with Android's media session at the start and end.  Unlike Windows, it doesn't sign out first:  Netflix may send a sign-in code to the account's email instead of asking for the password, which can't be automated.  If it does, sign in to Netflix once by hand in Chrome on the DUT.
@@ -936,6 +981,27 @@ Watches a Netflix video in Chrome, the Aluminium version of the Windows netflix 
 `netflix_username` - Netflix account, the same setting as the Windows netflix scenario **Default:** `` 
 
 `netflix_password` - Netflix account password **Default:** `` 
+
+## al_net_prep
+
+Validate the DUT's Wi-Fi connection against dut_wifi_name.  Changing networks over wireless ADB would disconnect
+the agent and can change dut_ip; join or switch networks over USB with dut_setup_aluminium.ps1 instead.
+
+
+<u>Parameters:</u>
+
+`net_prep_enabled` -  **Default:** `1`
+
+`connection` -  **Default:** `Wi-Fi`
+
+## al_notify
+
+Send the plan-completion email from the Windows HOBL host without contacting the Aluminium DUT.
+
+
+<u>Parameters:</u>
+
+`plan_run_type` -  **Default:** ``
 
 ## al_office_prep
 
@@ -985,6 +1051,28 @@ Turns on the device charger and waits until the battery reaches the recharge:res
 
 `check_smart_charge` -  **Default:** `1`  **Options:** `0, 1`
 
+## al_run_abl_if_preps_passed
+
+Launch the Aluminium ABL rundown after its workload preps have completed.
+
+
+<u>Parameters:</u>
+
+`prep_list` - Aluminium ABL prep scenarios to check. **Default:** `al_abl_active al_web_prep al_productivity_prep al_lvp_prep`
+
+`plans_to_launch` - Aluminium ABL rundown plan to launch. **Default:** `al_rundown_abl_lvp_web.ps1`
+
+## al_run_plans_if_preps_passed
+
+Launch Aluminium plans after the required preps have completed on the DUT.
+
+
+<u>Parameters:</u>
+
+`prep_list` - Aluminium prep scenarios to check before launching plans. **Default:** `al_app_install_prep al_google_account_prep al_web_prep al_lvp_prep`
+
+`plans_to_launch` - Aluminium test plans to launch in order. **Default:** `al_hobl.ps1 al_hobl_smoke.ps1`
+
 ## al_speedometer
 
 Runs the Speedometer 3.1 browser benchmark in Chrome, the Aluminium version of the Windows speedometer scenario.  The score is written to speedometer_score.csv with the same metric name as Windows.
@@ -1015,6 +1103,10 @@ Without a power measurement device, the average standby current and power are ca
 
 `wake_timeout` - Seconds to keep trying to wake the DUT after standby. **Default:** `300` 
 
+## al_test_fail
+
+Intentionally fail the scenario to validate failure reporting and plan continuation.
+
 ## al_timer
 
 Delays for the specified duration on an Aluminium (Android desktop) DUT.  Useful for checking that the HOBL host and the Aluminium agent are set up correctly.
@@ -1023,6 +1115,10 @@ Delays for the specified duration on an Aluminium (Android desktop) DUT.  Useful
 <u>Parameters:</u>
 
 `duration` - Seconds to delay. **Default:** `1` 
+
+## al_version_report
+
+Write Aluminium OS, build, architecture, agent, browser, and installed workload versions to the results.
 
 ## al_wait_for_dut
 
