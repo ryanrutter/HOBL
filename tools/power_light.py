@@ -11,11 +11,17 @@ import logging
 import sys
 import os
 import re
+import time
+from utilities.open_source import aluminium_power
 
 
 class Tool(Scenario):
     '''
-    Collect and parse a lightweight power trace.  Does not have a significant impact on power consumption.
+    Collect a lightweight power measurement.  On Aluminium, records Android's android.power Perfetto source and
+    uses the battery charge counter to write <test>_power_light_summary.csv with PM Total Power (W) when the DUT
+    is on battery and the charge counter changes.  PowerStats channel names are included for reference; the raw
+    Perfetto trace is saved as <test>_power_light.pftrace.  A charge-counter delta below its approximately 1 mAh
+    resolution is reported as unavailable, not zero.  Windows continues to use the power_light WPRP provider.
     '''
     module = __module__.split('.')[-1]
     # Set default parameters
@@ -48,6 +54,19 @@ class Tool(Scenario):
         # Keep a pointer to the scenario that this tools is being run with
         self.scenario = scenario
         self.conn_timeout = False
+        self.aluminium = self.platform.lower() == "aluminium"
+        self.start = None
+        self.end = None
+        self.perfetto = None
+        self.power_channels = []
+
+        if self.aluminium:
+            self.power_channels = aluminium_power.available_power_channels(scenario)
+            if self.power_channels:
+                logging.info("Android power channels: %s", ", ".join(self.power_channels))
+            else:
+                logging.info("The DUT does not expose Android PowerStats channels; power_light will use the battery charge counter.")
+            return
 
 
         logging.info("Power light Tool - initializing, associated with scenario: " + self.scenario._module)
@@ -64,8 +83,55 @@ class Tool(Scenario):
         # all_providers = all_providers + " power_light.wprp"
         all_providers = all_providers + " " + self.provider
         Params.setCalculated('trace_providers', all_providers)
-  
+
+    def testBeginCallback(self):
+        if not self.aluminium:
+            return
+        self.start = aluminium_power.read_battery_sample(self.scenario)
+        self.start_time = time.time()
+        try:
+            trace_name = self.scenario.testname + "_power_light"
+            self.perfetto = aluminium_power.start_perfetto(self.scenario, trace_name, "8mb")
+            logging.info("Started low-overhead android.power trace.")
+        except RuntimeError as exc:
+            logging.warning("Could not start the android.power trace; battery charge-counter measurement will still run: %s", exc)
+
+    def testEndCallback(self):
+        if not self.aluminium or self.start is None or self.conn_timeout:
+            return
+        try:
+            self.end = aluminium_power.read_battery_sample(self.scenario)
+            self.end_time = time.time()
+        finally:
+            if self.perfetto:
+                try:
+                    aluminium_power.stop_perfetto(self.scenario, *self.perfetto)
+                    logging.info("Stopped the android.power trace.")
+                except RuntimeError as exc:
+                    logging.warning("Could not collect the android.power trace: %s", exc)
+                self.perfetto = None
+
     def dataReadyCallback(self):
+        if self.aluminium:
+            if self.start is None or self.end is None:
+                logging.warning("power_light: no complete battery measurement is available.")
+                return
+            rows = aluminium_power.battery_summary(self.start, self.end, self.start_time, self.end_time)
+            if self.start[2] or self.end[2]:
+                logging.warning("power_light: the DUT was on AC/USB power; battery-derived average power is unavailable.")
+            else:
+                power = next((value for key, value in rows if key == "battery_avg_power_mw"), None)
+                if power is not None:
+                    rows.append(("PM Total Power (W)", f"{float(power) / 1000.0:.3f}"))
+                    logging.info("power_light: battery-derived average power was %s mW.", power)
+                else:
+                    logging.warning("power_light: the charge counter did not change; the measurement was below its resolution.")
+            rows.append(("Android PowerStats Channels", ";".join(self.power_channels)))
+            aluminium_power.write_rows(
+                os.path.join(self.scenario.result_dir, self.scenario.testname + "_power_light_summary.csv"),
+                rows,
+            )
+            return
         if self.conn_timeout and self.rundown_mode=='0' and int(self.stop_soc) <= 0:
             return
         # ETL traces have been pulled back to the host

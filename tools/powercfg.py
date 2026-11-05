@@ -10,12 +10,16 @@ import logging
 import sys
 import os
 import csv
+import time
 import xml.etree.ElementTree as ET
 
+from utilities.open_source import aluminium_power
 
 class Tool(Scenario):
     '''
-    Collect sleep study and battery reports.
+    Collect platform power and battery reports.  On Aluminium, saves the Android batterystats check-in report,
+    power state, and device-idle state, and writes a charge-counter summary to <test>_powercfg_summary.csv.
+    Windows continues to collect powercfg sleep-study and battery reports.
     '''
     module = __module__.split('.')[-1]
     # Set default parameters
@@ -35,12 +39,36 @@ class Tool(Scenario):
         # Initialization code
         # Keep a pointer to the scenario that this tools is being run with
         self.scenario = scenario
+        self.aluminium = (Params.get("global", "platform") or "").lower() == "aluminium"
+        self.start = None
+        self.end = None
+        self.reports = {}
+        self.battery_report = Params.get(self.module, "battery_report")
         return
 
     def testBeginCallback(self):
+        if self.aluminium:
+            self.start = aluminium_power.read_battery_sample(self.scenario)
+            self.start_time = time.time()
+            return
         pass
     
     def testEndCallback(self):
+        if self.aluminium:
+            if self.start is not None:
+                self.end = aluminium_power.read_battery_sample(self.scenario)
+                self.end_time = time.time()
+            commands = [
+                ("power_state.txt", ["dumpsys", "power"]),
+                ("device_idle.txt", ["dumpsys", "deviceidle"]),
+            ]
+            if self.battery_report == "1":
+                commands.insert(0, ("battery_stats_checkin.csv", ["dumpsys", "batterystats --checkin"]))
+            self.reports = {
+                name: self._call(command, log_output=False, timeout=60)
+                for name, command in commands
+            }
+            return
         output_file_xml = '\\sleepstudy-report.xml /XML'
         battery_file_xml = '\\battery-report.xml /XML'
         output_file_html = '\\sleepstudy-report.html'
@@ -65,6 +93,23 @@ class Tool(Scenario):
         #                         + self.scenario.result_dir + '\\battery-report.xml /output ' + self.scenario.result_dir + '\\battery_report.html')
 
     def dataReadyCallback(self):
+        if self.aluminium:
+            for name, contents in self.reports.items():
+                with open(os.path.join(self.scenario.result_dir, name), "w", encoding="utf-8", newline="\n") as report:
+                    report.write(contents or "")
+            if self.start is None or self.end is None:
+                logging.warning("powercfg: no complete battery measurement is available.")
+                return
+            rows = aluminium_power.battery_summary(self.start, self.end, self.start_time, self.end_time)
+            if self.start[2] or self.end[2]:
+                logging.warning("powercfg: the DUT was on AC/USB power; battery-derived average power is unavailable.")
+            elif not any(key == "battery_avg_power_mw" for key, _ in rows):
+                logging.warning("powercfg: the charge counter did not change; the measurement was below its resolution.")
+            aluminium_power.write_rows(
+                os.path.join(self.scenario.result_dir, self.scenario.testname + "_powercfg_summary.csv"),
+                rows,
+            )
+            return
         # You can do any post processing of data here.
         if self.platform.lower() == "wcos":
             self._host_call('%SystemRoot%\\sysnative\\WindowsPowerShell\\v1.0\\powershell.exe cmd.exe /c powercfg.exe /sleepstudy /transformxml ' 

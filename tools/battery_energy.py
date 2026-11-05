@@ -46,10 +46,14 @@ class Tool(Scenario):
         rows = [("battery_measured_duration_s", f"{seconds:.0f}"), ("battery_charge_used_mah", f"{charge_mah:.0f}")]
         if self.start[2] or self.end[2]:
             logging.info("battery_energy: on AC power, average power not reported.")
-        elif seconds > 0:
+        elif seconds > 0 and charge_mah > 0:
             current_ma, power_mw = battery.average_power(self.start, self.end, seconds)
             rows += [("battery_avg_current_ma", f"{current_ma:.1f}"), ("battery_avg_power_mw", f"{power_mw:.0f}")]
             logging.info(f"battery_energy: {charge_mah:.0f} mAh in {seconds:.0f}s, average {current_ma:.1f} mA, {power_mw:.0f} mW")
+        elif seconds > 0:
+            status = "insufficient_charge_counter_resolution" if charge_mah == 0 else "charge_counter_increased"
+            rows.append(("battery_power_measurement_status", status))
+            logging.warning("battery_energy: the charge counter did not decrease; average power is unavailable.")
         with open(os.path.join(self.scenario.result_dir, self.scenario.testname + "_battery_energy.csv"), "w") as f:
             for key, value in rows:
                 f.write(f"{key},{value}\n")

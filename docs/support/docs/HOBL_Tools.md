@@ -137,7 +137,9 @@ Parameters:
 
 ## display_brightness
 
-Map display brightness slider percentage to nits value specified by scenarios.
+Deprecated compatibility tool.  Maps the display brightness slider percentage to the nits value specified by
+a scenario; on Aluminium it uses the display tool's calibrated display:nits_map and restores the original
+brightness when display_brightness:display_restore=1.
 
 
 <u>Parameters:</u>
@@ -373,7 +375,9 @@ Deprecated.
 
 ## powercfg
 
-Collect sleep study and battery reports.
+Collect platform power and battery reports.  On Aluminium, saves the Android batterystats check-in report,
+power state, and device-idle state, and writes a charge-counter summary to <test>_powercfg_summary.csv.
+Windows continues to collect powercfg sleep-study and battery reports.
 
 
 <u>Parameters:</u>
@@ -382,7 +386,10 @@ Collect sleep study and battery reports.
 
 ## power_heavy
 
-Collect and parse a detailed power trace.  Has a significant impact on power consumption.
+Collect a detailed power trace.  On Aluminium, records Android's android.power source and ftrace/atrace
+categories in <test>_power_heavy.pftrace and writes a battery-derived summary to
+<test>_power_heavy_summary.csv when charge-counter resolution permits.  The trace has significant power
+overhead and should not be used for battery-life measurements.  Windows continues to use power_heavy.wprp.
 
 
 <u>Parameters:</u>
@@ -403,9 +410,17 @@ Collect and parse a detailed power trace.  Has a significant impact on power con
 
 `total_standby` -  **Default:** `` 
 
+`categories` - Space-separated Perfetto atrace categories. **Default:** `sched freq idle power am wm gfx view`
+
+`buffer` - Perfetto trace buffer size. **Default:** `64mb`
+
 ## power_light
 
-Collect and parse a lightweight power trace.  Does not have a significant impact on power consumption.
+Collect a lightweight power measurement.  On Aluminium, records Android's android.power Perfetto source and
+uses the battery charge counter to write <test>_power_light_summary.csv with PM Total Power (W) when the DUT
+is on battery and the charge counter changes.  PowerStats channel names are included for reference; the raw
+Perfetto trace is saved as <test>_power_light.pftrace.  A charge-counter delta below its approximately 1 mAh
+resolution is reported as unavailable, not zero.  Windows continues to use the power_light WPRP provider.
 
 
 <u>Parameters:</u>
@@ -696,4 +711,3 @@ Record a video of the scenario using a camera attached to the Host USB, or an RT
 `rotation` -  **Default:** `0` 
 
 `show` -  **Default:** `0` 
-

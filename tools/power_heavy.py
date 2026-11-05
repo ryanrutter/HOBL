@@ -11,11 +11,16 @@ import logging
 import sys
 import os
 import re
+import time
 
+from utilities.open_source import aluminium_power
 
 class Tool(Scenario):
     '''
-    Collect and parse a detailed power trace.  Has a significant impact on power consumption.
+    Collect a detailed power trace.  On Aluminium, records Android's android.power source and ftrace/atrace
+    categories in <test>_power_heavy.pftrace and writes a battery-derived summary to
+    <test>_power_heavy_summary.csv when charge-counter resolution permits.  The trace has significant power
+    overhead and should not be used for battery-life measurements.  Windows continues to use power_heavy.wprp.
     '''
     module = __module__.split('.')[-1]
     # Set default parameters
@@ -27,12 +32,22 @@ class Tool(Scenario):
     Params.setDefault(module, 'total', '')
     Params.setDefault(module, 'total_active', '')
     Params.setDefault(module, 'total_standby', '')
+    Params.setDefault(module, 'categories', 'sched freq idle power am wm gfx view', desc="Space-separated Perfetto atrace categories.")
+    Params.setDefault(module, 'buffer', '64mb', desc="Perfetto trace buffer size.")
 
 
     def initCallback(self, scenario):
         # Keep a pointer to the scenario that this tools is being run with
         self.scenario = scenario
         self.conn_timeout = False
+        self.aluminium = self.platform.lower() == "aluminium"
+        self.perfetto = None
+        self.start = None
+        self.end = None
+        self.trace_destination = None
+        if self.aluminium:
+            return
+
         if Params.get("global", "local_execution") == "0":
             # For remote execution, use the cmd.exe that matches the OS
             cmd = "cmd.exe"
@@ -53,8 +68,59 @@ class Tool(Scenario):
         all_providers = all_providers + " power_heavy.wprp" 
         Params.setCalculated('trace_providers', all_providers)
 
-  
+    def testBeginCallback(self):
+        if not self.aluminium:
+            return
+        self.start = aluminium_power.read_battery_sample(self.scenario)
+        self.start_time = time.time()
+        categories = Params.get(self.module, "categories").split()
+        buffer_size = Params.get(self.module, "buffer")
+        try:
+            self.perfetto = aluminium_power.start_perfetto(
+                self.scenario,
+                self.scenario.testname + "_power_heavy",
+                buffer_size,
+                categories,
+            )
+        except (RuntimeError, ValueError) as exc:
+            self.scenario.fail(f"power_heavy: could not start the Perfetto trace: {exc}")
+        logging.info("power_heavy: detailed Perfetto trace started.")
+
+    def testEndCallback(self):
+        if not self.aluminium or self.conn_timeout:
+            return
+        if self.start is not None:
+            self.end = aluminium_power.read_battery_sample(self.scenario)
+            self.end_time = time.time()
+        if self.perfetto:
+            try:
+                self.trace_destination = aluminium_power.stop_perfetto(self.scenario, *self.perfetto)
+                logging.info("power_heavy: Perfetto trace copied to %s.", self.trace_destination)
+            except RuntimeError as exc:
+                self.scenario.fail(f"power_heavy: could not stop or collect the Perfetto trace: {exc}")
+            self.perfetto = None
+
+    def testTimeoutCallback(self):
+        self.conn_timeout = True
+        self.perfetto = None
+
     def dataReadyCallback(self):
+        if self.aluminium:
+            if self.start is None or self.end is None:
+                logging.warning("power_heavy: battery summary is unavailable.")
+                return
+            rows = aluminium_power.battery_summary(self.start, self.end, self.start_time, self.end_time)
+            if self.start[2] or self.end[2]:
+                logging.warning("power_heavy: the DUT was on AC/USB power; battery-derived average power is unavailable.")
+            elif not any(key == "battery_avg_power_mw" for key, _ in rows):
+                logging.warning("power_heavy: the charge counter did not change; the measurement was below its resolution.")
+            if self.trace_destination:
+                rows.append(("perfetto_trace", os.path.basename(self.trace_destination)))
+            aluminium_power.write_rows(
+                os.path.join(self.scenario.result_dir, self.scenario.testname + "_power_heavy_summary.csv"),
+                rows,
+            )
+            return
         if self.conn_timeout:
             return
         # ETL traces have been pulled back to the host

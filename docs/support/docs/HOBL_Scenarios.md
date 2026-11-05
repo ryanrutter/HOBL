@@ -863,6 +863,26 @@ Installs the Android apps used by HOBL scenarios from the Play Store on an Alumi
 
 `install_timeout` - Seconds to wait for each app to download and install. **Default:** `900` 
 
+## al_discharge
+
+Turns off the charger and waits for the battery to reach discharge:resume_threshold.
+Aluminium version of the Windows discharge scenario; optionally plays local video with al_lvp.  Configure
+global:charge_off_call or disconnect the charger manually; the scenario fails rather than waiting forever
+if the DUT is still on AC/USB power above the requested threshold.
+
+
+<u>Parameters:</u>
+
+`resume_threshold` - Percent battery level to discharge to **Default:** `100`
+
+`poll_period` - How often to check battery level (default 30s) **Default:** `30`
+
+`run_scenario` - Run al_lvp in the background while discharging. **Default:** ``  **Options:** `lvp`
+
+`leave_on_dc` - Leave on DC power after discharge scenario (default 1 - keep charger off) **Default:** `1`
+
+`taper_workload` - Stop workload to cool down device. resume_threshold + taper_workload. (default 0) **Default:** `0`
+
 ## al_google_account_prep
 
 The Google account names in "dumpsys account" output.
@@ -1076,4 +1096,3 @@ By default the live site is used, because YouTube's player pauses the web_replay
 `page_load_time` - Seconds to wait for the video page **Default:** `15` 
 
 `web_replay` - Play the web_replay recording (1) or the live site (0).  The recording does not currently play in Chrome on Aluminium. **Default:** `0`  **Options:** `0, 1`
-
