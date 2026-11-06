@@ -274,3 +274,5 @@ def run(scenario):
     if _find_text(root, "Time range") is not None:
         scenario.fail("Chrome did not close the clear-data dialog after cache cleanup.")
     logging.info("Chrome cached images and files were cleared.")
+    # Clearing the cache isn't part of the Windows page timeline, so the timeline starts again after it.
+    scenario._sleep_to_now()
