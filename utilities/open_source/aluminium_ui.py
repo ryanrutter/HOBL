@@ -14,6 +14,8 @@ from core.parameters import Params
 
 
 UI_TREE_PATH = "/data/local/tmp/hobl_ui.xml"
+# UIAutomator waits for the screen to be idle; give up and try again if it waits this long.
+DUMP_TIMEOUT = 30
 
 
 def read_ui(scenario, path=UI_TREE_PATH, attempts=3):
@@ -22,12 +24,13 @@ def read_ui(scenario, path=UI_TREE_PATH, attempts=3):
         for attempt in range(attempts):
             last = attempt == attempts - 1
             dump_output = scenario._call(
-                ["uiautomator", f"dump {path}"],
+                ["timeout", f"{DUMP_TIMEOUT} uiautomator dump {path}"],
                 expected_exit_code="", fail_on_exception=False, log_output=False,
             )
-            if Params.getCalculated("last_call_exit_code") != "0":
-                # UIAutomator fails while the screen is animating.
-                if "could not get idle state" in str(dump_output).lower() and not last:
+            exit_code = Params.getCalculated("last_call_exit_code")
+            if exit_code != "0":
+                # UIAutomator fails, or doesn't return (exit code 124 from timeout), while the screen is animating.
+                if ("could not get idle state" in str(dump_output).lower() or exit_code == "124") and not last:
                     time.sleep(1)
                     continue
                 raise RuntimeError("Android UIAutomator could not capture the screen's accessibility tree.")

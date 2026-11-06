@@ -1,0 +1,157 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-06",
+        "description": "Join the Teams meeting on the DUT",
+        "enabled": true,
+        "id": "1XKTVU6",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set Default Params",
+        "enabled": true,
+        "id": "1XKTVU7",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set to 1 to have the DUT turn on its camera. Set to 0 to have the DUT camera off.",
+        "enabled": true,
+        "id": "1XKTVU8",
+        "multiple": false,
+        "name": "[teams:send_video]",
+        "type": "Set User Default",
+        "val_options": "0,1",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set to 1 to have the DUT have its mic on. Set to 0 to have the DUT be muted.",
+        "enabled": true,
+        "id": "1XKTVU9",
+        "multiple": false,
+        "name": "[teams:send_audio]",
+        "type": "Set User Default",
+        "val_options": "0,1",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Screen sharing from the DUT is not supported on Aluminium. Must be 0.",
+        "enabled": true,
+        "id": "1XKTVUC",
+        "multiple": false,
+        "name": "[teams:send_screen]",
+        "type": "Set User Default",
+        "val_options": "0",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "The access key for the Teams Bots Server. Contact HOBL Support to inquire for a key.",
+        "enabled": true,
+        "id": "1XKTVUE",
+        "multiple": false,
+        "name": "[teams:access_key]",
+        "type": "Set User Default",
+        "val_options": "",
+        "value": "-1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "For advanced use. Set to 1 to use the testing instance of the bots server. Not Recomended for general use.",
+        "enabled": true,
+        "id": "1XKTVUF",
+        "multiple": false,
+        "name": "[teams:bots_test_server]",
+        "type": "Set User Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Force the bots to subscribe to a specific video resolution",
+        "enabled": true,
+        "id": "1XKTVUH",
+        "multiple": false,
+        "name": "[teams:bots_force_subscribe_resolution]",
+        "type": "Set User Default",
+        "val_options": "0,1080,720,480,360",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows opens the msteams: join link and clicks through the pre-join page; Aluminium opens the meeting link in the Teams app",
+        "enabled": true,
+        "id": "1XKTVUJ",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "6.0",
+        "description": "Join Meeting",
+        "enabled": true,
+        "file_name": [
+            "code_1XKTVUK.py"
+        ],
+        "id": "1XKTVUK",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Meeting is now Running",
+        "enabled": true,
+        "id": "1XKTVUL",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVUM",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Make sure the main bot is sending video, as the Windows join code does",
+        "enabled": true,
+        "file_name": [
+            "code_1XKTVUN.py"
+        ],
+        "id": "1XKTVUN",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "10",
+        "description": "Make a request to the bots to Subscribe to the DUT at the given resolution",
+        "enabled": true,
+        "file_name": [
+            "code_1XKTVUP.py"
+        ],
+        "id": "1XKTVUP",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "10",
+        "description": "Meeting is running",
+        "enabled": true,
+        "id": "1XKTVUT",
+        "type": "Delay"
+    }
+]

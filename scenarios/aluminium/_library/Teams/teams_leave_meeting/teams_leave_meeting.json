@@ -1,0 +1,70 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-06",
+        "description": "Leave the Teams meeting",
+        "enabled": true,
+        "id": "1XKTVV0",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set Params",
+        "enabled": true,
+        "id": "1XKTVV1",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "The access key for the Teams Bots Server. Contact HOBL Support to inquire for a key.",
+        "enabled": true,
+        "id": "1XKTVV3",
+        "multiple": false,
+        "name": "[teams:access_key]",
+        "type": "Set User Default",
+        "val_options": "",
+        "value": "-1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows can collect Teams call health and stop screen sharing here; neither is available on Aluminium",
+        "enabled": true,
+        "id": "1XKTVV4",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "Send Request to delete Bots Meeting",
+        "enabled": true,
+        "file_name": [
+            "../../../../windows/_library/Teams/teams_leave_meeting/code_YTVVTX.py"
+        ],
+        "id": "1XKTVV5",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "10",
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVV6",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Leave Call",
+        "enabled": true,
+        "file_name": [
+            "code_1XKTVV7.py"
+        ],
+        "id": "1XKTVV7",
+        "type": "Code"
+    }
+]

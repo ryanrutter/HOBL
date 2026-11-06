@@ -13,14 +13,14 @@ class AlRunPlansIfPrepsPassed(core.app_scenario.Scenario):
     Params.setDefault(
         module,
         "prep_list",
-        "al_app_install_prep al_google_account_prep al_web_prep al_lvp_prep",
-        desc="Aluminium prep scenarios to check before launching plans.",
+        "al_abl_active al_standby al_lvp al_teams",
+        desc="Aluminium scenarios whose prep scenarios must have completed before launching plans.",
         multiple=True,
     )
     Params.setDefault(
         module,
         "plans_to_launch",
-        "al_hobl.ps1 al_hobl_smoke.ps1",
+        "al_hobl.ps1 al_hobl_etl.ps1",
         desc="Aluminium test plans to launch in order.",
         multiple=True,
     )

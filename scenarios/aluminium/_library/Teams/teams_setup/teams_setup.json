@@ -1,0 +1,52 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-06",
+        "description": "Create and join a Teams meeting",
+        "enabled": true,
+        "id": "1XKTVUU",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "The time in seconds to call for. Default is 600s or 5min.",
+        "enabled": true,
+        "id": "1XKTVUV",
+        "multiple": false,
+        "name": "[teams:duration]",
+        "type": "Set User Default",
+        "val_options": "60,120,300,600",
+        "value": "600"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVUW",
+        "include_path": "scenarios\\aluminium\\_library\\Teams\\teams_create_meeting",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVUX",
+        "include_path": "scenarios\\aluminium\\_library\\Teams\\teams_join_meeting",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Meeting is now Running",
+        "enabled": true,
+        "id": "1XKTVUY",
+        "type": "Comment"
+    }
+]

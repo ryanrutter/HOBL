@@ -1,0 +1,132 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-06",
+        "description": "Aluminium Teams call with bots",
+        "enabled": true,
+        "id": "1XKTVVE",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set Default Params",
+        "enabled": true,
+        "id": "1XKTVVF",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set to 1 to have the test periodically check that all bots are present in the call and add bots if needed.",
+        "enabled": true,
+        "id": "1XKTVVH",
+        "multiple": false,
+        "name": "[teams:maintain_bots]",
+        "type": "Set User Default",
+        "val_options": "0,1",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKTVVJ",
+                "include_path": "scenarios\\aluminium\\_library\\misc\\call_early_callback",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKTVVK",
+                "include_path": "scenarios\\aluminium\\_library\\Teams\\teams_setup",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVVL",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0.0",
+                        "description": "Periodically check for bots in call and add as needed.",
+                        "enabled": true,
+                        "file_name": [
+                            "../../windows/teams/code_12YEERJ.py"
+                        ],
+                        "id": "1XKTVVM",
+                        "type": "Code"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "1XKTVVN",
+                "left_term": "[teams:maintain_bots]",
+                "name": "",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "[teams:duration]",
+                        "description": "Call duration",
+                        "enabled": true,
+                        "id": "1XKTVVR",
+                        "type": "Delay"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "id": "1XKTVVT",
+                "type": "Else"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XKTVVU",
+                "type": "End If"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVVV",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKTVVW",
+                "include_path": "scenarios\\aluminium\\_library\\Teams\\teams_teardown",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVVX",
+        "type": "Teardown"
+    }
+]

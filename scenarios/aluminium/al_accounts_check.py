@@ -22,16 +22,22 @@ ACCOUNT_REQUIREMENTS = {
     "teams": [("global", "msa_account"), ("global", "dut_password"), ("teams", "access_key")],
 }
 
+# Teams uses teams_install:teams_msa_account and teams_msa_password instead of msa_account and dut_password when set.
+TEAMS_ACCOUNT = [("teams_install", "teams_msa_account"), ("teams_install", "teams_msa_password")]
+
 UNSET_VALUES = ("", "-1")
 
 
+def _is_set(section, key):
+    value = Params.get(section, key, log=False)
+    return value is not None and str(value).strip() not in UNSET_VALUES
+
+
 def missing_keys(workload):
-    missing = []
-    for section, key in ACCOUNT_REQUIREMENTS[workload]:
-        value = Params.get(section, key, log=False)
-        if value is None or str(value).strip() in UNSET_VALUES:
-            missing.append(f"{section}:{key}")
-    return missing
+    requirements = ACCOUNT_REQUIREMENTS[workload]
+    if workload == "teams" and _is_set(*TEAMS_ACCOUNT[0]):
+        requirements = TEAMS_ACCOUNT + [("teams", "access_key")]
+    return [f"{section}:{key}" for section, key in requirements if not _is_set(section, key)]
 
 
 def require_accounts(scenario, workload):

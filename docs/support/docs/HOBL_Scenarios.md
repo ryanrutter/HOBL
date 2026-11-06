@@ -1155,6 +1155,67 @@ Without a power measurement device, the average standby current and power are ca
 
 `wake_timeout` - Seconds to keep trying to wake the DUT after standby. **Default:** `300` 
 
+## al_teams
+
+A Teams call with bots on an Aluminium (Android desktop) DUT, the Aluminium version of the Windows teams scenario used by the teams2_* scenarios.  The bots meeting is created, maintained and removed on the host with the Windows Teams library code and the teams parameters (access_key, number_of_bots, duration, bots_send_video, ...); the DUT joins it in the Teams app with its camera and microphone set by send_video and send_audio.
+
+The Teams account (teams_install:teams_msa_account) is in one call at a time, so don't run Teams scenarios on two DUTs with the same account at once.  Sharing the DUT's screen (send_screen) and Teams call health and log collection are not available on Aluminium.
+
+
+<u>Parameters:</u>
+
+`meeting_time` - Set the time in minutes that the meeting can last up to. Default is 120min. **Default:** `120` 
+
+`access_key` - The access key for the Teams Bots Server. Contact HOBL Support to inquire for a key. **Default:** `-1` 
+
+`number_of_bots` - Sets the number of bots to have in the meeting. **Default:** `1`  **Options:** `1, 2, 4, 8, 9`
+
+`bots_send_video` - Set to 1 if bots should have their cameras on. Set to 0 for audio only calls. **Default:** `1`  **Options:** `0, 1`
+
+`bots_send_audio` - Set to 1 to have bots send audio. Set to 0 to have bots be muted. **Default:** `1`  **Options:** `0, 1`
+
+`bots_share_screen` - Set to 1 to have the primary bot share its screen in the meeting. **Default:** `0`  **Options:** `0, 1`
+
+`bots_test_server` - For advanced use. Set to 1 to use the testing instance of the bots server. Not Recomended for general use. **Default:** `0`  **Options:** `0, 1`
+
+`send_video` - Set to 1 to have the DUT turn on its camera. Set to 0 to have the DUT camera off. **Default:** `1`  **Options:** `0, 1`
+
+`send_audio` - Set to 1 to have the DUT have its mic on. Set to 0 to have the DUT be muted. **Default:** `1`  **Options:** `0, 1`
+
+`send_screen` - Screen sharing from the DUT is not supported on Aluminium. Must be 0. **Default:** `0`  **Options:** `0`
+
+`bots_force_subscribe_resolution` - Force the bots to subscribe to a specific video resolution **Default:** `0`  **Options:** `0, 1080, 720, 480, 360`
+
+`duration` - The time in seconds to call for. Default is 600s or 5min. **Default:** `600`  **Options:** `60, 120, 300, 600`
+
+`maintain_bots` - Set to 1 to have the test periodically check that all bots are present in the call and add bots if needed. **Default:** `1`  **Options:** `0, 1`
+
+## al_teams2_idle
+
+Teams is launched and then minimized to run in the background for the duration of the test, the Aluminium version of the Windows teams2_idle scenario.  As on Windows, Teams waits 5.5 minutes to reach its idle state before the measurement starts, and is left running afterwards.
+
+minimize_all=1 shows the home screen, the equivalent of minimizing all windows on Windows; with 0, Teams stays in front.  The Windows minimize_teams_only option isn't available, since the Android desktop has no shortcut to minimize one window.
+
+
+<u>Parameters:</u>
+
+`duration` - Seconds to measure Teams idling in the background. **Default:** `300` 
+
+`minimize_all` - 1 to show the home screen, minimizing all windows; 0 to leave Teams in front. **Default:** `1`  **Options:** `0, 1`
+
+`idle_wait` - Seconds to wait for Teams to reach its idle state before measuring. **Default:** `330` 
+
+## al_teams_prep
+
+Signs in to the Teams app on an Aluminium (Android desktop) DUT, the Aluminium version of the Windows teams_install scenario.  It uses teams_install:teams_msa_account and teams_msa_password, or msa_account and dut_password if they aren't set, as on Windows.  The account must not need extra verification (two-step verification or the Authenticator app) to sign in.
+
+It also allows Teams to use the camera, microphone, and phone (Teams can't join a meeting without the phone permission, since it places calls through Android's telecom service), and turns off its notifications and its location, nearby devices, and contacts requests.
+
+
+<u>Parameters:</u>
+
+`timeout` - Seconds to wait for the Teams sign-in. **Default:** `300` 
+
 ## al_test_fail
 
 Intentionally fail the scenario to validate failure reporting and plan continuation.

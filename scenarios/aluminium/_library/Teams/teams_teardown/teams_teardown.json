@@ -1,0 +1,41 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-06",
+        "description": "Leave the meeting and close Teams",
+        "enabled": true,
+        "id": "1XKTVV8",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows can decode the Teams logs here; they aren't available on Aluminium, use logcat instead",
+        "enabled": true,
+        "id": "1XKTVV9",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKTVVA",
+        "include_path": "scenarios\\aluminium\\_library\\Teams\\teams_leave_meeting",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Close Teams",
+        "enabled": true,
+        "file_name": [
+            "code_1XKTVVC.py"
+        ],
+        "id": "1XKTVVC",
+        "type": "Code"
+    }
+]
