@@ -1,0 +1,62 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Open the productivity apps",
+        "enabled": true,
+        "id": "1XKH6H2",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H3",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_open",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H5",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_open",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H6",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_open",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H7",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_open",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H8",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_open",
+        "params": [],
+        "type": "Include"
+    }
+]

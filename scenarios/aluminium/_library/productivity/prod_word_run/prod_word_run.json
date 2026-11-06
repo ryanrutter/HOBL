@@ -1,0 +1,356 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Word workload",
+        "enabled": true,
+        "id": "1XKH69L",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH69M",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH69N",
+        "name": "[short_typing]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69R",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69T",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69U",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69V",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    }
+                ],
+                "count": "4",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKH69W",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XKH69X",
+                "type": "End Loop"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XKH69Y",
+        "left_term": "[short_typing]",
+        "name": "",
+        "right_term": "1",
+        "type": "If"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "5",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69F",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "4",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69H",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "3",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69J",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    },
+                    {
+                        "children": [],
+                        "delay": "4",
+                        "description": "Down",
+                        "direction": "down",
+                        "enabled": true,
+                        "id": "1XKH69K",
+                        "type": "Scroll",
+                        "x": "0.5",
+                        "y": "0.5"
+                    }
+                ],
+                "count": "4",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKH6A0",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XKH6A1",
+                "type": "End Loop"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6A3",
+        "type": "Else"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6A4",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "CTRL-END",
+        "enabled": true,
+        "id": "1XKH6A5",
+        "text": "\ue009\ue010",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Error",
+        "enabled": true,
+        "id": "1XKH6A6",
+        "text": "Error\ue009z",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Passage 1",
+                "enabled": true,
+                "id": "1XKH6A7",
+                "text": "albert\ue00dEinstein\ue00dwas\ue00da\ue00dGerman-born\ue00dphysicist\ue00dwho\ue00ddeveloped\ue00dthe\ue00dtheory\ue00dof\ue00drelativity.\ue00d",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "5",
+                "description": "Passage 2",
+                "enabled": true,
+                "id": "1XKH6A8",
+                "text": "He\ue00dis\ue00dconsidered\ue00dthe\ue00dmost\ue00dinfluential\ue00dphysicist\ue00dof\ue00dthe\ue00d20th\ue00dcentury.\ue00d",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XKH6A9",
+        "left_term": "[short_typing]",
+        "name": "",
+        "right_term": "1",
+        "type": "If"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "18",
+                "description": "Passage 1",
+                "enabled": true,
+                "id": "1XKH6AC",
+                "text": "albert\ue00dEinstein\ue00dwas\ue00da\ue00dGerman-born\ue00dphysicist\ue00dwho\ue00ddeveloped\ue00dthe\ue00dtheory\ue00dof\ue00drelativity.\ue00d",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "15",
+                "description": "Passage 2",
+                "enabled": true,
+                "id": "1XKH6AE",
+                "text": "He\ue00dis\ue00dconsidered\ue00dthe\ue00dmost\ue00dinfluential\ue00dphysicist\ue00dof\ue00dthe\ue00d20th\ue00dcentury.\ue00d",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AF",
+        "type": "Else"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AH",
+        "type": "End If"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0.5",
+                "description": "Up",
+                "direction": "up",
+                "enabled": true,
+                "id": "1XKH6AJ",
+                "type": "Scroll",
+                "x": "0.5",
+                "y": "0.5"
+            }
+        ],
+        "count": "6",
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AK",
+        "type": "Loop"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AL",
+        "type": "End Loop"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "CTRL-END",
+        "enabled": true,
+        "id": "1XKH6AM",
+        "text": "\ue009\ue010",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "CTRL-v",
+        "enabled": true,
+        "id": "1XKH6AN",
+        "text": "\ue009v",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "ENTER",
+        "enabled": true,
+        "id": "1XKH6AP",
+        "text": "\ue007",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "3",
+        "description": "CTRL-s",
+        "enabled": true,
+        "id": "1XKH6AT",
+        "text": "\ue009s",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AU",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "run_word"
+            }
+        ],
+        "type": "Include"
+    }
+]

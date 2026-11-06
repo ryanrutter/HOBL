@@ -1,0 +1,141 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Close the productivity apps",
+        "enabled": true,
+        "id": "1XKH6HR",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HT",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HU",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HW",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_close",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HX",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HY",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_close",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J0",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J1",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_close",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J2",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J3",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_close",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J4",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J5",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_close",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6J6",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "close"
+            }
+        ],
+        "type": "Include"
+    }
+]

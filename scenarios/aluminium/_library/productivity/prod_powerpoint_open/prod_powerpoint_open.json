@@ -1,0 +1,60 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Open PowerPoint with sample.pptx",
+        "enabled": true,
+        "id": "1XKH68T",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH68U",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows switches to PowerPoint and opens sample.pptx from OneDrive with ALT-F-O-O; Aluminium opens it from Documents/abl_docs",
+        "enabled": true,
+        "id": "1XKH68V",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Open sample.pptx",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH68W.py"
+        ],
+        "id": "1XKH68W",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH68X",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "open_powerpoint"
+            }
+        ],
+        "type": "Include"
+    }
+]

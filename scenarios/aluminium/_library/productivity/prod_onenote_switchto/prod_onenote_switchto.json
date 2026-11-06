@@ -1,0 +1,42 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Switch to OneNote",
+        "enabled": true,
+        "id": "1XKH683",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows clicks the app's taskbar button; Aluminium brings its window to the front",
+        "enabled": true,
+        "id": "1XKH684",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Switch to OneNote",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH685.py"
+        ],
+        "id": "1XKH685",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Dismiss prompts",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH686.py"
+        ],
+        "id": "1XKH686",
+        "type": "Code"
+    }
+]

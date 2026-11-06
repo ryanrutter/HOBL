@@ -1,0 +1,121 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Idle with the productivity apps open",
+        "enabled": true,
+        "id": "1XKH6J7",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Idle time between each app switch, - 3s",
+        "enabled": true,
+        "id": "1XKH6J8",
+        "name": "[idle_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "111"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Each switch has inherent 3s delay",
+        "enabled": true,
+        "id": "1XKH6J9",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JA",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "[idle_time]",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JC",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JE",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "[idle_time]",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JF",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JH",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "[idle_time]",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JJ",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JK",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "[idle_time]",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JM",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JN",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "[idle_time]",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6JP",
+        "type": "Delay"
+    }
+]

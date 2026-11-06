@@ -1,0 +1,112 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Productivity workload",
+        "enabled": true,
+        "id": "1XKH6H9",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HA",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HC",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_run",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HE",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HH",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_excel_run",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HJ",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HK",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_word_run",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HL",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HM",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_powerpoint_run",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HN",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6HP",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_run",
+        "params": [],
+        "type": "Include"
+    }
+]

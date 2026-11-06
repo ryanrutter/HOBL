@@ -1,0 +1,33 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Kill the Microsoft 365 apps",
+        "enabled": true,
+        "id": "1XKH66V",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "ESC-ESC",
+        "enabled": true,
+        "id": "1XKH66W",
+        "text": "\ue00c\ue00c",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Kill processes",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH66Y.py"
+        ],
+        "id": "1XKH66Y",
+        "type": "Code"
+    }
+]

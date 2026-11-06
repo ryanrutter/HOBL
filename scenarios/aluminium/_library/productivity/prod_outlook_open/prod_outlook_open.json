@@ -1,0 +1,59 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Open Outlook",
+        "enabled": true,
+        "id": "1XKH690",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH691",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH692",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_outlook_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "11",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH693",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH694",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "open_outlook"
+            }
+        ],
+        "type": "Include"
+    }
+]

@@ -1,0 +1,239 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Aluminium ABL active",
+        "enabled": true,
+        "id": "1XKHL3Y",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL40",
+        "name": "[web_replay_run]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Idle time between each app switch, - 3s",
+        "enabled": true,
+        "id": "1XKHL41",
+        "name": "[idle_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "111"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL42",
+        "name": "[phase_reporting]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL43",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL44",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_setup",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL45",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL46",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_open",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL47",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_switchto",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL49",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_run",
+                "params": [
+                    {
+                        "name": "[load_only]",
+                        "value": "0"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4A",
+                "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "[idle_time]",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4C",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4E",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_idle",
+                "params": [
+                    {
+                        "name": "[idle_time]",
+                        "value": "[al_abl_active:idle_time]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4F",
+                "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+                "params": [
+                    {
+                        "name": "[phase_category]",
+                        "value": "idle"
+                    },
+                    {
+                        "name": "[phase_name]",
+                        "value": "idle"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4H",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_run",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4J",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_close",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4K",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
+                "params": [
+                    {
+                        "name": "[num_tabs_to_close]",
+                        "value": "1"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL4L",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4N",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4P",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL4R",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_kill",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL4T",
+        "type": "Teardown"
+    }
+]

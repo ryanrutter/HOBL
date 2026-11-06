@@ -1,0 +1,256 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "PowerPoint workload",
+        "enabled": true,
+        "id": "1XKH6CF",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CH",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "4",
+                "description": "PGDN",
+                "enabled": true,
+                "id": "1XKH6CJ",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "count": "4",
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CK",
+        "type": "Loop"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CL",
+        "type": "End Loop"
+    },
+    {
+        "children": [],
+        "delay": "3.5",
+        "description": "Page down 3x",
+        "enabled": true,
+        "id": "1XKH6CM",
+        "text": "\ue00f\ue00f\ue00f",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Home",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6CN.py"
+        ],
+        "id": "1XKH6CN",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "New slide",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6CP.py"
+        ],
+        "id": "1XKH6CP",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Slide content",
+        "enabled": true,
+        "id": "1XKH6CR",
+        "type": "Click Coord",
+        "x": "0.565",
+        "y": "0.55"
+    },
+    {
+        "children": [],
+        "delay": "4.5",
+        "description": "Delete content and paste",
+        "enabled": true,
+        "id": "1XKH6CU",
+        "text": "\ue009a\ue009\ue017\ue009v",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "4",
+                "description": "PGUP",
+                "enabled": true,
+                "id": "1XKH6CV",
+                "text": "\ue00e",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "count": "4",
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CW",
+        "type": "Loop"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CX",
+        "type": "End Loop"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "4",
+                "description": "PGDN",
+                "enabled": true,
+                "id": "1XKH6CY",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            }
+        ],
+        "count": "4",
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6E0",
+        "type": "Loop"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6E1",
+        "type": "End Loop"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6E2",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "4",
+        "description": "Select and delete slide",
+        "enabled": true,
+        "id": "1XKH6E3",
+        "text": "\ue008\ue036\ue008\ue017",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "3.5",
+        "description": "Copy paste slide",
+        "enabled": true,
+        "id": "1XKH6E5",
+        "text": "\ue009cv",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Undo and save",
+        "enabled": true,
+        "id": "1XKH6E6",
+        "text": "\ue009z\ue009\ue009s\ue009",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "3",
+        "description": "File",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6E7.py"
+        ],
+        "id": "1XKH6E7",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Back",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6E8.py"
+        ],
+        "id": "1XKH6E8",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Insert",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6E9.py"
+        ],
+        "id": "1XKH6E9",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Home",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6EA.py"
+        ],
+        "id": "1XKH6EA",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6EC",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "run_powerpoint"
+            }
+        ],
+        "type": "Include"
+    }
+]

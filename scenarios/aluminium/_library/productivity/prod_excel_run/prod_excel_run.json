@@ -1,0 +1,178 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Excel workload",
+        "enabled": true,
+        "id": "1XKH6AV",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AW",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6AX",
+        "name": "[short_typing]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Home",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6AY.py"
+        ],
+        "id": "1XKH6AY",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "3",
+        "description": "Monthly Expenses",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C0.py"
+        ],
+        "id": "1XKH6C0",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Test Data",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C1.py"
+        ],
+        "id": "1XKH6C1",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows types into the active cell; Android needs the grid focused, so tap cell A1",
+        "enabled": true,
+        "id": "1XKH6C3",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Cell A1",
+        "enabled": true,
+        "id": "1XKH6C4",
+        "type": "Click Coord",
+        "x": "0.044",
+        "y": "0.209"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Enter data",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C5.py"
+        ],
+        "id": "1XKH6C5",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Select all",
+        "enabled": true,
+        "id": "1XKH6C6",
+        "text": "\ue014\ue013\ue009\ue008\ue011",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Insert",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C7.py"
+        ],
+        "id": "1XKH6C7",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Charts",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C8.py"
+        ],
+        "id": "1XKH6C8",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Scatter choices",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6C9.py"
+        ],
+        "id": "1XKH6C9",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "3",
+        "description": "Scatter plot",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6CA.py"
+        ],
+        "id": "1XKH6CA",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "CTRL-c",
+        "enabled": true,
+        "id": "1XKH6CC",
+        "text": "\ue009c",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6CE",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "run_excel"
+            }
+        ],
+        "type": "Include"
+    }
+]

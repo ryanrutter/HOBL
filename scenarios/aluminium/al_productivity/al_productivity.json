@@ -1,0 +1,96 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Aluminium productivity workload",
+        "enabled": true,
+        "id": "1XKHL2U",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL2V",
+        "name": "[phase_reporting]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL2W",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_setup",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL2X",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL2Y",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_open",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL30",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_run",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL31",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_close",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL32",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL33",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_kill",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL35",
+        "type": "Teardown"
+    }
+]

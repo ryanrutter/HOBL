@@ -1,0 +1,31 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Close PowerPoint",
+        "enabled": true,
+        "id": "1XKH680",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows clicks the window's close button; Android apps are closed the way the system closes them",
+        "enabled": true,
+        "id": "1XKH681",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Close PowerPoint",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH682.py"
+        ],
+        "id": "1XKH682",
+        "type": "Code"
+    }
+]

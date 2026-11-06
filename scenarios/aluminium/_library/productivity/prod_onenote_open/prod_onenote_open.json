@@ -1,0 +1,75 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Open OneNote",
+        "enabled": true,
+        "id": "1XKH695",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH696",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH697",
+        "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_onenote_switchto",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "8",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH698",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows syncs the notebook with SHIFT-F9; OneNote for Android syncs automatically",
+        "enabled": true,
+        "id": "1XKH69A",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH69C",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH69E",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "open_onenote"
+            }
+        ],
+        "type": "Include"
+    }
+]

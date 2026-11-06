@@ -1,0 +1,42 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Switch to Word",
+        "enabled": true,
+        "id": "1XKH67J",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows clicks the app's taskbar button; Aluminium brings its window to the front",
+        "enabled": true,
+        "id": "1XKH67K",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Switch to Word",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH67M.py"
+        ],
+        "id": "1XKH67M",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Dismiss prompts",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH67N.py"
+        ],
+        "id": "1XKH67N",
+        "type": "Code"
+    }
+]

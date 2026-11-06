@@ -1,0 +1,115 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "OneNote workload",
+        "enabled": true,
+        "id": "1XKH6FM",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6FN",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "Add page",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6FP.py"
+        ],
+        "id": "1XKH6FP",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "6",
+        "description": "Hummingbird Wing Pattern",
+        "enabled": true,
+        "id": "1XKH6FT",
+        "text": "Hummingbird\ue00dWing\ue00dPattern\ue007",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows inserts Hummingbird.png with ALT-N-P-F.  OneNote for Android inserts pictures through its camera, so Aluminium keeps the time without inserting it",
+        "enabled": true,
+        "id": "1XKH6FU",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "21",
+        "description": "Insert picture",
+        "enabled": true,
+        "id": "1XKH6FV",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "The Windows notes use ALT ribbon shortcuts for superscript; OneNote for Android has no ribbon shortcuts, so the text is typed without them",
+        "enabled": true,
+        "id": "1XKH6FW",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "42",
+        "description": "Notes",
+        "enabled": true,
+        "id": "1XKH6FX",
+        "text": "Hummingbirds\ue00dproduce\ue00d75\ue00dpercent\ue00dof\ue00dtheir\ue00dweight\ue00dsupport\ue00dduring\ue00dthe\ue00ddown\ue00dstroke\ue00dand\ue00d25\ue00dpercent\ue00dduring\ue00dthe\ue00dupstroke.\ue00dThe\ue00dwings\ue00dmake\ue00da\ue00dfigure\ue00d8\ue00dmotion.\n",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [],
+        "delay": "3",
+        "description": "Delete page",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6FY.py"
+        ],
+        "id": "1XKH6FY",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "4",
+        "description": "Sync page",
+        "enabled": true,
+        "id": "1XKH6H0",
+        "type": "Delay"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH6H1",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "run_onenote"
+            }
+        ],
+        "type": "Include"
+    }
+]

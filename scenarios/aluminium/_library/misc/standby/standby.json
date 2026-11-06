@@ -1,0 +1,42 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Enter and exit standby",
+        "enabled": true,
+        "id": "1XKHL4W",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Time to be in standby, in seconds",
+        "enabled": true,
+        "id": "1XKHL4X",
+        "name": "[standby_duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "2348"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows presses the power button with button.exe; Aluminium sends the sleep key.  Android has no S1 or S3 sleep modes.",
+        "enabled": true,
+        "id": "1XKHL4Y",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Enter and exit standby",
+        "enabled": true,
+        "file_name": [
+            "code_1XKHL51.py"
+        ],
+        "id": "1XKHL51",
+        "type": "Code"
+    }
+]

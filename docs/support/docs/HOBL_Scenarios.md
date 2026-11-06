@@ -829,6 +829,30 @@ Local user is sharing desktop.
 
 `maintain_bots` - Set to 1 to have the test periodically check that all bots are present in the call and add bots if needed. **Default:** `0`  **Options:** `0, 1`
 
+## al_abl_active
+
+The active part of the Windows ABL (all-day battery life) workload on an Aluminium (Android desktop) DUT: the Microsoft 365 apps are opened, the twelve web sites are browsed in Chrome, the apps are idled in turn, then each app's productivity task is run and the apps are closed.  Steps and timings follow the Windows abl_active scenario; see al_productivity and al_web for the Aluminium differences.
+
+
+<u>Parameters:</u>
+
+`web_workload` - Specific websites to run. **Default:** `amazonbsg amazonvacuum googleimagesapollo googleimageslondon googlesearchbelgium googlesearchsuperbowl instagram reddit theverge wikipedia youtubenasa youtubetos`  **Options:** `amazonbsg, amazonvacuum, googleimagesapollo, googleimageslondon, googlesearchbelgium, googlesearchsuperbowl, instagram, reddit, theverge, wikipedia, youtubenasa, youtubetos`
+
+`idle_time` - Idle time between each app switch, - 3s **Default:** `111` 
+
+## al_abl_standby
+
+The standby part of the Windows ABL (all-day battery life) workload on an Aluminium (Android desktop) DUT: the Microsoft 365 apps are opened and the twelve web sites are loaded in Chrome, then the DUT sleeps for standby_duration with the screen off and is woken, and the apps are closed.  Steps and timings follow the Windows abl_standby scenario.
+
+Power is measured only while the DUT is in standby.  Without a power measurement device, the average standby current and power are calculated from the battery charge counter and written to standby_power.csv, as in al_standby.
+
+
+<u>Parameters:</u>
+
+`web_workload` - Specific websites to run. **Default:** `amazonbsg amazonvacuum googleimagesapollo googleimageslondon googlesearchbelgium googlesearchsuperbowl instagram reddit theverge wikipedia youtubenasa youtubetos`  **Options:** `amazonbsg, amazonvacuum, googleimagesapollo, googleimageslondon, googlesearchbelgium, googlesearchsuperbowl, instagram, reddit, theverge, wikipedia, youtubenasa, youtubetos`
+
+`standby_duration` - The time to be in standby, in seconds **Default:** `2348` 
+
 ## al_accounts_check
 
 Reports which account settings are present in the device profile of an Aluminium (Android desktop) DUT, without showing their values.
@@ -921,6 +945,17 @@ The Google account names in "dumpsys account" output.
 `required` - Space-separated workloads whose settings must be present: wifi, google, microsoft, netflix, teams **Default:** `` 
 
 `signin_timeout` - Seconds to wait for each Google sign-in screen. **Default:** `120` 
+
+## al_idle_apps
+
+Idles with the Microsoft 365 apps open and the twelve web sites loaded in Chrome, switching to each app in turn, the Aluminium version of the Windows idle_apps scenario.
+
+
+<u>Parameters:</u>
+
+`web_workload` - Specific websites to run. **Default:** `amazonbsg amazonvacuum googleimagesapollo googleimageslondon googlesearchbelgium googlesearchsuperbowl instagram reddit theverge wikipedia youtubenasa youtubetos`  **Options:** `amazonbsg, amazonvacuum, googleimagesapollo, googleimageslondon, googlesearchbelgium, googlesearchsuperbowl, instagram, reddit, theverge, wikipedia, youtubenasa, youtubetos`
+
+`idle_time` - Idle time between each app switch, - 3s **Default:** `111` 
 
 ## al_lvp
 
@@ -1022,6 +1057,23 @@ Runs pending background maintenance on an Aluminium (Android desktop) DUT so it 
 <u>Parameters:</u>
 
 `timeout` - Maximum time in seconds the automation will wait for tasks to complete **Default:** `1800` 
+
+## al_productivity
+
+Runs the Windows productivity workload in the Microsoft 365 apps on an Aluminium (Android desktop) DUT: Outlook, Excel, Word, PowerPoint and OneNote are opened with the Windows documents, each app's task is run, and the apps are closed, with the same steps, typed text, timings and phases as Windows.
+
+Outlook attaches its picture and document instead of inserting them inline, and OneNote keeps the picture-insert time without inserting the picture, since OneNote for Android inserts pictures through its camera.  Windows image-matched clicks are taps on the apps' labelled controls.
+
+## al_productivity_prep
+
+Prepares Word, Excel, PowerPoint, OneNote and Outlook on an Aluminium (Android desktop) DUT for the productivity scenarios, the Aluminium version of the Windows productivity_prep scenario.
+
+It copies the Windows productivity documents to the test user's Documents/abl_docs folder, gives the Office apps access to them, turns off the apps' notification prompts, and completes each app's first-run pages: Word, Excel and PowerPoint open their documents, OneNote opens a notebook page, and Outlook adds msa_account (offered by the Microsoft 365 sign-in, or signed in with dut_password).
+
+
+<u>Parameters:</u>
+
+`timeout` - Seconds to wait for each app's first-run pages. **Default:** `180` 
 
 ## al_read128kseq
 

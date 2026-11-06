@@ -1,0 +1,192 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Aluminium ABL standby",
+        "enabled": true,
+        "id": "1XKHL52",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "The time to be in standby, in seconds",
+        "enabled": true,
+        "id": "1XKHL53",
+        "name": "[standby_duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "2348"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL54",
+        "name": "[web_replay_run]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL55",
+                "include_path": "scenarios\\aluminium\\_library\\misc\\call_early_callback",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL56",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL57",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_setup",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL58",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_open",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL59",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_switchto",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5C",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_run",
+                "params": [
+                    {
+                        "name": "[load_only]",
+                        "value": "1"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL5E",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5F",
+                "include_path": "scenarios\\aluminium\\_library\\misc\\standby",
+                "params": [
+                    {
+                        "name": "[standby_duration]",
+                        "value": "[al_abl_standby:standby_duration]"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL5H",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5J",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
+                "params": [
+                    {
+                        "name": "[num_tabs_to_close]",
+                        "value": "6"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5K",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5L",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5M",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_close",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL5N",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_kill",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL5P",
+        "type": "Teardown"
+    }
+]

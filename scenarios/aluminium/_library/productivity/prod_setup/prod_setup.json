@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Productivity setup",
+        "enabled": true,
+        "id": "1XKH66T",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Copy the productivity documents",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH66U.py"
+        ],
+        "id": "1XKH66U",
+        "type": "Code"
+    }
+]

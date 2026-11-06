@@ -1,0 +1,60 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Open Excel with FamilyBudget.xlsx",
+        "enabled": true,
+        "id": "1XKH68C",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH68E",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows switches to Excel and opens FamilyBudget.xlsx from OneDrive with ALT-F-O-O; Aluminium opens it from Documents/abl_docs",
+        "enabled": true,
+        "id": "1XKH68F",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Open FamilyBudget.xlsx",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH68H.py"
+        ],
+        "id": "1XKH68H",
+        "type": "Code"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKH68J",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "prod"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "open_excel"
+            }
+        ],
+        "type": "Include"
+    }
+]

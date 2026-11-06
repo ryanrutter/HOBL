@@ -1,0 +1,198 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Aluminium idle with apps open",
+        "enabled": true,
+        "id": "1XKHL36",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Idle time between each app switch, - 3s",
+        "enabled": true,
+        "id": "1XKHL37",
+        "name": "[idle_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "111"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL38",
+        "name": "[web_replay_run]",
+        "type": "Set",
+        "value": "1"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL39",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_setup",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3A",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_open",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3C",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "5",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3E",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3F",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_run",
+                "params": [
+                    {
+                        "name": "[load_only]",
+                        "value": "1"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL3H",
+        "type": "Setup"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "[idle_time]",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3K",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3L",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_idle",
+                "params": [
+                    {
+                        "name": "[idle_time]",
+                        "value": "[al_idle_apps:idle_time]"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL3M",
+        "type": "Run Test"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3N",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_switchto",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3P",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
+                "params": [
+                    {
+                        "name": "[num_tabs_to_close]",
+                        "value": "1"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3R",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3T",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3U",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_close",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XKHL3V",
+                "include_path": "scenarios\\aluminium\\_library\\productivity\\prod_kill",
+                "params": [],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "id": "1XKHL3X",
+        "type": "Teardown"
+    }
+]

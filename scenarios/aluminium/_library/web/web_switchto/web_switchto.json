@@ -1,0 +1,31 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Switch to the browser",
+        "enabled": true,
+        "id": "1XKH6JR",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows clicks the browser's taskbar button; Aluminium brings Chrome's window to the front",
+        "enabled": true,
+        "id": "1XKH6JT",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2.5",
+        "description": "Switch to Chrome",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH6JU.py"
+        ],
+        "id": "1XKH6JU",
+        "type": "Code"
+    }
+]

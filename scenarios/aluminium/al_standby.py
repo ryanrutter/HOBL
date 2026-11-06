@@ -14,7 +14,7 @@ import os
 import time
 import core.app_scenario
 from core.parameters import Params
-from utilities.open_source.aluminium_battery import average_power, battery_values
+import utilities.open_source.aluminium_standby as standby
 
 
 DISCONNECTED_SCRIPT = """sleep 3
@@ -51,7 +51,7 @@ class AlStandby(core.app_scenario.Scenario):
         core.app_scenario.Scenario.setUp(self)
 
     def runTest(self):
-        start = battery_values(self._call(["dumpsys", "battery"], log_output=False))
+        start = standby.read_battery(self)
         if start[2]:
             logging.warning("The DUT is on AC power, so the standby power can't be calculated from the battery.")
         start_time = time.time()
@@ -78,35 +78,12 @@ class AlStandby(core.app_scenario.Scenario):
         self._callback(Params.get('global', 'callback_test_end'))
 
         self.wake()
-        end = battery_values(self._call(["dumpsys", "battery"], log_output=False))
+        end = standby.read_battery(self)
         seconds = time.time() - start_time
-        current_ma, power_mw = average_power(start, end, seconds)
-        logging.info(f"Standby: {seconds:.0f}s, {(start[0] - end[0]) / 1000.0:.0f} mAh, average {current_ma:.1f} mA, {power_mw:.0f} mW")
-        with open(os.path.join(self.result_dir, "standby_power.csv"), "w") as f:
-            f.write(f"standby_duration_s,{seconds:.0f}\n")
-            f.write(f"standby_charge_used_mah,{(start[0] - end[0]) / 1000.0:.0f}\n")
-            if not start[2] and not end[2]:
-                f.write(f"standby_avg_current_ma,{current_ma:.2f}\n")
-                f.write(f"standby_avg_power_mw,{power_mw:.1f}\n")
+        standby.write_power(self.result_dir, start, end, seconds)
 
     def wake(self):
-        if self.button_wake:
-            self._host_call(self.button_wake)
-        deadline = time.time() + self.wake_timeout
-        while time.time() < deadline:
-            try:
-                # A network request wakes the DUT in connected standby; the wake key turns the screen on.
-                self._call(["input", "keyevent KEYCODE_WAKEUP"], timeout=20)
-                state = self._call(["sh", "-c \"dumpsys power | grep -m1 mWakefulness=\""], timeout=20)
-                if "Awake" in state:
-                    logging.info("The DUT is awake.")
-                    # With a screen lock PIN, the DUT wakes to the lock screen.
-                    self._aluminium_unlock()
-                    return
-            except Exception as e:
-                logging.debug(f"DUT not reachable yet: {e}")
-            time.sleep(10)
-        self.fail(f"The DUT did not wake up within {self.wake_timeout:.0f} seconds after standby.")
+        standby.wake(self, self.button_wake, self.wake_timeout)
 
     def kill(self):
         try:

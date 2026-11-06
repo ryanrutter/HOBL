@@ -1,0 +1,31 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Close Word",
+        "enabled": true,
+        "id": "1XKH67P",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows clicks the window's close button; Android apps are closed the way the system closes them",
+        "enabled": true,
+        "id": "1XKH67R",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "1",
+        "description": "Close Word",
+        "enabled": true,
+        "file_name": [
+            "code_1XKH67T.py"
+        ],
+        "id": "1XKH67T",
+        "type": "Code"
+    }
+]
