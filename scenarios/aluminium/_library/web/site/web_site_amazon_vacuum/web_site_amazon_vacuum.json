@@ -1,0 +1,198 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Browse Amazon Vacuum",
+        "enabled": true,
+        "id": "1XJWMAU",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAW",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAX",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAY",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMC0",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "amazonvacuum"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMC1",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "www.amazon.com"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_amazon_vacuum:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "20"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows searches for vacuum in the search bar, found by image match; Aluminium waits the same time",
+        "enabled": true,
+        "id": "1XJWMAH",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "11",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAJ",
+        "type": "Delay"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "3",
+                        "description": "Page down",
+                        "enabled": true,
+                        "id": "1XJWMAK",
+                        "text": "\ue00f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "8",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMAL",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMAM",
+                "type": "End Loop"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "3",
+                        "description": "Page up",
+                        "enabled": true,
+                        "id": "1XJWMAN",
+                        "text": "\ue00e",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "8",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMAP",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMAR",
+                "type": "End Loop"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWMAT",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWMC2",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMC3",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMC4",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "amazon_vacuum"
+            }
+        ],
+        "type": "Include"
+    }
+]

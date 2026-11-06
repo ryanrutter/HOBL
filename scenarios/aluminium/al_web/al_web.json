@@ -3,10 +3,10 @@
         "author": "ryanru",
         "capture_device": "",
         "children": [],
-        "create_date": "2026-11-03",
+        "create_date": "2026-11-05",
         "description": "Aluminium Chrome multi-site web workload",
         "enabled": true,
-        "id": "AW0100",
+        "id": "1XJWMMW",
         "type": "Information"
     },
     {
@@ -14,7 +14,7 @@
         "delay": "0.0",
         "description": "Number of browser loops",
         "enabled": true,
-        "id": "AW0101",
+        "id": "1XJWMMX",
         "name": "[loops]",
         "type": "Set Default",
         "val_options": "",
@@ -23,20 +23,9 @@
     {
         "children": [],
         "delay": "0.0",
-        "description": "Seconds to wait after each page load",
+        "description": "Expected archived YouTube playback duration checked by web_check",
         "enabled": true,
-        "id": "AW0102",
-        "name": "[page_load_time]",
-        "type": "Set Default",
-        "val_options": "",
-        "value": "10"
-    },
-    {
-        "children": [],
-        "delay": "0.0",
-        "description": "Seconds to play archived YouTube videos",
-        "enabled": true,
-        "id": "AW0129",
+        "id": "1XJWMMY",
         "name": "[youtube_duration]",
         "type": "Set Default",
         "val_options": "",
@@ -45,8 +34,9 @@
     {
         "children": [],
         "delay": "0.0",
+        "description": "",
         "enabled": true,
-        "id": "AW0103",
+        "id": "1XJWMN0",
         "name": "[web_replay_run]",
         "type": "Set",
         "value": "1"
@@ -54,8 +44,9 @@
     {
         "children": [],
         "delay": "0.0",
+        "description": "",
         "enabled": true,
-        "id": "AW0104",
+        "id": "1XJWMN1",
         "name": "[phase_reporting]",
         "type": "Set",
         "value": "1"
@@ -65,14 +56,17 @@
             {
                 "children": [],
                 "delay": "0",
+                "description": "",
                 "enabled": true,
-                "id": "AW0105",
+                "id": "1XJWMN3",
                 "include_path": "scenarios\\aluminium\\_library\\web\\web_setup",
+                "params": [],
                 "type": "Include"
             }
         ],
+        "description": "",
         "enabled": true,
-        "id": "AW0106",
+        "id": "1XJWMN4",
         "type": "Setup"
     },
     {
@@ -82,43 +76,14 @@
                     {
                         "children": [],
                         "delay": "0",
+                        "description": "",
                         "enabled": true,
-                        "id": "AW0130",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0110",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+                        "id": "1XJWMN5",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_run",
                         "params": [
                             {
-                                "name": "[archive_name]",
-                                "value": "reddit"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0111",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "aka.ms/AAnowz2"
-                            },
-                            {
-                                "name": "new_tab",
+                                "name": "[load_only]",
                                 "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
                             }
                         ],
                         "type": "Include"
@@ -126,583 +91,60 @@
                     {
                         "children": [],
                         "delay": "0",
+                        "description": "",
                         "enabled": true,
-                        "id": "AW0112",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "instagram"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0113",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "aka.ms/AAle9to"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0114",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "amazonbsg"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0115",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "aka.ms/AAnpar4"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0116",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "amazonvacuum"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0117",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "www.amazon.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0118",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "theverge"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0119",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "www.theverge.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0120",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "wikipediaunitedstates"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0121",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "aka.ms/watb03"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0122",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "googleimagesapollo"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0123",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "images.google.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0131",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "googleimageslondon"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0132",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "images.google.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "description": "Search Google Images for London",
-                        "enabled": true,
-                        "id": "AW0133",
-                        "text": "london",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Submit search",
-                        "enabled": true,
-                        "id": "AW0134",
-                        "text": "\ue007",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "[page_load_time]",
-                        "description": "Wait for Google Images results",
-                        "enabled": true,
-                        "id": "AW0135",
-                        "type": "Delay"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0136",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "youtubetos"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0137",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "youtu.be/41hv2tW5Lc4"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "15"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Start archived video",
-                        "enabled": true,
-                        "id": "AW0154",
-                        "type": "Click Coord",
-                        "x": "0.37",
-                        "y": "0.45"
-                    },
-                    {
-                        "children": [],
-                        "delay": "[youtube_duration]",
-                        "description": "Play archived Tears of Steel",
-                        "enabled": true,
-                        "id": "AW0138",
-                        "type": "Delay"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Pause archived video",
-                        "enabled": true,
-                        "id": "AW0139",
-                        "type": "Click Coord",
-                        "x": "0.37",
-                        "y": "0.45"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0140",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "youtubenasa"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0141",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "aka.ms/AAnpaqy"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "15"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Start archived video",
-                        "enabled": true,
-                        "id": "AW0155",
-                        "type": "Click Coord",
-                        "x": "0.37",
-                        "y": "0.45"
-                    },
-                    {
-                        "children": [],
-                        "delay": "[youtube_duration]",
-                        "description": "Play archived NASA video",
-                        "enabled": true,
-                        "id": "AW0142",
-                        "type": "Delay"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Pause archived video",
-                        "enabled": true,
-                        "id": "AW0143",
-                        "type": "Click Coord",
-                        "x": "0.37",
-                        "y": "0.45"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0144",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "googlesearchbelgium"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0145",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "www.google.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "0"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Search Google for Belgium",
-                        "enabled": true,
-                        "id": "AW0146",
-                        "text": "belgium",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Submit search",
-                        "enabled": true,
-                        "id": "AW0147",
-                        "text": "\ue007",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "[page_load_time]",
-                        "description": "Wait for Google Search results",
-                        "enabled": true,
-                        "id": "AW0148",
-                        "type": "Delay"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0149",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
-                        "params": [
-                            {
-                                "name": "[archive_name]",
-                                "value": "googlesearchsuperbowl"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0150",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
-                        "params": [
-                            {
-                                "name": "web_site_address",
-                                "value": "www.google.com"
-                            },
-                            {
-                                "name": "new_tab",
-                                "value": "1"
-                            },
-                            {
-                                "name": "[web_site_load_time]",
-                                "value": "[page_load_time]"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Search Google for Super Bowl 48",
-                        "enabled": true,
-                        "id": "AW0151",
-                        "text": "super\ue00dbowl\ue00d48",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "1",
-                        "description": "Submit search",
-                        "enabled": true,
-                        "id": "AW0152",
-                        "text": "\ue007",
-                        "type": "Type",
-                        "typing_delay": "[typing_delay]"
-                    },
-                    {
-                        "children": [],
-                        "delay": "[page_load_time]",
-                        "description": "Wait for Google Search results",
-                        "enabled": true,
-                        "id": "AW0153",
-                        "type": "Delay"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0124",
-                        "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
-                        "params": [
-                            {
-                                "name": "[num_tabs_to_close]",
-                                "value": "6"
-                            }
-                        ],
-                        "type": "Include"
-                    },
-                    {
-                        "children": [],
-                        "delay": "0",
-                        "enabled": true,
-                        "id": "AW0125",
+                        "id": "1XJWMN6",
                         "include_path": "scenarios\\aluminium\\_library\\web\\web_check",
                         "params": [
                             {
                                 "name": "[youtube_duration]",
-                                "value": "[youtube_duration]"
+                                "value": "[al_web:youtube_duration]"
                             }
                         ],
                         "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "description": "",
+                        "enabled": true,
+                        "id": "1XJWMN7",
+                        "include_path": "scenarios\\aluminium\\_library\\web\\web_close_tabs",
+                        "params": [
+                            {
+                                "name": "[num_tabs_to_close]",
+                                "value": "[al_web:tabs]"
+                            }
+                        ],
+                        "type": "Include"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "",
+                        "enabled": true,
+                        "id": "1XJWMN8",
+                        "type": "Delay"
                     }
                 ],
                 "count": "[loops]",
                 "delay": "0.0",
+                "description": "",
                 "enabled": true,
-                "id": "AW0107",
+                "id": "1XJWMN9",
                 "type": "Loop"
             },
             {
                 "children": [],
+                "description": "",
                 "enabled": true,
-                "id": "AW0108",
+                "id": "1XJWMNA",
                 "type": "End Loop"
             }
         ],
+        "description": "",
         "enabled": true,
-        "id": "AW0109",
+        "id": "1XJWMNC",
         "type": "Run Test"
     },
     {
@@ -710,22 +152,27 @@
             {
                 "children": [],
                 "delay": "0",
+                "description": "",
                 "enabled": true,
-                "id": "AW0126",
+                "id": "1XJWMNE",
                 "include_path": "scenarios\\aluminium\\_library\\web\\web_close_browser",
+                "params": [],
                 "type": "Include"
             },
             {
                 "children": [],
                 "delay": "0",
+                "description": "",
                 "enabled": true,
-                "id": "AW0127",
+                "id": "1XJWMNH",
                 "include_path": "scenarios\\aluminium\\_library\\web\\web_kill",
+                "params": [],
                 "type": "Include"
             }
         ],
+        "description": "",
         "enabled": true,
-        "id": "AW0128",
+        "id": "1XJWMNJ",
         "type": "Teardown"
     }
 ]

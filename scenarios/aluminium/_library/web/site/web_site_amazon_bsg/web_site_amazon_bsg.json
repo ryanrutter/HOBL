@@ -1,0 +1,218 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Browse Amazon BSG",
+        "enabled": true,
+        "id": "1XJWMA4",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMA5",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMA6",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMA7",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMA8",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "amazonbsg"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMA9",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "aka.ms/AAnpar4"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_amazon_bsg:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "15"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Windows searches for bsg in the search bar, found by image match; Aluminium waits the same time",
+                "enabled": true,
+                "id": "1XJWM9N",
+                "type": "Comment"
+            },
+            {
+                "children": [],
+                "delay": "13",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM9R",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "CTRL-l",
+                "enabled": true,
+                "id": "1XJWM9T",
+                "text": "\ue009l",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "season 1 url",
+                "enabled": true,
+                "id": "1XJWM9U",
+                "text": "aka.ms/AAszv68\ue007",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "6",
+                        "description": "Page down",
+                        "enabled": true,
+                        "id": "1XJWM9V",
+                        "text": "\ue00f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "3",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM9W",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM9X",
+                "type": "End Loop"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "5",
+                        "description": "Page up",
+                        "enabled": true,
+                        "id": "1XJWM9Y",
+                        "text": "\ue00e",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "3",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMA0",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMA1",
+                "type": "End Loop"
+            },
+            {
+                "children": [],
+                "delay": "12",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWMA2",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWMAA",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAC",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMAE",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "amazon_bsg"
+            }
+        ],
+        "type": "Include"
+    }
+]

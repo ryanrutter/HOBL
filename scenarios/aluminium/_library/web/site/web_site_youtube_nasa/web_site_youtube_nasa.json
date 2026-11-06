@@ -1,0 +1,175 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Play NASA YouTube video",
+        "enabled": true,
+        "id": "1XJWMK1",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK3",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK4",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK5",
+        "name": "[web_site_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "15"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK6",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK7",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "youtubenasa"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMK8",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "aka.ms/AAnpaqy"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_youtube_nasa:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "[web_site_youtube_nasa:web_site_load_time]"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Windows reloads and picks 1080p in the player settings, found by image match; Aluminium starts the video",
+                "enabled": true,
+                "id": "1XJWMJV",
+                "type": "Comment"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "Start archived video",
+                "enabled": true,
+                "id": "1XJWMJW",
+                "type": "Click Coord",
+                "x": "0.37",
+                "y": "0.45"
+            },
+            {
+                "children": [],
+                "delay": "97.5",
+                "description": "Watch video",
+                "enabled": true,
+                "id": "1XJWMJX",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "Pause archived video",
+                "enabled": true,
+                "id": "1XJWMJY",
+                "type": "Click Coord",
+                "x": "0.37",
+                "y": "0.45"
+            },
+            {
+                "children": [],
+                "delay": "2",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWMK0",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWMK9",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKA",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKC",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "youtube_nasa"
+            }
+        ],
+        "type": "Include"
+    }
+]

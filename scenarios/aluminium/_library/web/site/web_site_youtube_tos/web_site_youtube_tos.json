@@ -1,0 +1,332 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Play Tears of Steel YouTube video",
+        "enabled": true,
+        "id": "1XJWMJH",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJJ",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJK",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJC",
+        "name": "[enable_pause]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "1"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJE",
+        "name": "[full_screen]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Video playback duration",
+        "enabled": true,
+        "id": "1XJWMJF",
+        "name": "[duration]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "120"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJL",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJM",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "youtubetos"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJP",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "youtu.be/41hv2tW5Lc4"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_youtube_tos:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "15"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "1",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMHL",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Windows reloads and picks 1080p in the player settings, found by image match; Aluminium starts the video",
+                "enabled": true,
+                "id": "1XJWMHM",
+                "type": "Comment"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "Start archived video",
+                "enabled": true,
+                "id": "1XJWMHN",
+                "type": "Click Coord",
+                "x": "0.37",
+                "y": "0.45"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "f to go full screen",
+                        "enabled": true,
+                        "id": "1XJWMHP",
+                        "text": "f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "1XJWMHR",
+                "left_term": "[full_screen]",
+                "name": "",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "1",
+                        "description": "",
+                        "enabled": true,
+                        "id": "1XJWMHT",
+                        "type": "Delay"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMHU",
+                "type": "Else"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMHV",
+                "type": "End If"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMHW",
+                "name": "[duration]",
+                "type": "Decrement",
+                "value": "26"
+            },
+            {
+                "children": [],
+                "delay": "[duration]",
+                "description": "Watch video",
+                "enabled": true,
+                "id": "1XJWMHY",
+                "type": "Delay"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "0",
+                        "description": "Pause archived video",
+                        "enabled": true,
+                        "id": "1XJWMJ0",
+                        "type": "Click Coord",
+                        "x": "0.37",
+                        "y": "0.45"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "delay": "1",
+                                "description": "",
+                                "enabled": true,
+                                "id": "1XJWMJ1",
+                                "type": "Delay"
+                            },
+                            {
+                                "children": [],
+                                "delay": "0",
+                                "description": "f to exit full screen",
+                                "enabled": true,
+                                "id": "1XJWMJ2",
+                                "text": "f",
+                                "type": "Type",
+                                "typing_delay": "[typing_delay]"
+                            }
+                        ],
+                        "description": "",
+                        "enabled": true,
+                        "eval_method": "==",
+                        "id": "1XJWMJ3",
+                        "left_term": "[full_screen]",
+                        "name": "",
+                        "right_term": "1",
+                        "type": "If"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "delay": "1",
+                                "description": "",
+                                "enabled": true,
+                                "id": "1XJWMJ4",
+                                "type": "Delay"
+                            }
+                        ],
+                        "description": "",
+                        "enabled": true,
+                        "id": "1XJWMJ5",
+                        "type": "Else"
+                    },
+                    {
+                        "children": [],
+                        "description": "",
+                        "enabled": true,
+                        "id": "1XJWMJ6",
+                        "type": "End If"
+                    }
+                ],
+                "description": "",
+                "enabled": true,
+                "eval_method": "==",
+                "id": "1XJWMJ7",
+                "left_term": "[enable_pause]",
+                "name": "",
+                "right_term": "1",
+                "type": "If"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMJ8",
+                "type": "End If"
+            },
+            {
+                "children": [],
+                "delay": "2",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWMJA",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWMJR",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJT",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMJU",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "youtube_tos"
+            }
+        ],
+        "type": "Include"
+    }
+]

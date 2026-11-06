@@ -1126,21 +1126,18 @@ Waits until the Aluminium agent on the DUT responds.
 
 ## al_web
 
-Runs the twelve default Windows web_replay sites in Chrome, including archived YouTube media requests.
+Runs the twelve default Windows web_replay sites in Chrome with the Windows web scenario's tab order, page timings, scrolling and searches.  Set web_workload to run a subset of the sites, the same as Windows.
 
-This Aluminium version matches the site set and tab count but does not yet reproduce Windows'
-image-matched scrolling or select fixed YouTube resolutions.  YouTube's player pauses the recorded
-videos in Chrome on Aluminium, so the scenario only checks that archived video segments were
-delivered; use al_youtube for representative video playback.
+Scrolling uses Page Down and Page Up, which reach Chrome whatever its window size.  Steps Windows finds by image match (the Amazon search bar, the first Instagram reel and the YouTube quality menu) keep the same timing without the interaction.  YouTube's player pauses the recorded videos in Chrome on Aluminium, so the scenario only checks that archived video segments were delivered; use al_youtube for representative video playback.
 
 
 <u>Parameters:</u>
 
+`web_workload` - Specific websites to run. **Default:** `amazonbsg amazonvacuum googleimagesapollo googleimageslondon googlesearchbelgium googlesearchsuperbowl instagram reddit theverge wikipedia youtubenasa youtubetos`  **Options:** `amazonbsg, amazonvacuum, googleimagesapollo, googleimageslondon, googlesearchbelgium, googlesearchsuperbowl, instagram, reddit, theverge, wikipedia, youtubenasa, youtubetos`
+
 `loops` - Number of browser loops **Default:** `1` 
 
-`page_load_time` - Seconds to wait after each page load **Default:** `10` 
-
-`youtube_duration` - Seconds to stream archived YouTube videos before pausing **Default:** `90` 
+`youtube_duration` - Expected archived YouTube playback duration checked by web_check **Default:** `90` 
 
 ## al_webxprt
 
@@ -1171,6 +1168,36 @@ Writes a 1 GB file sequentially in 128 KB blocks, bypassing the file cache, for 
 `block` - Block size in KB **Default:** `128` 
 
 `duration` - Seconds **Default:** `300` 
+
+## al_wr_cookies_remove
+
+Removes cookies from the web_replay archive file named by global:web_replay_recording on the Host, for archives recorded from an Aluminium (Android desktop) DUT.
+
+## al_wr_idle_timeout
+
+Adds the server idle timeouts in the Host's web_replay recordings\idle_timeouts.json to the archive named by global:web_replay_recording.
+
+On Windows, idle_timeouts.json comes from a Microsoft Edge netlog capture.  Chrome on Aluminium (Android desktop) can't be started with a netlog, so the file must come from a Windows recording of the same sites.
+
+## al_wr_record_start
+
+Starts a web_replay recording server on the Host and points the Aluminium (Android desktop) DUT's global proxy at it.
+
+Set global:web_replay_recording to the archive to record; use a new name so an existing archive isn't overwritten.  Run the workload with global:web_replay_action=bulk_record, then run al_wr_record_stop.
+
+## al_wr_record_stop
+
+Stops the web_replay recording server started by al_wr_record_start and clears the Aluminium (Android desktop) DUT's global proxy.
+
+## al_wr_replay_start
+
+Starts a web_replay replay server on the Host for global:web_replay_recording and points the Aluminium (Android desktop) DUT's global proxy at it.
+
+Run workloads with global:web_replay_action=bulk_replay while it is running, then run al_wr_replay_stop.
+
+## al_wr_replay_stop
+
+Stops the web_replay replay server started by al_wr_replay_start and clears the Aluminium (Android desktop) DUT's global proxy.
 
 ## al_youtube
 

@@ -1,0 +1,165 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Browse Google Images for London",
+        "enabled": true,
+        "id": "1XJWME0",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME1",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME2",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME3",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME4",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "googleimageslondon"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME5",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "images.google.com"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_google_images_london:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "15"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "9",
+        "description": "London",
+        "enabled": true,
+        "id": "1XJWMCT",
+        "text": "london\ue007",
+        "type": "Type",
+        "typing_delay": "[typing_delay]"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "4",
+                        "description": "Page down",
+                        "enabled": true,
+                        "id": "1XJWMCU",
+                        "text": "\ue00f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "7",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMCV",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMCW",
+                "type": "End Loop"
+            },
+            {
+                "children": [],
+                "delay": "8",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWMCY",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWME6",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME7",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWME8",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "google_images_london"
+            }
+        ],
+        "type": "Include"
+    }
+]

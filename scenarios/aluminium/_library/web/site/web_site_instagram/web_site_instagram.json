@@ -1,0 +1,275 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Browse Instagram",
+        "enabled": true,
+        "id": "1XJWM98",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM99",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9C",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9E",
+        "name": "[web_site_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "20"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9F",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9H",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "instagram"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9J",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "aka.ms/AAle9to"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_instagram:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "[web_site_instagram:web_site_load_time]"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "1",
+                "description": "ESC",
+                "enabled": true,
+                "id": "1XJWM8N",
+                "text": "\ue00c",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "1",
+                "description": "ESC",
+                "enabled": true,
+                "id": "1XJWM8P",
+                "text": "\ue00c",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Page down",
+                        "enabled": true,
+                        "id": "1XJWM8R",
+                        "text": "\ue00f",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "ESC",
+                        "enabled": true,
+                        "id": "1XJWM8T",
+                        "text": "\ue00c",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "3",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM8U",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM8V",
+                "type": "End Loop"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "Page up",
+                        "enabled": true,
+                        "id": "1XJWM8W",
+                        "text": "\ue00e",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    },
+                    {
+                        "children": [],
+                        "delay": "2",
+                        "description": "ESC",
+                        "enabled": true,
+                        "id": "1XJWM8X",
+                        "text": "\ue00c",
+                        "type": "Type",
+                        "typing_delay": "[typing_delay]"
+                    }
+                ],
+                "count": "4",
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM90",
+                "type": "Loop"
+            },
+            {
+                "children": [],
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM91",
+                "type": "End Loop"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "Windows opens the first reel by image match and skips to the next one; Aluminium stays on the feed for the same time",
+                "enabled": true,
+                "id": "1XJWM92",
+                "type": "Comment"
+            },
+            {
+                "children": [],
+                "delay": "3",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWM93",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "30",
+                "description": "30s",
+                "enabled": true,
+                "id": "1XJWM94",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "30",
+                "description": "30s",
+                "enabled": true,
+                "id": "1XJWM95",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "ESC",
+                "enabled": true,
+                "id": "1XJWM96",
+                "text": "\ue00c",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWM97",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWM9K",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9L",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM9M",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "instagram"
+            }
+        ],
+        "type": "Include"
+    }
+]

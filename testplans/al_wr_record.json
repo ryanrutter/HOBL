@@ -1,0 +1,64 @@
+{
+    "StudyVars": {},
+    "PlanBasedStudyVars": [],
+    "StudyType": "web_replay",
+    "AutoResubmit": 0,
+    "Scenarios": [
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_wr_record_start",
+            "Enabled": true,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc global:web_replay_recording=AL_WEB"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_web",
+            "Enabled": true,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:training_mode=1 global:web_replay_action=bulk_record"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_wr_record_stop",
+            "Enabled": true,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_web",
+            "Enabled": true,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:training_mode=1 global:web_replay_recording=AL_WEB"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_wr_cookies_remove",
+            "Enabled": true,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc global:web_replay_recording=AL_WEB\\instagram.json.gz"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_wr_idle_timeout",
+            "Enabled": false,
+            "Expand": [],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc global:web_replay_recording=AL_WEB"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_web",
+            "Enabled": false,
+            "Expand": [],
+            "Iterations": 5,
+            "Parameters": "global:web_replay_recording=AL_WEB global:module_name=web_replay"
+        }
+    ]
+}

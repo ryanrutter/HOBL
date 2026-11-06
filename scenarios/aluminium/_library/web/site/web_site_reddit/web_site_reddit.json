@@ -1,0 +1,223 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Browse Reddit",
+        "enabled": true,
+        "id": "1XJWM88",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM89",
+        "name": "[new_tab]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8A",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8C",
+        "name": "[web_site_load_time]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "20"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8E",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_begin",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8F",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_switch_archive",
+        "params": [
+            {
+                "name": "[archive_name]",
+                "value": "reddit"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8H",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_enter_address",
+        "params": [
+            {
+                "name": "[web_site_address]",
+                "value": "aka.ms/AAnowz2"
+            },
+            {
+                "name": "[new_tab]",
+                "value": "[web_site_reddit:new_tab]"
+            },
+            {
+                "name": "[web_site_load_time]",
+                "value": "[web_site_reddit:web_site_load_time]"
+            }
+        ],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Windows moves the pointer off the video here",
+        "enabled": true,
+        "id": "1XJWM7W",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "2",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM7X",
+        "type": "Delay"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "60",
+                "description": "Watch video 60s",
+                "enabled": true,
+                "id": "1XJWM7Y",
+                "type": "Delay"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM80",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM81",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM82",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM83",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "6",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM84",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "3",
+                "description": "Page down",
+                "enabled": true,
+                "id": "1XJWM85",
+                "text": "\ue00f",
+                "type": "Type",
+                "typing_delay": "[typing_delay]"
+            },
+            {
+                "children": [],
+                "delay": "2",
+                "description": "Final delay",
+                "enabled": true,
+                "id": "1XJWM87",
+                "type": "Delay"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "==",
+        "id": "1XJWM8J",
+        "left_term": "[load_only]",
+        "name": "",
+        "right_term": "0",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8K",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM8M",
+        "include_path": "scenarios\\aluminium\\_library\\misc\\recording_phase_end",
+        "params": [
+            {
+                "name": "[phase_category]",
+                "value": "web"
+            },
+            {
+                "name": "[phase_name]",
+                "value": "reddit"
+            }
+        ],
+        "type": "Include"
+    }
+]

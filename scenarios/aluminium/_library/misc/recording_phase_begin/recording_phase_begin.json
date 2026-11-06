@@ -1,0 +1,23 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Record phase start time",
+        "enabled": true,
+        "id": "1XJWM7M",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Set phase_start_time",
+        "enabled": true,
+        "file_name": [
+            "code_1XJWM7N.py"
+        ],
+        "id": "1XJWM7N",
+        "type": "Code"
+    }
+]

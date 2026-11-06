@@ -8,12 +8,9 @@ from . import default_params
 
 class AlWeb(core.app_scenario.Scenario):
     '''
-    Runs the twelve default Windows web_replay sites in Chrome, including archived YouTube media requests.
+    Runs the twelve default Windows web_replay sites in Chrome with the Windows web scenario's tab order, page timings, scrolling and searches.  Set web_workload to run a subset of the sites, the same as Windows.
 
-    This Aluminium version matches the site set and tab count but does not yet reproduce Windows'
-    image-matched scrolling or select fixed YouTube resolutions.  YouTube's player pauses the recorded
-    videos in Chrome on Aluminium, so the scenario only checks that archived video segments were
-    delivered; use al_youtube for representative video playback.
+    Scrolling uses Page Down and Page Up, which reach Chrome whatever its window size.  Steps Windows finds by image match (the Amazon search bar, the first Instagram reel and the YouTube quality menu) keep the same timing without the interaction.  YouTube's player pauses the recorded videos in Chrome on Aluminium, so the scenario only checks that archived video segments were delivered; use al_youtube for representative video playback.
     '''
     default_params.run()
 

@@ -1,0 +1,45 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Record phase",
+        "enabled": true,
+        "id": "1XJWM7P",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM7R",
+        "name": "[phase_category]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "invalid"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWM7T",
+        "name": "[phase_name]",
+        "type": "Set Default",
+        "val_options": "",
+        "value": "invalid"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Record phase",
+        "enabled": true,
+        "file_name": [
+            "code_1XJWM7U.py"
+        ],
+        "id": "1XJWM7U",
+        "type": "Code"
+    }
+]

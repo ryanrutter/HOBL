@@ -1,0 +1,727 @@
+[
+    {
+        "author": "ryanru",
+        "capture_device": "",
+        "children": [],
+        "create_date": "2026-11-05",
+        "description": "Web browsing",
+        "enabled": true,
+        "id": "1XJWMKF",
+        "type": "Information"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKH",
+        "name": "[load_only]",
+        "type": "Set Default",
+        "val_options": "0,1",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Specific websites to run.",
+        "enabled": true,
+        "id": "1XJWMKJ",
+        "multiple": true,
+        "name": "[al_web:web_workload]",
+        "type": "Set User Default",
+        "val_options": "amazonbsg,amazonvacuum,googleimagesapollo,googleimageslondon,googlesearchbelgium,googlesearchsuperbowl,instagram,reddit,theverge,wikipedia,youtubenasa,youtubetos",
+        "value": "amazonbsg amazonvacuum googleimagesapollo googleimageslondon googlesearchbelgium googlesearchsuperbowl instagram reddit theverge wikipedia youtubenasa youtubetos"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKK",
+        "name": "[al_web:tabs]",
+        "type": "Set",
+        "value": "0"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Requires web_replay parameters to be set by top-level scenario.",
+        "enabled": true,
+        "id": "1XJWMKL",
+        "type": "Comment"
+    },
+    {
+        "children": [],
+        "delay": "0",
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKM",
+        "include_path": "scenarios\\aluminium\\_library\\web\\web_clear_cache",
+        "params": [],
+        "type": "Include"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 1",
+        "enabled": true,
+        "id": "1XJWMKP",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMKN",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_reddit",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "20"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMKR",
+        "left_term": "reddit",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKT",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 1",
+        "enabled": true,
+        "id": "1XJWMKW",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMKV",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_instagram",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "20"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMKX",
+        "left_term": "instagram",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMKY",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 2",
+        "enabled": true,
+        "id": "1XJWML3",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWML0",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_new_tab",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWML1",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_amazon_bsg",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWML2",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWML4",
+        "left_term": "amazonbsg",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWML6",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 2",
+        "enabled": true,
+        "id": "1XJWML8",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWML7",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_amazon_vacuum",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWML9",
+        "left_term": "amazonvacuum",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMLA",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 3",
+        "enabled": true,
+        "id": "1XJWMLF",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLC",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_google_images_apollo",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "1"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "15"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLE",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMLH",
+        "left_term": "googleimagesapollo",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMLJ",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 3",
+        "enabled": true,
+        "id": "1XJWMLM",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLL",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_google_images_london",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMLN",
+        "left_term": "googleimageslondon",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMLP",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 4",
+        "enabled": true,
+        "id": "1XJWMLU",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLR",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_youtube_tos",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "1"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[enable_pause]",
+                        "value": "1"
+                    },
+                    {
+                        "name": "[duration]",
+                        "value": "120"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLT",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMLV",
+        "left_term": "youtubetos",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMLW",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 4",
+        "enabled": true,
+        "id": "1XJWMM0",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMLY",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_wikipedia",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "15"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMM1",
+        "left_term": "wikipedia",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMM2",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 5",
+        "enabled": true,
+        "id": "1XJWMM5",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMM3",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_youtube_nasa",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "1"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "15"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMM4",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMM6",
+        "left_term": "youtubenasa",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMM7",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 5",
+        "enabled": true,
+        "id": "1XJWMMA",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMM8",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_google_search_belgium",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    }
+                ],
+                "type": "Include"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMMC",
+        "left_term": "googlesearchbelgium",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMME",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 6",
+        "enabled": true,
+        "id": "1XJWMMK",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMMF",
+                "include_path": "scenarios\\aluminium\\_library\\web\\web_new_tab",
+                "params": [],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMMH",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_the_verge",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "0"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    },
+                    {
+                        "name": "[web_site_load_time]",
+                        "value": "20"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMMJ",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMML",
+        "left_term": "theverge",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMMM",
+        "type": "End If"
+    },
+    {
+        "children": [],
+        "delay": "0.0",
+        "description": "Tab 7",
+        "enabled": true,
+        "id": "1XJWMMT",
+        "type": "Comment"
+    },
+    {
+        "children": [
+            {
+                "children": [],
+                "delay": "0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMMN",
+                "include_path": "scenarios\\aluminium\\_library\\web\\site\\web_site_google_search_super_bowl",
+                "params": [
+                    {
+                        "name": "[new_tab]",
+                        "value": "1"
+                    },
+                    {
+                        "name": "[load_only]",
+                        "value": "[web_run:load_only]"
+                    }
+                ],
+                "type": "Include"
+            },
+            {
+                "children": [],
+                "delay": "0.0",
+                "description": "",
+                "enabled": true,
+                "id": "1XJWMMR",
+                "name": "[al_web:tabs]",
+                "type": "Increment",
+                "value": "1"
+            }
+        ],
+        "description": "",
+        "enabled": true,
+        "eval_method": "in",
+        "id": "1XJWMMU",
+        "left_term": "googlesearchsuperbowl",
+        "name": "",
+        "right_term": "[al_web:web_workload]",
+        "type": "If"
+    },
+    {
+        "children": [],
+        "description": "",
+        "enabled": true,
+        "id": "1XJWMMV",
+        "type": "End If"
+    }
+]
