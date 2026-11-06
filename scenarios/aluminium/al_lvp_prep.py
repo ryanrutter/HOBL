@@ -112,7 +112,9 @@ class AlLvpPrep(core.app_scenario.Scenario):
                 download = os.path.join("downloads", "lvp_extract", member)
 
         if download.lower().endswith(".mp4"):
-            shutil.copyfile(download, path)
+            # A direct .mp4 URL with the same name is downloaded to path itself.
+            if os.path.abspath(download) != os.path.abspath(path):
+                shutil.copyfile(download, path)
             return path
         ffmpeg = find_ffmpeg()
         if not ffmpeg:

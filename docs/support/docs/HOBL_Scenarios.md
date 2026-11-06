@@ -883,9 +883,20 @@ Installs the Android apps used by HOBL scenarios from the Play Store on an Alumi
 
 <u>Parameters:</u>
 
-`apps` - Space-separated apps to install: netflix, word, excel, powerpoint, outlook, onenote, teams, onedrive **Default:** `netflix word excel powerpoint outlook onenote teams onedrive` 
+`apps` - Space-separated apps to install: netflix, word, excel, powerpoint, outlook, onenote, teams, onedrive, edge, edgebeta, edgedev, edgecanary **Default:** `netflix word excel powerpoint outlook onenote teams onedrive edge` 
 
 `install_timeout` - Seconds to wait for each app to download and install. **Default:** `900` 
+
+## al_battery_saver
+
+Turns Android's Battery Saver on (state=1) or off (state=0) on an Aluminium (Android desktop) DUT, the Aluminium version of the Windows energy_saver scenario.  No restart is needed on Android.
+
+Android doesn't run Battery Saver while the DUT is charging.  On AC power, state=1 sets Battery Saver to turn on when the charger is disconnected, and keeps it on after a full charge, so measurements on battery run with it.  The scenario checks the setting took effect, and fails if not.
+
+
+<u>Parameters:</u>
+
+`state` - 1 to turn Battery Saver on, 0 to turn it off. **Default:** `0`  **Options:** `0, 1`
 
 ## al_config_check
 
@@ -957,6 +968,15 @@ Idles with the Microsoft 365 apps open and the twelve web sites loaded in Chrome
 
 `idle_time` - Idle time between each app switch, - 3s **Default:** `111` 
 
+## al_idle_desktop_jeita
+
+Idles on the Android desktop with all windows minimized, for JEITA battery life testing, the Aluminium version of the Windows idle_desktop_jeita scenario.  Windows sets the JEITA JB3_0 desktop image in its prep; Aluminium keeps the default wallpaper, since the Googlebook builds used for bring-up show the default wallpaper for the test user whatever is set.
+
+
+<u>Parameters:</u>
+
+`duration` - Time to idle in seconds **Default:** `300` 
+
 ## al_lvp
 
 True if an audio player of uid is started in "dumpsys audio" output.
@@ -973,6 +993,25 @@ True if an audio player of uid is started in "dumpsys audio" output.
 `duration` - Time to play the video in seconds **Default:** `300` 
 
 `airplane_mode` - Not supported on Aluminium: airplane mode would disconnect the HOBL agent. **Default:** `0`  **Options:** `0`
+
+## al_lvp_jeita
+
+Plays a video in full screen mode in accordance with requirements set by the Japan Electronics and Information Technology Industries Association for battery operated electronic devices being released in Japan, the Aluminium version of the Windows lvp_jeita scenario.
+
+Please do not alter parameters as they have been set to meet the requirements of that governing body.
+
+
+<u>Parameters:</u>
+
+`duration` - Time to play the video in seconds **Default:** `300` 
+
+The video is always JB3_0-MOVIE.mp4, copied by al_lvp_jeita_prep.
+
+## al_lvp_jeita_prep
+
+Copies the JEITA JB3_0 battery life test video to the Movies folder of the active Android user on an Aluminium (Android desktop) DUT, the Aluminium version of the Windows lvp_jeita_prep scenario.
+
+The video is downloaded from https://home.jeita.or.jp/page_file/JB3_0-MOVIE.mp4 to the Host's downloads folder the first time.
 
 ## al_lvp_prep
 
@@ -1263,9 +1302,11 @@ Runs the WebXPRT 4 browser benchmark in Chrome with its automation URL, the Alum
 
 ## al_web_prep
 
-Prepares Chrome for Aluminium web workloads.  It dismisses Chrome's first-run, sign-in, sync,
-notification, and default browser prompts without accepting them, then clears cached files only,
-preserving cookies, browsing history, passwords, and the signed-in test account.
+Prepares the web browser (global:browser, Chrome or Edge) for Aluminium web workloads.  It dismisses the
+browser's first-run, sign-in, sync, notification, and default browser prompts without accepting them, then clears
+cached files only, preserving cookies, browsing history, passwords, and the signed-in test account.  For Edge, it
+also turns on Edge's "Enable command line on non-rooted devices" flag, so Edge trusts web_replay's certificates
+the same way as Chrome.
 
 ## al_write128kseq
 

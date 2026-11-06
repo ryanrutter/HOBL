@@ -5,11 +5,12 @@ import logging
 import time
 
 import utilities.open_source.aluminium_media as media
+import utilities.open_source.aluminium_browser as browser
 
 
 def run(scenario):
     start_time, start_position = scenario.al_netflix_start
-    state, position = media.playback(scenario, "com.android.chrome")
+    state, position = media.playback(scenario, browser.package())
     elapsed = time.time() - start_time
     if state != "PLAYING":
         scenario.fail(f"Netflix stopped playing (state {state}).")

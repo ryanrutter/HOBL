@@ -12,7 +12,7 @@
     {
         "children": [],
         "delay": "0.0",
-        "description": "Windows clicks the browser's taskbar button; Aluminium brings Chrome's window to the front",
+        "description": "Windows clicks the browser's taskbar button; Aluminium brings the browser's window to the front",
         "enabled": true,
         "id": "1XKH6JT",
         "type": "Comment"
@@ -20,7 +20,7 @@
     {
         "children": [],
         "delay": "2.5",
-        "description": "Switch to Chrome",
+        "description": "Switch to the browser",
         "enabled": true,
         "file_name": [
             "code_1XKH6JU.py"

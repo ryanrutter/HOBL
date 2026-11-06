@@ -3,11 +3,12 @@
 
 import logging
 import time
+import utilities.open_source.aluminium_browser as browser
 
 def run(scenario):
     logging.debug('Executing code block: code_1X8U3N0.py')
     try:
-        scenario._kill("com.android.chrome")
+        browser.kill(scenario)
     except:
         pass
 

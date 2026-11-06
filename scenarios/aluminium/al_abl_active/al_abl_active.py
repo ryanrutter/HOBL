@@ -4,6 +4,7 @@
 import core.app_scenario
 import os
 import utilities.open_source.aluminium_office as office
+import utilities.open_source.aluminium_browser as browser
 from . import default_params
 
 
@@ -37,7 +38,7 @@ class AlAblActive(core.app_scenario.Scenario):
 
     def kill(self):
         try:
-            self._kill("com.android.chrome")
+            browser.kill_all(self)
         except Exception:
             pass
         try:

@@ -6,6 +6,7 @@ import time
 import xml.etree.ElementTree as ET
 
 from core.parameters import Params
+import utilities.open_source.aluminium_browser as browser
 
 
 UI_TREE_PATH = "/data/local/tmp/hobl_web_prep.xml"
@@ -231,6 +232,10 @@ def _confirm_site_data_dialog(scenario, root):
 
 
 def run(scenario):
+    if browser.is_edge():
+        # Edge for Android has no clear-data settings page (edge://settings/clearBrowserData is blank).
+        logging.info(f"{browser.name()} cached files are kept: Edge for Android has no clear-data settings page.")
+        return
     logging.info("Clearing Chrome cached files only; retaining cookies, history, and saved passwords.")
 
     root = _open_clear_data_settings(scenario)

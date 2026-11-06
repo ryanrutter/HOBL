@@ -4212,7 +4212,8 @@ class Scenario(unittest.TestCase):
             except:
                 pass
         elif self.platform.lower() == "aluminium":
-            self._kill("com.android.chrome")
+            import utilities.open_source.aluminium_browser as aluminium_browser
+            aluminium_browser.kill_all(self)
 
         if self.web_replay_action not in ["record", "replay", "bulk_record", "bulk_replay"]:
             raise Exception(f"Invalid web_replay action parameter: {self.web_replay_action}")

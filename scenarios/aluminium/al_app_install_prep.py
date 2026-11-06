@@ -26,6 +26,13 @@ APP_PACKAGES = {
     "onenote": "com.microsoft.office.onenote",
     "teams": "com.microsoft.teams",
     "onedrive": "com.microsoft.skydrive",
+    "edge": "com.microsoft.emmx",
+}
+# Edge preview channels, used by the browser study; not installed unless listed in "apps".
+OPTIONAL_PACKAGES = {
+    "edgebeta": "com.microsoft.emmx.beta",
+    "edgedev": "com.microsoft.emmx.dev",
+    "edgecanary": "com.microsoft.emmx.canary",
 }
 
 INSTALLED_LABELS = ["Open", "Uninstall", "Play"]
@@ -37,14 +44,15 @@ class AlAppInstallPrep(core.app_scenario.Scenario):
     Installs the Android apps used by HOBL scenarios from the Play Store on an Aluminium (Android desktop) DUT, for the active Android user.  Apps that are already installed are left unchanged.  The DUT must be signed in to a Google account.
     '''
     module = __module__.split('.')[-1]
-    Params.setDefault(module, 'apps', " ".join(APP_PACKAGES), desc="Space-separated apps to install: " + ", ".join(APP_PACKAGES), multiple=True)
+    Params.setDefault(module, 'apps', " ".join(APP_PACKAGES), desc="Space-separated apps to install: " + ", ".join(list(APP_PACKAGES) + list(OPTIONAL_PACKAGES)), multiple=True)
     Params.setDefault(module, 'install_timeout', '900', desc="Seconds to wait for each app to download and install.")
 
     is_prep = True
 
     def runTest(self):
         apps = Params.get(self.module, 'apps').split()
-        unknown = [app for app in apps if app not in APP_PACKAGES]
+        packages = {**APP_PACKAGES, **OPTIONAL_PACKAGES}
+        unknown = [app for app in apps if app not in packages]
         if unknown:
             self.fail("Unknown apps in al_app_install_prep:apps: " + ", ".join(unknown))
         self.timeout = int(Params.get(self.module, 'install_timeout'))
@@ -52,7 +60,7 @@ class AlAppInstallPrep(core.app_scenario.Scenario):
 
         try:
             for app in apps:
-                self.install(app, APP_PACKAGES[app])
+                self.install(app, packages[app])
         finally:
             self._call(["am", f"force-stop --user {self.user} com.android.vending"], expected_exit_code="")
             self._call(["input", "keyevent KEYCODE_HOME"], expected_exit_code="")

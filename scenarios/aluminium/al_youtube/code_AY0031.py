@@ -5,6 +5,7 @@ import logging
 import time
 
 import utilities.open_source.aluminium_media as media
+import utilities.open_source.aluminium_browser as browser
 
 
 def run(scenario):
@@ -12,7 +13,7 @@ def run(scenario):
     deadline = time.time() + 30
     pressed = False
     while time.time() < deadline:
-        state, position = media.playback(scenario, "com.android.chrome")
+        state, position = media.playback(scenario, browser.package())
         if state == "PLAYING":
             logging.info(f"YouTube is playing at {position:.1f}s")
             return

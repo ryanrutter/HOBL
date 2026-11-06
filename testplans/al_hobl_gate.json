@@ -1,0 +1,199 @@
+{
+    "StudyVars": {
+        "charge": {
+            "off": "charge:state=off",
+            "on": "charge:state=on"
+        },
+        "battery_saver": {
+            "on": "",
+            "off": ""
+        }
+    },
+    "PlanBasedStudyVars": [
+        "charge"
+    ],
+    "StudyType": "WinGates",
+    "AutoResubmit": 0,
+    "Scenarios": [
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_process_idle_tasks",
+            "Enabled": true,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Prep global:post_run_delay=0"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_config_check",
+            "Enabled": false,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": ""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "charge_off",
+            "Enabled": false,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc global:post_run_delay=900"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "charge",
+            "Enabled": true,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc global:post_run_delay=900"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_battery_saver",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.off"
+            ],
+            "Iterations": 1,
+            "Parameters": "al_battery_saver:state=0 global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_abl_active",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.off"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_teams2_1on1_audio",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.off"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_teams2_3x3_video",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.off"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "study_report",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.off"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_battery_saver",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.on"
+            ],
+            "Iterations": 1,
+            "Parameters": "al_battery_saver:state=1 global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_abl_active",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.on"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_teams2_1on1_audio",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.on"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_teams2_3x3_video",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.on"
+            ],
+            "Iterations": 3,
+            "Parameters": "global:attempts=2 global:run_type=Power global:tools=\"+power_light\""
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "study_report",
+            "Enabled": true,
+            "Expand": [
+                "charge",
+                "battery_saver.on"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "charge_on",
+            "Enabled": true,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_version_report",
+            "Enabled": true,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Prep global:post_run_delay=0"
+        },
+        {
+            "Command": ".\\hobl.cmd",
+            "Scenario": "al_notify",
+            "Enabled": true,
+            "Expand": [
+                "charge"
+            ],
+            "Iterations": 1,
+            "Parameters": "global:run_type=Misc"
+        }
+    ]
+}

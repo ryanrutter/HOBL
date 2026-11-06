@@ -7,13 +7,14 @@ import time
 from core.parameters import Params
 import utilities.open_source.aluminium_ui as ui
 from scenarios.aluminium.al_accounts_check import require_accounts
+import utilities.open_source.aluminium_browser as browser
 
 PASSWORD_OPTIONS = ["use password", "sign in with password"]
 CODE_PAGE = ["enter the code we sent", "enter a pin code", "send sign-in code"]
 
 
 def current_url(root):
-    node = next((n for n in root.iter("node") if n.get("resource-id") == "com.android.chrome:id/url_bar"), None)
+    node = next((n for n in root.iter("node") if n.get("resource-id") == f"{browser.package()}:id/url_bar"), None)
     return node.get("text", "") if node is not None else ""
 
 
@@ -67,7 +68,7 @@ def run(scenario):
             continue
         if find_text(root, CODE_PAGE) is not None:
             scenario.fail("Netflix sent a sign-in code to the account's email instead of asking for its password, so HOBL can't sign in.  "
-                          "Sign in to Netflix once by hand in Chrome on the DUT; the sign-in is kept between runs.")
+                          f"Sign in to Netflix once by hand in {browser.name()} on the DUT; the sign-in is kept between runs.")
     else:
         scenario.fail("The Netflix password page did not load.")
 

@@ -13,6 +13,11 @@ from core.parameters import Params, get_hobl_version
 
 PACKAGES = {
     "Chrome": "com.android.chrome",
+    "Edge": "com.microsoft.emmx",
+    "Edge Beta": "com.microsoft.emmx.beta",
+    "Edge Dev": "com.microsoft.emmx.dev",
+    "Edge Canary": "com.microsoft.emmx.canary",
+    "Teams": "com.microsoft.teams",
     "Android WebView": "com.google.android.webview",
     "Word": "com.microsoft.office.word",
     "Excel": "com.microsoft.office.excel",

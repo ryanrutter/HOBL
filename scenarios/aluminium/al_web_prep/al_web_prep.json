@@ -4,7 +4,7 @@
         "capture_device": "Acer Googlebook 14, Android 17, Chrome",
         "children": [],
         "create_date": "2026-11-03",
-        "description": "Prepare Chrome for Aluminium web workloads",
+        "description": "Prepare the web browser for Aluminium web workloads",
         "enabled": true,
         "id": "AW0200",
         "type": "Information"
@@ -35,7 +35,7 @@
             {
                 "children": [],
                 "delay": "0",
-                "description": "Dismiss Chrome first-run prompts",
+                "description": "Dismiss browser first-run prompts",
                 "enabled": true,
                 "id": "AW0211",
                 "include_path": "scenarios\\aluminium\\_library\\web\\web_first_run",

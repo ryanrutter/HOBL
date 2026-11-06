@@ -3,14 +3,17 @@
 
 import core.app_scenario
 import os
+import utilities.open_source.aluminium_browser as browser
 from . import default_params
 
 
 class AlWebPrep(core.app_scenario.Scenario):
     '''
-    Prepares Chrome for Aluminium web workloads.  It dismisses Chrome's first-run, sign-in, sync,
-    notification, and default browser prompts without accepting them, then clears cached files only,
-    preserving cookies, browsing history, passwords, and the signed-in test account.
+    Prepares the web browser (global:browser, Chrome or Edge) for Aluminium web workloads.  It dismisses the
+    browser's first-run, sign-in, sync, notification, and default browser prompts without accepting them, then clears
+    cached files only, preserving cookies, browsing history, passwords, and the signed-in test account.  For Edge, it
+    also turns on Edge's "Enable command line on non-rooted devices" flag, so Edge trusts web_replay's certificates
+    the same way as Chrome.
     '''
     default_params.run()
 
@@ -36,6 +39,6 @@ class AlWebPrep(core.app_scenario.Scenario):
 
     def kill(self):
         try:
-            self._kill("com.android.chrome")
+            browser.kill_all(self)
         except Exception:
             pass
