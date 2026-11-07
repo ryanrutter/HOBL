@@ -36,6 +36,11 @@ def run(scenario):
     # netflix.com/login page stays on the sign-in form.  The account comes from the [netflix] section of the
     # device profile, the same setting as the Windows netflix scenario, and is replaced with ******** in the log.
     root, _ = ui.wait_for(scenario, ["Netflix"], timeout=30)
+    # A signed-in account is redirected from /login to /browse, which can take a while after the cache is cleared.
+    deadline = time.time() + 15
+    while "/login" in current_url(root) and edit_field(root, password=False) is None and time.time() < deadline:
+        time.sleep(3)
+        root = ui.read_ui(scenario)
     if "/login" not in current_url(root):
         logging.info("Already signed in to Netflix.")
         return
@@ -55,6 +60,10 @@ def run(scenario):
     while time.time() < deadline:
         time.sleep(3)
         root = ui.read_ui(scenario)
+        # Netflix can finish signing in without a password page, for example when it recognizes the browser.
+        if "/login" not in current_url(root):
+            logging.info("Signed in to Netflix.")
+            return
         field = edit_field(root, password=True)
         if field is not None:
             ui.tap(scenario, field)

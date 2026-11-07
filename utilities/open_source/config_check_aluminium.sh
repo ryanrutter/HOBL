@@ -120,6 +120,17 @@ read_battery() {
     battery_level="N/A"
     battery_status="N/A"
     battery_capacity_wh="N/A"
+    # Android's charge counter (uAh) and battery voltage (mV), used when the fuel gauge isn't readable.
+    charge_counter_mah="N/A"
+    battery_voltage_mv="N/A"
+    counter=$(dumpsys_battery "Charge counter")
+    if is_number "$counter"; then
+        charge_counter_mah=$(awk -v uah="$counter" 'BEGIN {printf "%.1f", uah / 1000}')
+    fi
+    voltage_mv=$(dumpsys_battery "voltage")
+    if is_number "$voltage_mv"; then
+        battery_voltage_mv="$voltage_mv"
+    fi
 
     # Fuel gauge readings give two decimal places, when the kernel exposes them to the shell.
     for supply in /sys/class/power_supply/*; do
@@ -185,6 +196,8 @@ collect_run_readings() {
     read_brightness
     read_volume
     add_reading "Run $phase Battery State (%)" "$battery_level"
+    add_reading "Run $phase Charge Counter (mAh)" "$charge_counter_mah"
+    add_reading "Run $phase Battery Voltage (mV)" "$battery_voltage_mv"
     add_reading "Run $phase Charge State" "$battery_status"
     add_reading "Run $phase Screen Brightness (%)" "$screen_brightness_pct"
     add_reading "Run $phase Audio Volume (%)" "$audio_volume"
@@ -236,6 +249,18 @@ elif $PostRun; then
             if [ "$run_duration_seconds" -gt 0 ]; then
                 battery_drain_rate_mw=$(awk -v capacity="$battery_capacity_wh" -v drain="$battery_drain_percentage" -v seconds="$run_duration_seconds" 'BEGIN {printf "%.0f", capacity * drain / 100 * 1000 * 3600 / seconds}')
             fi
+        fi
+    fi
+    # Googlebook builds don't let the shell read the fuel gauge's capacity, so the energy comes from the charge
+    # counter and the average battery voltage instead.
+    start_counter=$(csv_value "Run Start Charge Counter (mAh)" "$pre_run_file")
+    start_voltage=$(csv_value "Run Start Battery Voltage (mV)" "$pre_run_file")
+    if [ "$battery_drain_wh" = "N/A" ] && is_number "$start_counter" && is_number "$charge_counter_mah" \
+            && is_number "$start_voltage" && is_number "$battery_voltage_mv"; then
+        battery_drain_wh=$(awk -v start="$start_counter" -v stop="$charge_counter_mah" -v v1="$start_voltage" -v v2="$battery_voltage_mv" \
+            'BEGIN {used = start - stop; printf "%.2f", (used > 0 ? used : 0) * (v1 + v2) / 2 / 1e6}')
+        if [ "$run_duration_seconds" -gt 0 ]; then
+            battery_drain_rate_mw=$(awk -v wh="$battery_drain_wh" -v seconds="$run_duration_seconds" 'BEGIN {printf "%.0f", wh * 1000 * 3600 / seconds}')
         fi
     fi
     add_reading "Battery Drain (%)" "$battery_drain_percentage"
