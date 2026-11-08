@@ -392,6 +392,21 @@ def dismiss_prompts(scenario, app, root=None):
         logging.info(f"Declining {APPS[app]['name']}'s feedback survey")
         ui.tap(scenario, survey, settle=2)
         return True
+    # Office asks for an app rating at random ("Enjoying OneNote?"), and can follow a "Not really" with a request for
+    # feedback; decline both.  The prompts are matched by their exact text wherever they are drawn.
+    name = APPS[app]['name']
+    if ui.find_any(root, [f"Enjoying {name}?", "Enjoying the app?"]) is not None:
+        button = ui.find_any(root, ["Not really", "NOT REALLY"])
+        if button is not None:
+            logging.info(f"Declining {name}'s rating prompt")
+            ui.tap(scenario, button, settle=2)
+            return True
+    if ui.find_any(root, ["Would you mind giving us some feedback?", "Would you like to give feedback?"]) is not None:
+        button = ui.find_any(root, ["No, thanks", "No thanks", "NO THANKS", "Not now", "NOT NOW"])
+        if button is not None:
+            logging.info(f"Declining {name}'s feedback request")
+            ui.tap(scenario, button, settle=2)
+            return True
     # Microsoft 365 announces new features with a one-time sheet.
     got_it = find_in(root, app, ["Got It", "Got it", "GOT IT"], clickable=True)
     if got_it is not None:
