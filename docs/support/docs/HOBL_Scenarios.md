@@ -1103,11 +1103,15 @@ Runs the Windows productivity workload in the Microsoft 365 apps on an Aluminium
 
 Outlook attaches its picture and document instead of inserting them inline, and OneNote keeps the picture-insert time without inserting the picture, since OneNote for Android inserts pictures through its camera.  Windows image-matched clicks are taps on the apps' labelled controls.
 
+When Excel is skipped (the excel_skip parameter; by default on x86_64 DUTs with an Excel build that crashes when a workbook opens, an Office bug), each Excel step runs as idle time of the same length, a warning is logged, and excel_skipped is written to excel_skip.csv.  al_idle_apps, al_abl_active and al_abl_standby do the same.
+
 ## al_productivity_prep
 
 Prepares Word, Excel, PowerPoint, OneNote and Outlook on an Aluminium (Android desktop) DUT for the productivity scenarios, the Aluminium version of the Windows productivity_prep scenario.
 
 It copies the Windows productivity documents to the test user's Documents/abl_docs folder, gives the Office apps access to them, turns off the apps' notification prompts, and completes each app's first-run pages: Word, Excel and PowerPoint open their documents, OneNote opens a notebook page, and Outlook adds msa_account (offered by the Microsoft 365 sign-in, or signed in with dut_password).
+
+When Excel is skipped (see the excel_skip parameter; by default on x86_64 DUTs with an Excel build that crashes when a workbook opens, an Office bug), Excel's document isn't opened and the prep still completes.
 
 
 <u>Parameters:</u>

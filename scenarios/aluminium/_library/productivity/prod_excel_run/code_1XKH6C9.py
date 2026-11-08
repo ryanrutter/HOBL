@@ -6,4 +6,6 @@ import utilities.open_source.aluminium_office as office
 
 def run(scenario):
     logging.debug('Executing code block: code_1XKH6C9.py')
+    if office.excel_skipped(scenario):
+        return
     office.tap_label(scenario, "excel", ["X Y (Scatter)"])

@@ -33,6 +33,8 @@ class AlProductivityPrep(core.app_scenario.Scenario):
     Prepares Word, Excel, PowerPoint, OneNote and Outlook on an Aluminium (Android desktop) DUT for the productivity scenarios, the Aluminium version of the Windows productivity_prep scenario.
 
     It copies the Windows productivity documents to the test user's Documents/abl_docs folder, gives the Office apps access to them, turns off the apps' notification prompts, and completes each app's first-run pages: Word, Excel and PowerPoint open their documents, OneNote opens a notebook page, and Outlook adds msa_account (offered by the Microsoft 365 sign-in, or signed in with dut_password).
+
+    When Excel is skipped (see the excel_skip parameter; by default on x86_64 DUTs with an Excel build that crashes when a workbook opens, an Office bug), Excel's document isn't opened and the prep still completes.
     '''
     module = __module__.split('.')[-1]
     Params.setDefault(module, 'timeout', '180', desc="Seconds to wait for each app's first-run pages.")
@@ -50,7 +52,11 @@ class AlProductivityPrep(core.app_scenario.Scenario):
         office.copy_docs(self)
 
         try:
+            skip_excel = office.excel_skipped(self)
             for app, document in DOCUMENTS.items():
+                if app == "excel" and skip_excel:
+                    logging.info(f"Excel skipped: not opening {document} in Excel.")
+                    continue
                 logging.info(f"Opening {document} in {office.APPS[app]['name']}")
                 office.open_document(self, app, document)
                 self.complete_first_run(app, lambda root, app=app, document=document:
@@ -90,7 +96,7 @@ class AlProductivityPrep(core.app_scenario.Scenario):
                 self.fail(f"{name} couldn't open its document.  Check that the Office apps were updated from the Play Store.")
             if office.app_crashed(self, app, started) or not self._call(
                     ["pidof", office.package(app)], expected_exit_code="", fail_on_exception=False, log_output=False).strip():
-                self.fail(f"{name} closed while starting.  On x86_64 Googlebooks, Excel 16.0.20625 and earlier crash when opening any workbook; check logcat for a native crash in {office.package(app)}.")
+                self.fail(f"{name} closed while starting.  On x86_64 Googlebooks, Excel 16.0.20625 and earlier crash when opening any workbook; check logcat for a native crash in {office.package(app)}.  Set excel_skip=1 in the [global] section of the device profile to skip Excel.")
             edit = next((node for node in root.iter("node") if node.get("class") == "android.widget.EditText"
                          and node.get("package") == office.package(app) and node.get("password") in ("true", "false")
                          and not (node.get("resource-id") or "").endswith("subject_field")), None)

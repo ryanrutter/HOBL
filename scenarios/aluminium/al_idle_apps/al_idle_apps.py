@@ -22,6 +22,7 @@ class AlIdleApps(core.app_scenario.Scenario):
             self._aluminium_unlock()
         actions_json = os.path.join(os.path.dirname(__file__), "al_idle_apps.json")
         self.actions = self.load_action_json(actions_json)
+        office.skip_excel_actions(self, self.actions)
         setup_action = self._find_next_type("Setup", json=self.actions)
         if setup_action:
             self.run_actions(setup_action["children"])

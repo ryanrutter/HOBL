@@ -6,4 +6,4 @@ import utilities.open_source.aluminium_office as office
 
 def run(scenario):
     logging.debug('Executing code block: code_1XKH6E8.py')
-    office.tap_label(scenario, "powerpoint", ["Back"], resource_suffix="backButton")
+    office.close_file_menu(scenario, "powerpoint")
