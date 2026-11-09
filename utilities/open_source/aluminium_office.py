@@ -450,28 +450,78 @@ def outlook_discard_draft(scenario):
     tap_label(scenario, "outlook", ["Inbox"], settle=1)
 
 
+def _label(node):
+    return (node.get("content-desc") or node.get("text") or "").strip()
+
+
+def _onenote_nodes(root, prefix):
+    return [node for node in root.iter("node") if node.get("package") == package("onenote") and node.get("bounds")
+            and _label(node).startswith(prefix)]
+
+
+def onenote_set_default_section(scenario, timeout=20):
+    '''Answers OneNote's "Default section unavailable" prompt, which it shows instead of adding a page when it has no
+    default section: picks Quick Notes (or the first section) of the notebook OneNote offers as the default section.'''
+    tap_label(scenario, "onenote", ["OK"], clickable=True, settle=2)
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        root = ui.read_ui(scenario)
+        sections = _onenote_nodes(root, "Section:")
+        if sections:
+            section = next((node for node in sections if _label(node).startswith("Section: Quick Notes")), sections[0])
+            notebook = next((_label(node).split(". ", 1)[-1] for node in _onenote_nodes(root, "Navigate Up")), "the notebook")
+            name = _label(section).split(". ")[0][len("Section: "):]
+            logging.warning(f"OneNote had no default section, so it couldn't add a page; setting {name} in {notebook} as "
+                            "its default section.")
+            ui.tap(scenario, section, settle=1)
+            tap_label(scenario, "onenote", ["OK"], clickable=True, settle=2)
+            return
+        # The picker can open on the list of notebooks: open the first one.
+        header = next(iter(_onenote_nodes(root, "Notebooks")), None)
+        if header is not None:
+            top = ui.center(header)[1]
+            notebook = next((node for node in root.iter("node") if node.get("package") == package("onenote")
+                             and node.get("bounds") and _label(node) and not _label(node).startswith("\ufffd")
+                             and _label(node) not in ("Notebooks", "CANCEL", "OK", "Set as default")
+                             and ui.center(node)[1] > top), None)
+            if notebook is not None:
+                ui.tap(scenario, notebook, settle=2)
+                continue
+        time.sleep(1)
+    scenario.fail("OneNote has no default section and its default section picker didn't show a section.  "
+                  "Open OneNote on the DUT, add a page, and choose a default section when asked.")
+
+
 def onenote_new_page(scenario):
     '''Adds a page to the default notebook: the equivalent of Windows OneNote's Add page button.'''
     root = ui.read_ui(scenario)
     if find_in(root, "onenote", ["New Page"]) is None:
         tap_label(scenario, "onenote", ["Back"], clickable=True, settle=2)
     tap_label(scenario, "onenote", ["New Page"], clickable=True, settle=2)
+    if _onenote_nodes(ui.read_ui(scenario), "Default section unavailable"):
+        onenote_set_default_section(scenario)
+        tap_label(scenario, "onenote", ["New Page"], clickable=True, settle=2)
 
 
-def onenote_delete_page(scenario):
+def onenote_delete_page(scenario, timeout=10):
     '''Deletes the page being edited: the equivalent of selecting the page and pressing Delete on Windows.  OneNote's
     page menu ignores taps while a note is being edited, so the page is selected in the page list and deleted with
-    the selection toolbar.'''
+    the selection toolbar.  The test account's notebook is shared by every DUT that uses it, so the list can also show
+    pages synced from other DUTs; the page being edited is the one marked Active.'''
     scenario._send_text("\ue00c")
     time.sleep(1)
     root = ui.read_ui(scenario)
     if find_in(root, "onenote", ["New Page"]) is None:
         tap_label(scenario, "onenote", ["Back"], clickable=True, settle=2)
-        root = ui.read_ui(scenario)
-    entry = next((node for node in root.iter("node") if node.get("package") == package("onenote")
-                  and (node.get("content-desc") or node.get("text") or "").lstrip().startswith("Page:")), None)
-    if entry is None:
-        scenario.fail("OneNote's page list didn't show the page to delete.")
+    deadline = time.time() + timeout
+    while True:
+        pages = _onenote_nodes(ui.read_ui(scenario), "Page:")
+        entry = next((node for node in pages if ". Active." in _label(node)), pages[0] if pages else None)
+        if entry is not None:
+            break
+        if time.time() >= deadline:
+            scenario.fail("OneNote's page list didn't show the page to delete.")
+        time.sleep(1)
     x, y = ui.center(entry)
     scenario._call(["input", f"swipe {x} {y} {x} {y} 1200"])
     time.sleep(1)

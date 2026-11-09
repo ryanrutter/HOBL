@@ -5,3 +5,6 @@
 -keep class com.microsoft.hobl.agent.ScreenServer {
     public static void main(java.lang.String[]);
 }
+-keep class com.microsoft.hobl.agent.WallpaperTool {
+    public static void main(java.lang.String[]);
+}

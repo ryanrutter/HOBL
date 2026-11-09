@@ -16,7 +16,7 @@ from core.parameters import Params
 
 class AlIdleDesktopJeita(core.app_scenario.Scenario):
     '''
-    Idles on the Android desktop with all windows minimized, for JEITA battery life testing, the Aluminium version of the Windows idle_desktop_jeita scenario.  Windows sets the JEITA JB3_0 desktop image in its prep; Aluminium keeps the default wallpaper, since the Googlebook builds used for bring-up show the default wallpaper for the test user whatever is set.
+    Idles on the Android desktop with all windows minimized, for JEITA battery life testing, the Aluminium version of the Windows idle_desktop_jeita scenario.  As on Windows, the JEITA JB3_0 desktop image is set by the JEITA prep plan (al_wallpaper_prep in al_rundown_jeita_prep.ps1).
     '''
     module = __module__.split('.')[-1]
     Params.setDefault(module, 'duration', '300', desc="Time to idle in seconds")

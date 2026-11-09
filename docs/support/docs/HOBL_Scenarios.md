@@ -970,7 +970,7 @@ Idles with the Microsoft 365 apps open and the twelve web sites loaded in Chrome
 
 ## al_idle_desktop_jeita
 
-Idles on the Android desktop with all windows minimized, for JEITA battery life testing, the Aluminium version of the Windows idle_desktop_jeita scenario.  Windows sets the JEITA JB3_0 desktop image in its prep; Aluminium keeps the default wallpaper, since the Googlebook builds used for bring-up show the default wallpaper for the test user whatever is set.
+Idles on the Android desktop with all windows minimized, for JEITA battery life testing, the Aluminium version of the Windows idle_desktop_jeita scenario.  As on Windows, the JEITA JB3_0 desktop image is set by the JEITA prep plan (al_wallpaper_prep in al_rundown_jeita_prep.ps1).
 
 
 <u>Parameters:</u>
@@ -1279,6 +1279,19 @@ Write Aluminium OS, build, architecture, agent, browser, and installed workload 
 ## al_wait_for_dut
 
 Waits until the Aluminium agent on the DUT responds.
+
+## al_wallpaper_prep
+
+Sets the wallpaper of the active Android user on an Aluminium (Android desktop) DUT, the Aluminium version of the wallpaper setting of the Windows system_prep scenario.  al_rundown_jeita_prep.ps1 uses it to set the JEITA JB3_0 image for the JEITA plans, as Windows does.
+
+The image is set for the home and lock screens through Android's wallpaper service, with a helper in the HOBL agent JAR.  It then checks, from a screenshot of the desktop, that the wallpaper is shown: Googlebook builds before CL3B.260622.286 save a new wallpaper but don't show it until the DUT restarts, so the prep fails on them rather than letting a JEITA test run with the wrong wallpaper.  wallpaper=default restores Android's default wallpaper.
+
+
+<u>Parameters:</u>
+
+`wallpaper` - Image file in utilities\open_source\DesktopImages to use as the wallpaper, for example JB3_0-IMAGE.jpg for JEITA tests, or default for Android's default wallpaper. **Default:** `default` 
+
+`timeout` - Seconds to wait for the desktop to show the new wallpaper. **Default:** `30` 
 
 ## al_web
 
